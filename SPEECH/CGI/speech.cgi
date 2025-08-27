@@ -1,12 +1,12 @@
 #!/bin/bash -vx
 #
-# memo.cgi
+# speech.cgi
 #
 # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27
 
 homd=/home/k_noguchi2005/WEB
 logd=$homd/LOG
-apid=$homd/MEMO
+apid=$homd/SPEECH
 htmd=$apid/HTML
 
 tmp=/tmp/tmp_$$

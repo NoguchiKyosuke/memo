@@ -15,7 +15,7 @@ exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S)
 
 cat $htmd/index.html > $tmp-html
 
-echo "Content-type: text/html"
+echo "Content-Type: text/html"
 echo ""
 cat $tmp-html
 
