@@ -3371,3 +3371,5 @@
 [Thu Aug 28 04:40:31.342390 2025] [cgi:error] [pid 10142] [client 34.235.48.77:36388] AH01215: + rm -rf /tmp/tmp_54490-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
 [Thu Aug 28 04:40:31.343153 2025] [cgi:error] [pid 10142] [client 34.235.48.77:36388] AH01215: exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
 [Thu Aug 28 04:40:31.343165 2025] [cgi:error] [pid 10142] [client 34.235.48.77:36388] AH01215: + exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 05:26:09.431009 2025] [cgi:error] [pid 10141] [client 218.158.169.73:58226] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Thu Aug 28 05:26:09.499966 2025] [cgi:error] [pid 10322] [client 218.158.169.73:58253] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci

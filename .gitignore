@@ -1,2 +1,5 @@
 ./MEMO/LOG/*
 ./.gitignore
+MEMO/LOG/error.log
+MEMO/LOG/access.log
+.gitignore
