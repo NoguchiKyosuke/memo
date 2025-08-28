@@ -1,2 +1,7 @@
-./MEMO/LOG/*
-./.gitignore
+# Ignore log files (fix: remove mistaken leading "./")
+MEMO/LOG/*.log
+SDV/LOG/*.log
+SPEECH/LOG/*.log
+
+# If you later want to keep empty LOG dirs, you can add a .gitkeep and unignore it like:
+# MEMO/LOG/*\n# !MEMO/LOG/.gitkeep
