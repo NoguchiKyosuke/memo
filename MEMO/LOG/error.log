@@ -1598,3 +1598,694 @@
 [Wed Aug 27 08:50:29.147466 2025] [cgi:error] [pid 10142] [client 126.1.172.200:60790] AH01215: + rm -rf /tmp/tmp_14890-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/
 [Wed Aug 27 08:50:29.148128 2025] [cgi:error] [pid 10142] [client 126.1.172.200:60790] AH01215: exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/
 [Wed Aug 27 08:50:29.148148 2025] [cgi:error] [pid 10142] [client 126.1.172.200:60790] AH01215: + exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913382 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913419 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913427 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: # memo.cgi: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913431 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913456 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913460 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913473 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913489 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913501 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913519 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913534 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: apid=$homd/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913556 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + apid=/home/k_noguchi2005/WEB/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913571 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913596 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + htmd=/home/k_noguchi2005/WEB/MEMO/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913603 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913614 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913632 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + tmp=/tmp/tmp_15010: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913636 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913663 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913671 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + exec: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913731 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913735 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913751 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.913774 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + cat /home/k_noguchi2005/WEB/MEMO/HTML/index.html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.914441 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.914463 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.914479 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.914484 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: echo "": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.914491 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + echo '': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.914499 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.914514 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + cat /tmp/tmp_15010-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.915199 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.915212 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.915247 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + rm -rf /tmp/tmp_15010-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.916013 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:00.916030 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:02.771073 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771105 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: #: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771113 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: # speech.cgi: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771116 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: #: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771142 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771155 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771170 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771189 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771197 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771215 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771231 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: apid=$homd/SPEECH: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771256 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + apid=/home/k_noguchi2005/WEB/SPEECH: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771268 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771295 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + htmd=/home/k_noguchi2005/WEB/SPEECH/HTML: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771300 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771312 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771326 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + tmp=/tmp/tmp_15014: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771330 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771362 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771369 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + exec: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771417 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771425 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771441 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.771465 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + cat /home/k_noguchi2005/WEB/SPEECH/HTML/index.html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772122 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772141 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772157 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772164 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: echo "": /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772170 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + echo '': /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772179 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772193 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + cat /tmp/tmp_15014-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772869 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772884 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.772916 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + rm -rf /tmp/tmp_15014-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.773653 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: exit 0: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:02.773669 2025] [cgi:error] [pid 10143] [client 126.1.172.200:60799] AH01215: + exit 0: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 08:52:22.464566 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464601 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464609 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: # memo.cgi: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464612 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464636 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464639 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464652 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464668 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464688 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464707 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464716 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: apid=$homd/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464735 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + apid=/home/k_noguchi2005/WEB/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464745 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464764 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + htmd=/home/k_noguchi2005/WEB/MEMO/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464769 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464778 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464790 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + tmp=/tmp/tmp_15056: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464793 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464830 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464837 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + exec: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464883 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464888 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464904 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.464927 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + cat /home/k_noguchi2005/WEB/MEMO/HTML/index.html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.465631 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.465651 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.465667 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.465674 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: echo "": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.465682 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + echo '': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.465698 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.465714 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + cat /tmp/tmp_15056-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.466397 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.466411 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.466445 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + rm -rf /tmp/tmp_15056-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.467210 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 08:52:22.467228 2025] [cgi:error] [pid 10139] [client 126.1.172.200:60800] AH01215: + exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/
+[Wed Aug 27 09:04:13.873358 2025] [cgi:error] [pid 10140] [client 218.158.250.34:38727] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 09:04:13.917566 2025] [cgi:error] [pid 12871] [client 218.158.250.34:38764] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 09:13:05.767592 2025] [cgi:error] [pid 10141] [client 14.33.215.88:37602] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 09:13:05.810243 2025] [cgi:error] [pid 10322] [client 14.33.215.88:37648] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 09:23:53.063433 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063465 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063469 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: # sdv.cgi: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063472 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063488 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063490 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063498 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063506 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063511 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063520 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063525 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: apid=$homd/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063535 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + apid=/home/k_noguchi2005/WEB/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063540 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063550 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + htmd=/home/k_noguchi2005/WEB/SDV/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063560 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063565 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063571 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + tmp=/tmp/tmp_16200: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063572 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063585 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063588 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + exec: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063685 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063695 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063704 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.063716 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + cat /home/k_noguchi2005/WEB/SDV/HTML/index.html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.064437 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.064451 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.064459 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.064462 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: echo "": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.064466 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + echo '': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.064470 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.064477 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + cat /tmp/tmp_16200-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.065284 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.065298 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.065312 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + rm -rf /tmp/tmp_16200-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.066040 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:23:53.066051 2025] [cgi:error] [pid 10139] [client 34.235.48.77:59716] AH01215: + exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Wed Aug 27 09:46:25.889987 2025] [cgi:error] [pid 10143] [client 182.155.188.127:34182] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 09:46:27.025438 2025] [cgi:error] [pid 10139] [client 182.155.188.127:34278] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 10:06:59.281000 2025] [cgi:error] [pid 12871] [client 121.185.148.144:47642] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 10:24:39.687931 2025] [cgi:error] [pid 10139] [client 179.124.30.192:41084] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 10:24:40.034777 2025] [cgi:error] [pid 10142] [client 179.124.30.192:41155] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 10:27:43.742726 2025] [cgi:error] [pid 10141] [client 206.220.191.144:45079] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 10:27:43.985473 2025] [cgi:error] [pid 10322] [client 206.220.191.144:45150] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 10:43:07.284072 2025] [cgi:error] [pid 10143] [client 118.141.248.118:59775] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 10:43:07.360999 2025] [cgi:error] [pid 10139] [client 118.141.248.118:59828] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 12:12:11.863724 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863752 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863757 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: # memo.cgi: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863760 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863776 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863778 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863787 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863796 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863801 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863810 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863832 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: apid=$homd/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863848 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + apid=/home/k_noguchi2005/WEB/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863853 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863864 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + htmd=/home/k_noguchi2005/WEB/MEMO/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863866 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863871 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863877 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + tmp=/tmp/tmp_21606: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863879 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863893 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863904 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + exec: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863930 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863932 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863940 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.863952 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + cat /home/k_noguchi2005/WEB/MEMO/HTML/index.html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.864700 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.864709 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.864718 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.864722 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: echo "": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.864725 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + echo '': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.864729 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.864736 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + cat /tmp/tmp_21606-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.865491 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.865504 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.865560 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + rm -rf /tmp/tmp_21606-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.866273 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:11.866284 2025] [cgi:error] [pid 10322] [client 89.187.179.57:61201] AH01215: + exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Wed Aug 27 12:12:21.524745 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524769 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524773 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: # memo.cgi: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524775 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524790 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524792 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524801 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524834 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524841 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524856 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524864 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: apid=$homd/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524885 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + apid=/home/k_noguchi2005/WEB/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524893 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524906 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + htmd=/home/k_noguchi2005/WEB/MEMO/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524907 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524912 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524917 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + tmp=/tmp/tmp_21610: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524919 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524932 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524934 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + exec: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524961 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524962 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524970 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.524982 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + cat /home/k_noguchi2005/WEB/MEMO/HTML/index.html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.525732 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.525742 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.525754 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.525758 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: echo "": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.525762 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + echo '': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.525766 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.525773 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + cat /tmp/tmp_21610-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.526515 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.526525 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.526562 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + rm -rf /tmp/tmp_21610-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.527395 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:21.527405 2025] [cgi:error] [pid 10139] [client 89.187.179.57:38805] AH01215: + exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189101 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189128 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189137 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: # sdv.cgi: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189139 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189156 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189157 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189165 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189173 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189178 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189186 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189199 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: apid=$homd/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189208 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + apid=/home/k_noguchi2005/WEB/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189213 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189223 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + htmd=/home/k_noguchi2005/WEB/SDV/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189225 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189229 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189235 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + tmp=/tmp/tmp_21615: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189237 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189250 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189253 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + exec: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189279 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189281 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189289 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.189301 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + cat /home/k_noguchi2005/WEB/SDV/HTML/index.html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.190144 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.190154 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.190163 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.190167 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: echo "": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.190171 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + echo '': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.190175 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.190185 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + cat /tmp/tmp_21615-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.191012 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.191023 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.191032 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + rm -rf /tmp/tmp_21615-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.191752 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:27.191756 2025] [cgi:error] [pid 10142] [client 89.187.179.57:10109] AH01215: + exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501691 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501715 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: #: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501720 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: # speech.cgi: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501722 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: #: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501737 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501739 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501747 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501755 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501760 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501769 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501774 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: apid=$homd/SPEECH: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501784 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + apid=/home/k_noguchi2005/WEB/SPEECH: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501789 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501806 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + htmd=/home/k_noguchi2005/WEB/SPEECH/HTML: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501830 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501839 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501848 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + tmp=/tmp/tmp_21619: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501850 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501863 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501866 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + exec: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501893 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501894 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501903 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.501915 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + cat /home/k_noguchi2005/WEB/SPEECH/HTML/index.html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.502705 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.502715 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.502724 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.502727 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: echo "": /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.502731 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + echo '': /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.502735 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.502742 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + cat /tmp/tmp_21619-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.503468 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.503477 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.503525 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + rm -rf /tmp/tmp_21619-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.504246 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: exit 0: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:12:37.504254 2025] [cgi:error] [pid 10140] [client 89.187.179.57:19524] AH01215: + exit 0: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231718 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231746 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: #: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231752 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: # speech.cgi: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231754 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: #: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231771 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231773 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231785 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231794 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231799 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231808 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231832 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: apid=$homd/SPEECH: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231843 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + apid=/home/k_noguchi2005/WEB/SPEECH: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231849 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231860 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + htmd=/home/k_noguchi2005/WEB/SPEECH/HTML: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231862 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231867 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231880 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + tmp=/tmp/tmp_21945: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231882 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231895 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231898 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + exec: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231925 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231927 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231935 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.231948 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + cat /home/k_noguchi2005/WEB/SPEECH/HTML/index.html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.232708 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.232725 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.232734 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.232737 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: echo "": /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.232740 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + echo '': /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.232745 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.232752 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + cat /tmp/tmp_21945-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.233485 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.233496 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.233533 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + rm -rf /tmp/tmp_21945-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.234273 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: exit 0: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:17:57.234286 2025] [cgi:error] [pid 12871] [client 89.187.179.57:42197] AH01215: + exit 0: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958761 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958803 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: #: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958813 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: # speech.cgi: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958831 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: #: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958851 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958854 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958862 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958870 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958876 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958885 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958890 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: apid=$homd/SPEECH: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958900 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + apid=/home/k_noguchi2005/WEB/SPEECH: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958905 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958916 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + htmd=/home/k_noguchi2005/WEB/SPEECH/HTML: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958918 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958923 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958929 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + tmp=/tmp/tmp_21961: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958931 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958945 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958955 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + exec: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958983 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958984 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.958993 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.959005 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + cat /home/k_noguchi2005/WEB/SPEECH/HTML/index.html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.959715 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.959725 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.959735 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.959738 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: echo "": /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.959742 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + echo '': /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.959746 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.959753 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + cat /tmp/tmp_21961-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.960486 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.960504 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.960534 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + rm -rf /tmp/tmp_21961-html: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.961237 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: exit 0: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:43.961247 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + exit 0: /home/k_noguchi2005/WEB/SPEECH/CGI/speech.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521042 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521066 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521078 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: # sdv.cgi: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521080 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521097 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521098 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521106 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521114 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521119 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521128 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521133 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: apid=$homd/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521142 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + apid=/home/k_noguchi2005/WEB/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521147 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521157 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + htmd=/home/k_noguchi2005/WEB/SDV/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521159 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521164 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521170 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + tmp=/tmp/tmp_21965: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521171 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521185 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521188 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + exec: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521216 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521219 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521228 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.521240 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + cat /home/k_noguchi2005/WEB/SDV/HTML/index.html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522093 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522104 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522114 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522118 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: echo "": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522121 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + echo '': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522126 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522133 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + cat /tmp/tmp_21965-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522943 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522956 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.522965 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + rm -rf /tmp/tmp_21965-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.523660 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:46.523667 2025] [cgi:error] [pid 10141] [client 89.187.179.57:29986] AH01215: + exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.087914 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.087946 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.087953 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: # sdv.cgi: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.087956 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.087981 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.087984 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088006 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088018 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088025 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088039 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088058 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: apid=$homd/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088073 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + apid=/home/k_noguchi2005/WEB/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088080 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088096 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + htmd=/home/k_noguchi2005/WEB/SDV/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088098 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088105 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088114 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + tmp=/tmp/tmp_21969: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088117 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088138 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088142 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + exec: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088175 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088177 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088185 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088197 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + cat /home/k_noguchi2005/WEB/SDV/HTML/index.html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088944 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088970 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088984 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088989 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: echo "": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.088995 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + echo '': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.089002 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.089014 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + cat /tmp/tmp_21969-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.089771 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.089782 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.089794 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + rm -rf /tmp/tmp_21969-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.090447 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:57.090456 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386354 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386376 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386380 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: # sdv.cgi: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386382 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386398 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386400 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386407 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386416 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386420 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386429 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386441 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: apid=$homd/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386449 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + apid=/home/k_noguchi2005/WEB/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386454 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386464 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + htmd=/home/k_noguchi2005/WEB/SDV/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386466 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386470 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386476 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + tmp=/tmp/tmp_21973: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386478 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386491 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386494 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + exec: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386520 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386522 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386530 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.386542 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + cat /home/k_noguchi2005/WEB/SDV/HTML/index.html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.387308 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.387319 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.387328 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.387331 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: echo "": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.387335 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + echo '': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.387342 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.387349 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + cat /tmp/tmp_21973-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.388152 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.388171 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.388186 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + rm -rf /tmp/tmp_21973-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.388811 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:20:58.388831 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.283977 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284002 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284007 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: # memo.cgi: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284009 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284037 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284039 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284046 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284054 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284059 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284069 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284074 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: apid=$homd/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284083 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + apid=/home/k_noguchi2005/WEB/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284088 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284108 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + htmd=/home/k_noguchi2005/WEB/MEMO/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284110 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284115 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284120 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + tmp=/tmp/tmp_21977: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284122 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284136 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284138 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + exec: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284166 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284168 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284176 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284189 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + cat /home/k_noguchi2005/WEB/MEMO/HTML/index.html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284961 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284973 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284983 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284986 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: echo "": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284990 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + echo '': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.284994 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.285001 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + cat /tmp/tmp_21977-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.285739 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.285749 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.285788 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + rm -rf /tmp/tmp_21977-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.286515 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:21:02.286525 2025] [cgi:error] [pid 10322] [client 89.187.179.57:64262] AH01215: + exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi, referer: http://35.200.30.85/cgi-bin/memo.cgi
+[Wed Aug 27 12:31:06.891418 2025] [cgi:error] [pid 10139] [client 200.124.55.84:42863] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 13:27:03.075960 2025] [cgi:error] [pid 10322] [client 39.123.122.75:44744] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 13:27:03.135662 2025] [cgi:error] [pid 10143] [client 39.123.122.75:44755] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 14:54:15.279883 2025] [cgi:error] [pid 10140] [client 121.167.125.180:58697] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 14:54:15.319136 2025] [cgi:error] [pid 10141] [client 121.167.125.180:58945] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 15:07:27.978909 2025] [cgi:error] [pid 10143] [client 124.170.176.40:54496] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 15:07:33.938909 2025] [cgi:error] [pid 10139] [client 124.170.176.40:54587] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 17:43:01.724683 2025] [cgi:error] [pid 10141] [client 175.204.108.239:57304] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 17:43:01.777919 2025] [cgi:error] [pid 10322] [client 175.204.108.239:57325] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 17:45:58.343288 2025] [cgi:error] [pid 10143] [client 175.208.15.203:33260] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 17:45:58.432282 2025] [cgi:error] [pid 10139] [client 175.208.15.203:33289] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 18:48:40.236329 2025] [core:error] [pid 10322] [client 103.110.81.140:49692] AH10244: invalid URI path (/cgi-bin/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/bin/sh)
+[Wed Aug 27 18:48:40.342471 2025] [core:error] [pid 10143] [client 103.110.81.140:35580] AH10244: invalid URI path (/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh)
+[Wed Aug 27 19:15:59.984805 2025] [cgi:error] [pid 10142] [client 121.185.148.144:39447] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 19:16:00.203162 2025] [cgi:error] [pid 12871] [client 121.185.148.144:39489] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 19:17:14.021190 2025] [cgi:error] [pid 10141] [client 221.159.119.8:49791] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 19:17:14.086667 2025] [cgi:error] [pid 10322] [client 221.159.119.8:49836] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 20:59:51.488042 2025] [cgi:error] [pid 10139] [client 183.106.38.201:38606] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 20:59:51.600611 2025] [cgi:error] [pid 10142] [client 183.106.38.201:38648] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 21:09:40.332370 2025] [cgi:error] [pid 12871] [client 210.106.139.172:52496] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 21:09:40.392402 2025] [cgi:error] [pid 10140] [client 210.106.139.172:52558] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 22:53:52.306674 2025] [cgi:error] [pid 10142] [client 121.186.1.159:41803] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Wed Aug 27 22:53:52.371625 2025] [cgi:error] [pid 12871] [client 121.186.1.159:41852] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Thu Aug 28 00:12:49.906169 2025] [cgi:error] [pid 10140] [client 114.129.192.36:46726] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Thu Aug 28 00:12:49.975389 2025] [cgi:error] [pid 10141] [client 114.129.192.36:46770] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Thu Aug 28 00:44:49.483846 2025] [cgi:error] [pid 10143] [client 211.228.142.201:50017] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Thu Aug 28 00:44:49.567899 2025] [cgi:error] [pid 10139] [client 211.228.142.201:50056] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Thu Aug 28 02:42:07.648977 2025] [cgi:error] [pid 10141] [client 14.33.215.88:32776] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Thu Aug 28 03:25:46.622253 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622289 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622295 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: # memo.cgi: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622298 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622314 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622316 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622325 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622334 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622340 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622349 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622355 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: apid=$homd/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622365 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + apid=/home/k_noguchi2005/WEB/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622370 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622381 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + htmd=/home/k_noguchi2005/WEB/MEMO/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622384 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622389 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622404 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + tmp=/tmp/tmp_50689: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622407 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622421 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622425 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + exec: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622451 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622454 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622463 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.622476 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + cat /home/k_noguchi2005/WEB/MEMO/HTML/index.html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.623343 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.623363 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.623372 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.623375 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: echo "": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.623379 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + echo '': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.623383 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.623391 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + cat /tmp/tmp_50689-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.624108 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.624129 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.624158 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + rm -rf /tmp/tmp_50689-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.625005 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:25:46.625032 2025] [cgi:error] [pid 10141] [client 126.1.172.200:55043] AH01215: + exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:29:57.007232 2025] [cgi:error] [pid 10143] [client 218.151.4.81:36006] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Thu Aug 28 03:29:57.077668 2025] [cgi:error] [pid 10139] [client 218.151.4.81:36038] AH02811: script not found or unable to stat: /home/k_noguchi2005/WEB/MEMO/CGI/luci
+[Thu Aug 28 03:30:17.484619 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484652 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484657 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: # sdv.cgi: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484660 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484686 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484688 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484696 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484704 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484709 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484718 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484726 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: apid=$homd/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484735 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + apid=/home/k_noguchi2005/WEB/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484740 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484750 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + htmd=/home/k_noguchi2005/WEB/SDV/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484753 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484758 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484764 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + tmp=/tmp/tmp_50973: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484766 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484784 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484788 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + exec: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484839 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484844 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484858 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.484879 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + cat /home/k_noguchi2005/WEB/SDV/HTML/index.html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.485684 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.485703 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.485713 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.485716 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: echo "": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.485720 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + echo '': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.485730 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.485737 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + cat /tmp/tmp_50973-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.486542 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.486560 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.486574 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + rm -rf /tmp/tmp_50973-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.487245 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.487259 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839660 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839686 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839691 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: # sdv.cgi: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839694 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: #: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839709 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839712 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839719 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839728 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839733 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839742 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839747 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: apid=$homd/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839756 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + apid=/home/k_noguchi2005/WEB/SDV: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839761 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839773 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + htmd=/home/k_noguchi2005/WEB/SDV/HTML: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839776 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839784 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839792 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + tmp=/tmp/tmp_50977: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839794 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839807 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839834 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + exec: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839871 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839876 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839890 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.839909 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + cat /home/k_noguchi2005/WEB/SDV/HTML/index.html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.840702 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.840721 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.840730 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.840734 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: echo "": /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.840737 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + echo '': /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.840742 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.840749 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + cat /tmp/tmp_50977-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.841582 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.841600 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.841608 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + rm -rf /tmp/tmp_50977-html: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.842323 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:17.842337 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + exit 0: /home/k_noguchi2005/WEB/SDV/CGI/sdv.cgi
+[Thu Aug 28 03:30:18.220983 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: #!/bin/bash -vx: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221016 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221024 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: # memo.cgi: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221027 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: #: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221050 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: # written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/8/27: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221057 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221069 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221084 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + homd=/home/k_noguchi2005/WEB: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221091 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: logd=$homd/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221120 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + logd=/home/k_noguchi2005/WEB/LOG: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221131 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: apid=$homd/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221147 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + apid=/home/k_noguchi2005/WEB/MEMO: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221158 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: htmd=$apid/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221177 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + htmd=/home/k_noguchi2005/WEB/MEMO/HTML: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221181 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221190 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: tmp=/tmp/tmp_$$: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221202 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + tmp=/tmp/tmp_50981: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221205 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221230 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: exec 2> $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221235 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + exec: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221282 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi: line 14: $logd/LOG.${basename $0}.$(date +%Y%m%d_%H%M%S): bad substitution: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221291 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221305 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: cat $htmd/index.html > $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221328 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + cat /home/k_noguchi2005/WEB/MEMO/HTML/index.html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221977 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.221996 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: echo "Content-Type: text/html": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.222011 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + echo 'Content-Type: text/html': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.222017 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: echo "": /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.222023 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + echo '': /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.222031 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: cat $tmp-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.222044 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + cat /tmp/tmp_50981-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.222702 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: : /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.222715 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: rm -rf $tmp-*: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.222749 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + rm -rf /tmp/tmp_50981-html: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.223535 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
+[Thu Aug 28 03:30:18.223552 2025] [cgi:error] [pid 10142] [client 52.167.144.20:23950] AH01215: + exit 0: /home/k_noguchi2005/WEB/MEMO/CGI/memo.cgi
