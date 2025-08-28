@@ -5,15 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDV</title>
     <style>
-      body { font-family: system-ui, sans-serif; line-height: 1.6; margin: 2rem; max-width: 900px; }
-      h1 { color:#003366; }
-      h2 { margin-top:2.2rem; border-bottom:2px solid #ccc; padding-bottom:.2rem; }
-      h3 { margin-top:1.2rem; }
-      ul { list-style: disc; padding-left:1.5rem; }
+      html { -webkit-text-size-adjust:100%; }
+      body { font-family: system-ui,Helvetica,Arial,sans-serif; line-height: 1.6; margin: 2rem auto; max-width: 900px; padding:0 0.75rem; word-break:break-word; }
+      h1 { color:#003366; font-size:2.1rem; margin:.2rem 0 1rem; }
+      h2 { margin-top:2.2rem; border-bottom:2px solid #ccc; padding-bottom:.2rem; font-size:1.4rem; }
+      h3 { margin-top:1.2rem; font-size:1.15rem; }
+      ul { list-style: disc; padding-left:1.3rem; }
       li { margin-bottom:1rem; }
-      header nav a { margin-right:1rem; text-decoration:none; color:#036; }
+      header nav { margin-bottom:1rem; }
+      header nav a { margin-right:1rem; text-decoration:none; color:#036; line-height:2.2rem; }
       header nav a:hover { text-decoration:underline; }
       footer { margin-top:3rem; font-size:.85rem; color:#666; }
+      @media (max-width: 680px) {
+        body { margin:1.2rem auto; padding:0 .9rem; }
+        h1 { font-size:1.75rem; }
+        h2 { font-size:1.25rem; }
+        h3 { font-size:1.05rem; }
+        header nav a { display:inline-block; margin:0 .75rem .5rem 0; font-size:.95rem; }
+        ul { padding-left:1.05rem; }
+      }
     </style>
 </head>
 <body>
