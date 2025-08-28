@@ -1,6 +1,6 @@
 # GitHub Copilot Instructions
 
-This repository contains CGI scripts and static HTML pages for memo(root page) / SDV / speech capture utilities.
+This repository contains CGI scripts for memo(root page) / SDV / speech capture utilities.
 
 ## environment
 - Apache 2.0
@@ -10,6 +10,8 @@ This repository contains CGI scripts and static HTML pages for memo(root page) /
 ## Coding Style
 - Use UTF-8 encoding.
 - Smartphone compatible.
+- In CGI header, write Email: k.noguchi2005@gmail.com.
+- In CGI html header section, write 'echo "Content-Type: text/html"' and 'echo ""'
 
 ## Security
 - Never trust user input from forms; sanitize or escape before using.

@@ -2,7 +2,7 @@
 #
 # shaken.cgi - SDV 車検活用ページ配信用 CGI
 #
-# written by Noguchi Kyosuke (auto-generated helper) 2025/08/28
+# written by Noguchi Kyosuke (k.noguchi2005@gmail.com) 2025/08/28
 
 homd=/home/k_noguchi2005/WEB
 logd=$homd/LOG
@@ -18,8 +18,8 @@ exec 2> $logd/LOG.shaken.cgi.$(date +%Y%m%d_%H%M%S)
 cat "$htmd/shaken.html" > "$tmp-html"
 
 # HTTP ヘッダ
-printf '%s\n' 'Content-Type: text/html'
-printf '\n'
+echo "Content-Type: text/html"
+echo ""
 
 # 本文
 cat "$tmp-html"
