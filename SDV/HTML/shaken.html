@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDV 車検活用アイデア</title>
+    <style>
+      html { -webkit-text-size-adjust:100%; }
+      body { font-family: system-ui,Helvetica,Arial,sans-serif; line-height: 1.6; margin: 2rem auto; max-width: 900px; padding:0 0.75rem; word-break:break-word; }
+      h1 { color:#003366; font-size:2.1rem; margin:.2rem 0 1rem; }
+      h2 { margin-top:2.2rem; border-bottom:2px solid #ccc; padding-bottom:.2rem; font-size:1.4rem; }
+      h3 { margin-top:1.2rem; font-size:1.15rem; }
+      ul { list-style: disc; padding-left:1.3rem; }
+      li { margin-bottom:1rem; }
+      header nav { margin-bottom:1rem; }
+      header nav a { margin-right:1rem; text-decoration:none; color:#036; line-height:2.2rem; }
+      header nav a:hover { text-decoration:underline; }
+      footer { margin-top:3rem; font-size:.85rem; color:#666; }
+      @media (max-width: 680px) {
+        body { margin:1.2rem auto; padding:0 .9rem; }
+        h1 { font-size:1.75rem; }
+        h2 { font-size:1.25rem; }
+        h3 { font-size:1.05rem; }
+        header nav a { display:inline-block; margin:0 .75rem .5rem 0; font-size:.95rem; }
+        ul { padding-left:1.05rem; }
+      }
+    </style>
+</head>
+<body>
+<header>
+  <h1>SDVを車検に活用する方法について考えた</h1>
+    <nav>
+        <a href="/cgi-bin/memo.cgi">MEMO Top</a>
+        <a href="/sdv-cgi/sdv.cgi">SDV Top</a>
+        <a href="/sdv-html/shaken.html" aria-current="page">車検活用</a>
+    </nav>
+  <p>あくまで、これは個人的な意見にとどまるため、真に受けずに冗談半分で読んでください。</p>
+</header>
+<h2>前書き</h2>
+<p>2025/08/28現在、SDVが消費者に対してどのようなサービスを提供するかはまだ検討段階である。そこで、私は車検に対するSDVの活用方法について考えた。</p>
+
+<h2>車検への活用方法</h2>
+<p>そもそも、ハードウェアに対するソフトウェアのメリットには速さと場所を選ばない点にある。そのうえで、以下に活用方法を記す。</p>
+<ul>
+    <li>
+        <h3>車検前にSDVによってプレ車検を行う</h3>
+        <p>ブレーキやステアリングの利き具合の変化、また排気ガスの初出量などが規定内であるかをあらかじめ測定しておくことができる。</p>
+        <p>また、測定値の規定が変わった際にもOTAによって即座に更新できる点に利点がある。</p>
+        <p>簡易的なソフトウェアのチャックやセキュリティのチェックであれば、ガソリンスタンドでの給油時など、短い時間で行うことができる。</p>
+    </li>
+    <li>
+        <h3>故障時の原因を特定</h3>
+        <p>車が故障した際に、原因をソフトウェア的に特定することが可能であれば、乗客による応急処置や修理業者の負担軽減を見込むことができる。</p>
+        <p>また、走行データのログを細かく残すことが可能であれば、車の故障原因の調査や再発防止に活用することができる。</p>
+    </li>
+</ul>
+
+<h2>車検への活用の課題</h2>
+<ul>
+    <li>
+        <h3>セキュリティの確保</h3>
+        <p>ソフトウェアによる検査は、ソフトウェア自体が安全であるうえで成り立つ。そのため、セキュリティ対策を強固にすることが必須である。同時に、人間の目による従来の検査方法の安全性の高さも忘れてはならないことがわかる。</p>
+        <p>また、定期的にソフトウェアの技術者による点検も要さなければならない。</p>
+    </li>
+    <li>
+        <h3>ハードウェアとソフトウェアの見極め</h3>
+        <p>車の故障による事故が発生した際に、ハードウェアとソフトウェアのどちらに原因があるかを見極める必要がある。その際は、どちらの技術にも横断的な知見を持ち、適切に検査を行える人材や技術が必要になる。</p>
+    </li>
+</ul>
+
+<h2>車検について</h2>
+<p>車検は、新車で3年後、それ以降は2年ごとに実施される検査である。</p>
+<p>検査項目に以下のとおりである。</p>
+<ul>
+    <li>
+        <h3>同一性の確認</h3>
+        <ul>
+            <li>
+                <h4>車台番号と車検証の番号を照合する。</h4>
+                <p>この項目では、車検証をデジタル化することを見込むことができる。</p>
+            </li>
+            <li>
+                <h4>エンジンの型式と車検証の記載が一致しているかを確認する。</h4>
+                <p>この項目も、車検証のデジタル化することを見込むことができる。</p>
+            </li>
+            <li>
+                <h4>ナンバープレートの偽造や変造を確認する。</h4>
+                <p>この項目は、SDVの技術によって簡略化することができない。</p>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <h3>外回り・内装の検査</h3>
+        <ul>
+            <li>
+                <h4>ボディ</h4>
+                <p>違法な改造がないか、規定内の大きさに収まっているかを確認する。</p>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <h3>灯火類の点灯確認</h3>
+    </li>
+    <li>
+        <h3>タイヤの摩耗状態</h3>
+    </li>
+    <li>
+        <h3>その他安全に関わる項目</h3>
+    </li>
+</ul>
+
+
+</body>
+</html>
