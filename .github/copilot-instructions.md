@@ -12,6 +12,7 @@ This repository contains CGI scripts for memo(root page) / SDV / speech capture 
 - Smartphone compatible.
 - In CGI header, write Email: k.noguchi2005@gmail.com.
 - In CGI html header section, write 'echo "Content-Type: text/html"' and 'echo ""'
+- add a copy button for source code.
 
 ## Security
 - Never trust user input from forms; sanitize or escape before using.
