@@ -1,0 +1,27 @@
+nohup: ignoring input
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.3)
+
+2025-09-24T15:10:34.166Z  INFO 40596 --- [memo] [           main] com.example.memo.MemoApplication         : Starting MemoApplication v0.0.1-SNAPSHOT using Java 17.0.16 with PID 40596 (/home/k_noguchi2005/WEB/memo/target/memo-0.0.1-SNAPSHOT.jar started by k_noguchi2005 in /home/k_noguchi2005/WEB/memo)
+2025-09-24T15:10:34.171Z DEBUG 40596 --- [memo] [           main] com.example.memo.MemoApplication         : Running with Spring Boot v3.3.3, Spring v6.1.12
+2025-09-24T15:10:34.175Z  INFO 40596 --- [memo] [           main] com.example.memo.MemoApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-09-24T15:10:35.900Z  INFO 40596 --- [memo] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-24T15:10:35.915Z  INFO 40596 --- [memo] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-24T15:10:35.915Z  INFO 40596 --- [memo] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.28]
+2025-09-24T15:10:35.955Z  INFO 40596 --- [memo] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-24T15:10:35.957Z  INFO 40596 --- [memo] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1684 ms
+2025-09-24T15:10:36.123Z  INFO 40596 --- [memo] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-09-24T15:10:36.527Z  INFO 40596 --- [memo] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-24T15:10:36.545Z  INFO 40596 --- [memo] [           main] com.example.memo.MemoApplication         : Started MemoApplication in 3.149 seconds (process running for 3.786)
+2025-09-24T15:10:46.153Z  INFO 40596 --- [memo] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-24T15:10:46.154Z  INFO 40596 --- [memo] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-24T15:10:46.156Z  INFO 40596 --- [memo] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-09-24T15:30:58.420Z  WARN 40596 --- [memo] [nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'PROPFIND' is not supported]
+2025-09-24T15:43:16.308Z  WARN 40596 --- [memo] [nio-8080-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'PROPFIND' is not supported]

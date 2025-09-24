@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>プラットフォームポータル</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css" />
+  <script defer src="/assets/js/health.js"></script>
+  <!-- admax (loader retained only if required elsewhere - removed inline script to avoid duplicate load) -->
+  <script src="https://adm.shinobi.jp/s/945ac836d868082489bc5e309de2b366" async></script>
+  <!-- /admax -->
+</head>
+<body>
+<header class="site-header">
+  <div class="container flex-between">
+  <div class="brand">プラットフォームポータル</div>
+    <nav class="main-nav">
+  <a href="/sdv">SDV</a>
+  <a href="/speech">音声</a>
+  <a href="/api/v1/health" target="_blank" rel="noopener">API 状態</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container fade-in">
+  <section class="hero">
+  <h1>メモ帳</h1>
+  <p class="lead">対象領域: Software Defined Vehicle (SDV) と 音声解析。統合された安全で可視化可能なバックエンド。</p>
+    <div class="status-row" id="global-status" aria-live="polite"></div>
+    <div class="hero-ad" style="margin-top:1.6rem;display:flex;justify-content:center;">
+    </div>
+  </section>
+
+  <section>
+  <h2 class="section-title">領域</h2>
+    <div class="card-grid">
+      <a class="card" href="/sdv">
+        <div class="card-head">
+          <h3>SDV</h3>
+        </div>
+  <p>Software Defined Vehicle に関する知見。</p>
+        <div class="badge" data-service="sdv">loading...</div>
+      </a>
+
+      <a class="card" href="/speech">
+        <div class="card-head">
+          <h3>音声</h3>
+        </div>
+  <p>音声解析に関するメモと数式。</p>
+        <div class="badge" data-service="speech">loading...</div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container small">&copy; 2025 プラットフォームポータル</div>
+</footer>
+</body>
+</html>

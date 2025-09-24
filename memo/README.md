@@ -1,0 +1,73 @@
+# Memo Platform (Spring Boot Migration)
+
+Migrated from legacy CGI scripts (MEMO / SDV / SPEECH) to Spring Boot 3 (Java 17).
+
+## Run (Production-like)
+```
+mvn spring-boot:run
+```
+Then open:
+- Root: http://localhost:8080/
+- APIs: http://localhost:8080/api/v1/sdv , /api/v1/speech , /api/v1/health
+- Legacy memo endpoint/page removed ( /api/v1/memo returns 404, /memo.html returns 410 )
+
+## Fast Dev (Auto Restart & No Cache)
+Spring Boot DevTools + `dev` プロファイル。
+```
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+```
+テンプレートはキャッシュ無効で即時反映。Javaクラス変更は自動再起動。
+
+### Unified Helper Script: `dev-run.sh`
+Convenience script providing start/stop/status/restart and optional daemon mode.
+
+```
+# Foreground start (dev profile, port 8080)
+./dev-run.sh start
+
+# Background (daemon) start with logs (logs/app.out, logs/app.err)
+DAEMON=1 ./dev-run.sh start
+
+# Status / Stop / Restart
+./dev-run.sh status
+./dev-run.sh stop
+DAEMON=1 ./dev-run.sh restart
+
+# Change port / use packaged jar
+PORT=8090 ./dev-run.sh start
+JAR_MODE=1 DAEMON=1 ./dev-run.sh start
+```
+Environment variables:
+
+| Var | Default | Purpose |
+|-----|---------|---------|
+| PORT | 8080 | Listening port |
+| SPRING_PROFILE | dev | Spring profile to activate |
+| JAR_MODE | 0 | 1 => use built jar instead of mvn run |
+| DAEMON | 0 | 1 => background (nohup) |
+| LOG_DIR | logs | Log directory when DAEMON=1 |
+| OUT_LOG | app.out | Stdout file name |
+| ERR_LOG | app.err | Stderr file name |
+| MVN_OPTS | (empty) | Extra Maven options |
+
+PID file: `app.pid` (removed on stop). If `lsof` is installed it improves duplicate detection; otherwise fallback warnings appear.
+
+Typical flow:
+1. `DAEMON=1 ./dev-run.sh start`
+2. Develop & edit code
+3. `./dev-run.sh status` (health check)
+4. `./dev-run.sh stop` when done
+
+## Build
+```
+mvn package
+java -jar target/memo-0.0.1-SNAPSHOT.jar
+```
+
+## Test
+```
+mvn test
+```
+
+## Contact
+Author email intentionally removed from runtime footer; see repository root instructions if needed.

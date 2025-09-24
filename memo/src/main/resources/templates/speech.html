@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>音声解析と機械学習の研究メモ</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script th:inline="none">
+        /*<![CDATA[*/
+            MathJax = {
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+                }
+            };
+        /*]]>*/
+            function copyCode() {
+                const codeElement = document.getElementById('pythonCode');
+                const codeText = codeElement.textContent || codeElement.innerText;
+
+                // 現代的なクリップボードAPIを試す
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(codeText).then(function() {
+                        showCopySuccess();
+                    }).catch(function(err) {
+                        console.error('クリップボードAPIでコピーに失敗:', err);
+                        fallbackCopyMethod(codeText);
+                    });
+                } else {
+                    // フォールバック方法を使用
+                    fallbackCopyMethod(codeText);
+                }
+            }
+
+            function showCopySuccess() {
+                const button = document.querySelector('button[onclick="copyCode()"]');
+                const originalText = button.textContent;
+                const originalBg = button.style.backgroundColor;
+
+                button.textContent = 'コピー完了！';
+                button.style.backgroundColor = '#28a745';
+
+                setTimeout(function() {
+                    button.textContent = originalText;
+                    button.style.backgroundColor = originalBg;
+                }, 2000);
+            }
+
+            function fallbackCopyMethod(text) {
+                // 古いブラウザ用のフォールバック方法
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        showCopySuccess();
+                    } else {
+                        showCopyError();
+                    }
+                } catch (err) {
+                    console.error('フォールバック方法でコピーに失敗:', err);
+                    showCopyError();
+                } finally {
+                    document.body.removeChild(textArea);
+                }
+            }
+
+            function showCopyError() {
+                alert('コピーに失敗しました。\\n\\n手動でコードを選択してコピーしてください：\\n1. コードエリアをクリック\\n2. Ctrl+A（全選択）\\n3. Ctrl+C（コピー）');
+            }
+        /*]]>*/
+        </script>
+        <style>
+            html{-webkit-text-size-adjust:100%;}
+            body{font-family:system-ui,Helvetica,Arial,sans-serif;line-height:1.6;margin:2rem auto;max-width:900px;padding:0 .75rem;word-break:break-word;}
+            h1{margin:.2rem 0 1rem;font-size:2rem;color:#222;}
+            h2{margin-top:1.8rem;font-size:1.3rem;border-bottom:2px solid #ddd;padding-bottom:.25rem;}
+            h3{margin-top:1.1rem;font-size:1.1rem;}
+            ul{padding-left:1.3rem;}
+            a{color:#036;text-decoration:none;}
+            a:hover{text-decoration:underline;}
+            @media (max-width:640px){
+                body{margin:1.2rem auto;padding:0 .9rem;}
+                h1{font-size:1.7rem;}
+                h2{font-size:1.2rem;}
+                h3{font-size:1.02rem;}
+            }
+            #pythonCode {
+                background-color: #f8f9fa;
+                padding: 1rem;
+                border-radius: 8px;
+                border-left: 4px solid #036;
+                overflow-x: auto;
+                font-size: 0.9rem;
+                line-height: 1.4;
+                margin: 1.5rem 0;
+            }
+            #copyButton {
+                position: absolute; 
+                top: 10px; 
+                right: 10px; 
+                padding: 0.5rem 1rem; 
+                background-color: #036; 
+                color: white; 
+                border: none; 
+                border-radius: 4px; 
+                cursor: pointer; 
+                font-size: 0.9rem; 
+                z-index: 1;
+            }
+            
+            /* 動的セクションのスタイル */
+            .research-section {
+                margin: 2rem 0;
+                padding: 1.5rem;
+                background-color: #f9f9f9;
+                border-radius: 8px;
+                border-left: 4px solid #036;
+            }
+            
+            .research-item {
+                margin: 1rem 0;
+                padding: 1rem;
+                background-color: white;
+                border-radius: 6px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .research-item h3 {
+                color: #036;
+                margin-top: 0;
+            }
+        </style>
+</head>
+<body>
+    <h1>音声解析と機械学習の研究メモ <span th:text="'(' + ${#dates.format(lastUpdated, 'yyyy年MM月dd日更新')} + ')'" class="update-info">(動的更新)</span></h1>
+    
+    <!-- 動的に生成される研究項目 -->
+    <div th:each="research : ${researchItems}" class="research-section">
+        <h2 th:text="${research.date} + ' - ' + ${research.title}">研究日付とタイトル</h2>
+        
+        <div th:each="item : ${research.items}" class="research-item">
+            <h3 th:text="${item.title}">項目タイトル</h3>
+            <p th:text="${item.content}">項目内容</p>
+            
+            <!-- 特定の項目に追加情報を表示 -->
+            <div th:if="${item.title} == 'GTX1050にCUDAをダウンロード'">
+                <h4>参考資料</h4>
+                <ul>
+                    <li><a href="https://qiita.com/cabos/items/e8d253ecd9e7b48674ac" target="_blank" rel="noopener noreferrer">【環境構築まとめ】GPUでCUDA / TensorFlowを扱うまでの流れ</a></li>
+                </ul>
+            </div>
+            
+            <div th:if="${item.title} == 'z-score（標準得点）'">
+                <p>z-scoreの式は以下のように表される。</p>
+                <div style="text-align: center; margin: 1.5rem 0;">
+                    $$z = \frac{X - \mu}{\sigma}$$
+                </div>
+                <p>ここで、$X$は各データの値、$\mu$は平均、$\sigma$は標準偏差を表す。</p>
+                <p>z-scoreが0の際は<br/>
+                    データの値が平均と等しい。<br/>
+                    正の値の際はデータの値が平均よりも高い。<br/>
+                    負の値の際はデータの値が平均よりも低い。</p>
+                <p>z-scoreの絶対値は標準偏差と等しくなる。</p>
+                <p>正規分布のうち、<br/>
+                    68%のデータはz-scoreが$-1$から$1$の範囲に収まり、<br/>
+                    95%のデータはz-scoreが$-2$から$2$の範囲に収まり、<br/>
+                    99.7%のデータはz-scoreが$-3$から$3$の範囲に収まる。</p>
+            </div>
+        </div>
+    </div>
+
+    <h2>2025/9/9</h2>
+    <h3>アイヌ語の勉強</h3>
+    <h4>z-scoreとは</h4>
+    <p>z-scoreは標準得点のこと。別名"standard score"とも言う。</p>
+    <p>z-scoreの式は以下のように表される。</p>
+    <div style="text-align: center; margin: 1.5rem 0;">
+        $$z = \frac{X - \mu}{\sigma}$$
+    </div>
+    <p>ここで、$X$は各データの値、$\mu$は平均、$\sigma$は標準偏差を表す。</p>
+    <p>z-scoreが0の際は<br/>
+        データの値が平均と等しい。<br/>
+        正の値の際はデータの値が平均よりも高い。<br/>
+        負の値の際はデータの値が平均よりも低い。</p>
+    <p>z-scoreの絶対値は標準偏差と等しくなる。</p>
+    <p>正規分布のうち、<br/>
+        68%のデータはz-scoreが$-1$から$1$の範囲に収まり、<br/>
+        95%のデータはz-scoreが$-2$から$2$の範囲に収まり、<br/>
+        99.7%のデータはz-scoreが$-3$から$3$の範囲に収まる。</p>
+    <h3>Webページの音声のダウンロードが楽だった方法</h3>
+    <p>生成AIにWebの音声ファイルを一括でダウンロードするPythonファイルを作成してもらうのが一番早い。</p>
+    <p>今回は<a href="https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/">『浅井タケ昔話全集 I, II』 （村崎恭子 編訳）</a>の音声ファイルを一括でダウンロードした。このときのダウンロード用のPythonコードを以下に示す。</p>
+    
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>#!/usr/bin/env python3
+"""
+浅井タケ昔話集からすべての音声ファイルをダウンロードする
+https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/asai01.html
+"""
+
+import requests
+from bs4 import BeautifulSoup
+import re
+from urllib.parse import urljoin
+import os
+import time
+from pathlib import Path
+import json
+from tqdm import tqdm
+
+def download_asai_collection():
+    # ダウンロード用のディレクトリを作成
+    base_dir = Path('data/samples')
+    asai_dir = base_dir / 'asai_take_stories'
+    asai_dir.mkdir(exist_ok=True)
+    
+    # ダウンロード状況を記録するメタデータファイルを作成
+    metadata_file = asai_dir / 'metadata.json'
+    metadata = {
+        'collection': 'Asai Take Folktale Collection',
+        'source': 'https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/asai01.html',
+        'stories': {}
+    }
+    
+    # 物語コレクションのベースURL
+    base_url = 'https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/'
+    
+    print('浅井タケ音声コレクション全体のダウンロードを開始します...')
+    print(f'保存先ディレクトリ: {asai_dir}')
+    
+    # すべての物語ページのURLを生成（At01からAt54まで）
+    story_urls = []
+    for i in range(1, 55):  # 1から54まで
+        story_url = f'{base_url}at{i:02d}aj.html'
+        story_urls.append((i, story_url))
+    
+    print(f'処理対象の物語ページ数: {len(story_urls)}')
+    
+    total_downloaded = 0
+    total_audio_files = 0
+    
+    # プログレスバー付きですべての物語を処理
+    for story_num, story_url in tqdm(story_urls, desc="物語を処理中"):
+        story_id = f"At{story_num:02d}"
+        print(f'\\n{story_id}を処理中: {story_url}')
+        
+        try:
+            response = requests.get(story_url, timeout=30)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # このページ内の音声リンクを検索
+            audio_links = []
+            for link in soup.find_all('a', href=True):
+                href = link['href']
+                if any(ext in href.lower() for ext in ['.wav', '.mp3', '.au', '.aiff']):
+                    full_url = urljoin(story_url, href)
+                    audio_links.append(full_url)
+            
+            print(f'  発見した音声ファイル数: {len(audio_links)}')
+            total_audio_files += len(audio_links)
+            
+            # プログレスバー付きで各音声ファイルをダウンロード
+            story_downloaded = 0
+            for i, audio_url in enumerate(tqdm(audio_links, desc=f"  {story_id} 音声", leave=False)):
+                filename = f'{story_id}_{i+1:03d}.wav'
+                filepath = asai_dir / filename
+                
+                # 既に存在する場合はスキップ
+                if filepath.exists():
+                    print(f'    ⚡ スキップ（既存）: {filename}')
+                    story_downloaded += 1
+                    continue
+                
+                try:
+                    audio_response = requests.get(audio_url, timeout=30)
+                    audio_response.raise_for_status()
+                    
+                    with open(filepath, 'wb') as f:
+                        f.write(audio_response.content)
+                    
+                    story_downloaded += 1
+                    print(f'    ✓ ダウンロード完了: {filename} ({len(audio_response.content)} バイト)')
+                    
+                except Exception as e:
+                    print(f'    ✗ ダウンロード失敗 {audio_url}: {e}')
+                
+                time.sleep(0.3)  # サーバーに配慮した待機時間
+            
+            total_downloaded += story_downloaded
+            
+            # メタデータを更新
+            metadata['stories'][story_id] = {
+                'url': story_url,
+                'audio_files_found': len(audio_links),
+                'audio_files_downloaded': story_downloaded,
+                'title': f'物語 {story_num}'  # 実際のタイトルでさらに改善可能
+            }
+            
+            print(f'  ✓ {story_id}: {story_downloaded}/{len(audio_links)} ファイルをダウンロード')
+            
+        except Exception as e:
+            print(f'  ✗ {story_url}の処理中にエラー: {e}')
+            metadata['stories'][story_id] = {
+                'url': story_url,
+                'error': str(e)
+            }
+        
+        # 定期的にメタデータを保存
+        if story_num % 5 == 0:
+            with open(metadata_file, 'w', encoding='utf-8') as f:
+                json.dump(metadata, f, indent=2, ensure_ascii=False)
+    
+    # 最終的なメタデータ保存
+    metadata['total_stories'] = len(story_urls)
+    metadata['total_audio_files_found'] = total_audio_files
+    metadata['total_audio_files_downloaded'] = total_downloaded
+    
+    with open(metadata_file, 'w', encoding='utf-8') as f:
+        json.dump(metadata, f, indent=2, ensure_ascii=False)
+    
+    print(f'\\n🎉 ダウンロード完了！')
+    print(f'📊 統計情報:')
+    print(f'   処理した物語数: {len(story_urls)}')
+    print(f'   発見した音声ファイル総数: {total_audio_files}')
+    print(f'   ダウンロード成功数: {total_downloaded}')
+    print(f'   保存ディレクトリ: {asai_dir}')
+    print(f'   メタデータ保存先: {metadata_file}')
+    
+    return asai_dir, total_downloaded, total_audio_files
+
+if __name__ == '__main__':
+    download_asai_collection()
+</code></pre>
+    </div>
+    
+  <div th:replace="~{fragments/ad :: adBanner}"></div>
+
+    <h2>2025/09/11</h2>
+    <h3>アイヌ語のサイト</h3>
+    <h4>音声まとめサイト</h4>
+    <a href="https://akitaben.com/category19/entry238.html">無料で使えるインターネット上のアイヌ語資料・アイヌ語教材のご紹介(アイヌ語を勉強・学習したい人のために)</a>
+    <h4>アイヌ語辞書</h4>
+    <a href="https://www.ff-ainu.or.jp/teach/files/saru_tango.pdf">アイヌ語辞書</a>
+
+    <h3>Pythonの勉強</h3>
+    <h4>suffix.lower()の使い方</h4>
+    <p>以下のコードにおける"suffix.lower()"は、ファイルのパスを格納している"p"の拡張子が"AUDIO_EXTS"ファイルに含まれているかを判定するために使用されている。</p>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            def list_audio_files(folder: Path) -> List[Path]:
+            # AUDIO_EXTSには音声ファイルの拡張子が格納されている。
+            return [p for p in folder.rglob('*') if p.suffix.lower() in AUDIO_EXTS]
+        </code></pre>
+    </div>
+    <h4>audio_urilsのtrim_silenceについて</h4>
+    <p>以下のコードのように"trim_silence"は"top_db"で指定したデシベル以下の音声をカットする関数である。また、0.01秒の間隔でカットを行うため、0.01秒以上の無音部分をカットすることができる。</p>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            TRIM_DB = 30.0
+            trimmed_audio = trim_silence(rec_audio, top_db=TRIM_DB)
+        </code></pre>
+    </div>
+
+    <h4>notebookの記述のコツ</h4>
+    <p>notebookのセルをまたぐ際に、一つ前のセルの最初で変更する予定の変数をゼロリセットすることで、次のセルの最初に条件分岐によって一つ前のセルが実行されたかを判定することができる。</p>
+
+      <div th:replace="~{fragments/ad :: adBanner}"></div>
+
+    <h2>2025/09/12</h2>
+    <h3>DTWとは</h3>
+    <p>DTW(Dynamic Time Warping)は、2つの時間軸のシーケンスの類似度を図るアルゴリズムである。このとき、2つのシーケンスは時間が一致する必要がない。</br>
+    音声シーケンスのグリッドの距離が最短になるように速さをストレッチすることで、異なる速度で話される音声を比較することができる。</p>
+
+    <h3>MFAとは</h3>
+    <p>音素認識技術の一つである。音声ファイルとテキストの対応関係を学習し、新たな音声データに対して音素のラベリングを行う。</p>
+
+    <h3>Pythonの勉強</h3>
+    <h4>tqdmとは</h4>
+    <p>tqdmとは、notebookなどでデータの処理の際に視覚的にわかりやすいデザインにしてくれるプラグインである。</p>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <pre id="pythonCode"><code>
+            TDTW scoring: 100%|██████████| 2815/2815 [00:11<00:00, 243.06it/s]
+        </code></pre>
+    </div>
+
+      <div th:replace="~{fragments/ad :: adBanner}"></div>
+
+    <!-- 動的フッター -->
+    <footer style="margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; text-align: center; color: #666;">
+        <p>&copy; <span th:text="${currentYear}">2025</span> 音声研究ノート - 最終更新: <span th:text="${#dates.format(lastUpdated, 'yyyy年MM月dd日 HH:mm')}">動的</span></p>
+    </footer>
+
+</body>
+</html>
+</html>

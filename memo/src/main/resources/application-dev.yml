@@ -1,0 +1,15 @@
+spring:
+  thymeleaf:
+    cache: false
+  web:
+    resources:
+      cache:
+        period: 0
+        cachecontrol:
+          no-cache: true
+          no-store: true
+          must-revalidate: true
+logging:
+  level:
+    root: INFO
+    org.springframework.boot.devtools: INFO
