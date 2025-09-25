@@ -447,6 +447,7 @@
     <h4>tqdmとは</h4>
     <p>tqdmとは、notebookなどでデータの処理の際に視覚的にわかりやすいデザインにしてくれるプラグインである。</p>
     <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
         <pre id="pythonCode"><code>
             TDTW scoring: 100%|██████████| 2815/2815 [00:11<00:00, 243.06it/s]
         </code></pre>
@@ -474,7 +475,7 @@
     </div>
     <h4>GMMs適用時のエラーの対処法</h4>
     <p>以下のようなエラーコードが出た際は、モデルの統計データの計算が正しく行われていないことが示唆されている。大抵は、MFCCのデータが小さすぎたり、似すぎていたり、アルゴリズムが働くほどにデータにバリエーションがないことが多い。<br/>
-    そのため、</p>
+    そのため、scikit-learnを使用してコードを正規化することで解決することができる。機械学習においては、正規化を常に行うことが慣例となっている。</p>
     <div style="position: relative; margin: 1.5rem 0;">
         <button id="copyButton" onclick="copyCode()">コードをコピー</button>
         <pre id="pythonCode"><code>
@@ -568,6 +569,136 @@
              (See &lt;attachments&gt; above for file contents. You may not need to search or read the file again.)
         </code></pre>
     </div>
+
+    <p>以上のエラーを以下のようなコードでall_featuresを正規化した。</p>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+                from sklearn.preprocessing import StandardScaler
+                scaler = StandardScaler()
+                scaled_features = scaler.fit_transform(all_features)
+        </code></pre>
+    </div>
+
+    <p>また、以下のようにreg_covarをGaussianMixtureに設定することで、共分散を正の正規化するので収束時に不安定になることを防ぐことができる。</p>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+                gmm = GaussianMixture(n_components=16, random_state=0, reg_covar=1e-6)
+        </code></pre>
+    </div>
+
+    <h3>結果が一方に偏った際の対処法</h3>
+    <p>GMMsによる分類の結果が、特定の対象のみに偏った場合、以下のようなプロセスが原因だと考えられる。</p>
+    <h4>コード</h4>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            def extract_features(file_path):
+                try:
+                    audio, sample_rate = librosa.load(file_path, sr=16000)
+                    mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=20)
+
+                    # each row is a time frame and each column is an MFCC coefficient
+                    return mfccs.T
+
+                except Exception as e:
+                    print(f"Error processing {file_path}: {e}")
+                    return None
+
+            all_features = {}
+            speaker_features = {}
+            #store the scaler for each speaker
+            scalers = {}
+            for speaker, paths in speaker_paths.items():
+                combined_features = []
+                print(f"Extracting features for {speaker}...")
+                for path in paths:
+                    features = extract_features(path)
+                    if features is not None:
+                        combined_features.append(features)
+
+                all_features[speaker] = np.vstack(combined_features)
+
+                scaler = StandardScaler()
+                scaled_features = scaler.fit_transform(all_features[speaker])
+
+                speaker_features[speaker] = scaled_features
+                scalers[speaker] = scaler
+
+                print(f"Finished extracting features for {speaker}. Shape: {speaker_features[speaker].shape}")
+        </code></pre>
+    </div>
+
+    <h4>結果</h4>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            Extracting features for Speaker1...
+            Finished extracting features for Speaker1. Shape: (711208, 20)
+            Extracting features for Speaker2...
+            Finished extracting features for Speaker2. Shape: (257415, 20)
+        </code></pre>
+    </div>
+
+    <p>
+        以上の様にSpeaker1のデータの量がSpeaker2に比べて3倍以上である。そのため比較的に、Speaker1のデータは全体として包括的に音響を分析し、Speaker2のデータは特徴的な部分を中心的に分析してしまう。<br/>
+        結果的に、テストの際にSpeaker2の音声に対しては十分に波形が近いことを求められるため分類の結果がSpeaker1に偏ってしまう。<br/>
+        解決法としてそれぞれのデータを均等な量にする必要がある。
+    </p>
+
+    <p>
+        それでもなお解決しなかった。原因はテスト時にテストデータを正規化するのを忘れていたためだった。<br/>
+        以下のようにscalersを追加することで修正した。
+    </p>
+
+    <h4>修正前</h4>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            def predict_speaker(file_path, models):
+                unknown_features = extract_features(file_path)
+                if unknown_features is None:
+                    return "Could not process audio."
+
+                scores = {}
+                for speaker, gmm in models.items():
+                    scores[speaker] = gmm.score(unknown_features)
+
+                predicted_speaker = max(scores, key=scores.get)
+
+                return predicted_speaker, scores[predicted_speaker]
+        </code></pre>
+    </div>
+
+    <h4>修正後</h4>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            def predict_speaker(file_path, models, scalers):
+                unknown_features = extract_features(file_path)
+                if unknown_features is None:
+                    return "Could not process audio.", 0
+
+                scores = {}
+                for speaker, gmm in models.items():
+                    scaler = scalers[speaker]
+                    scaled_unknown_features = scaler.transform(unknown_features)
+
+                    scores[speaker] = gmm.score(scaled_unknown_features)
+
+                predicted_speaker = max(scores, key=scores.get)
+
+                return predicted_speaker, scores[predicted_speaker]
+        </code></pre>
+    </div>
+
+    <h3>結果をCSVで保存するときの日時の指定</h3>
+    <p>
+        「<a href="https://note.nkmk.me/python-datetime-now-today/">Pythonで現在時刻・日付・日時を取得</a>」このサイトを参考にした。
+    </p>
+
+
 
       <div th:replace="~{fragments/ad :: adBanner}"></div>
 
