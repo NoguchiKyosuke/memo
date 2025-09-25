@@ -15,39 +15,51 @@
                 }
             };
         /*]]>*/
-            function copyCode() {
-                const codeElement = document.getElementById('pythonCode');
-                const codeText = codeElement.textContent || codeElement.innerText;
+            function copyCode(btn) {
+                // クリックされたボタンの近くのコードブロックからコピーする
+                const button = btn || document.activeElement;
+                let container = null;
+                if (button && typeof button.closest === 'function') {
+                    container = button.closest('div');
+                }
+                const candidate = container ? (container.querySelector('pre code') || container.querySelector('#pythonCode code') || container.querySelector('pre')) : null;
+                const codeElement = candidate || document.querySelector('#pythonCode code') || document.querySelector('pre code') || document.querySelector('pre');
+                const codeText = codeElement ? (codeElement.textContent || codeElement.innerText || '') : '';
 
                 // 現代的なクリップボードAPIを試す
                 if (navigator.clipboard && window.isSecureContext) {
                     navigator.clipboard.writeText(codeText).then(function() {
-                        showCopySuccess();
+                        showCopySuccess(button);
                     }).catch(function(err) {
                         console.error('クリップボードAPIでコピーに失敗:', err);
-                        fallbackCopyMethod(codeText);
+                        fallbackCopyMethod(codeText, button);
                     });
                 } else {
                     // フォールバック方法を使用
-                    fallbackCopyMethod(codeText);
+                    fallbackCopyMethod(codeText, button);
                 }
             }
 
-            function showCopySuccess() {
-                const button = document.querySelector('button[onclick="copyCode()"]');
-                const originalText = button.textContent;
-                const originalBg = button.style.backgroundColor;
+            function showCopySuccess(buttonEl) {
+                const button = buttonEl || document.querySelector('button[onclick^="copyCode"]');
+                if (!button) return;
+                const originalText = button.getAttribute('data-original-text') || button.textContent;
+                const originalBg = button.getAttribute('data-original-bg') || button.style.backgroundColor;
+
+                // 保存
+                if (!button.getAttribute('data-original-text')) button.setAttribute('data-original-text', originalText);
+                if (!button.getAttribute('data-original-bg')) button.setAttribute('data-original-bg', originalBg);
 
                 button.textContent = 'コピー完了！';
                 button.style.backgroundColor = '#28a745';
 
                 setTimeout(function() {
-                    button.textContent = originalText;
-                    button.style.backgroundColor = originalBg;
+                    button.textContent = button.getAttribute('data-original-text');
+                    button.style.backgroundColor = button.getAttribute('data-original-bg');
                 }, 2000);
             }
 
-            function fallbackCopyMethod(text) {
+            function fallbackCopyMethod(text, button) {
                 // 古いブラウザ用のフォールバック方法
                 const textArea = document.createElement('textarea');
                 textArea.value = text;
@@ -61,7 +73,7 @@
                 try {
                     const successful = document.execCommand('copy');
                     if (successful) {
-                        showCopySuccess();
+                        showCopySuccess(button);
                     } else {
                         showCopyError();
                     }
@@ -76,6 +88,52 @@
             function showCopyError() {
                 alert('コピーに失敗しました。\\n\\n手動でコードを選択してコピーしてください：\\n1. コードエリアをクリック\\n2. Ctrl+A（全選択）\\n3. Ctrl+C（コピー）');
             }
+
+            // コードブロックを折りたたむボタンを動的に追加
+            function addToggleButtons() {
+                // 実質的にページ内のpre#pythonCodeを対象。重複IDだがquerySelectorAllで全取得可
+                const targets = document.querySelectorAll('pre#pythonCode');
+                targets.forEach(function(pre) {
+                    const container = pre.parentElement;
+                    if (!container) return;
+                    // 既にボタンがある場合はスキップ
+                    if (container.querySelector('.toggle-button')) return;
+
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'toggle-button';
+                    btn.textContent = pre.classList.contains('collapsed') ? '展開' : '折りたたむ';
+                    btn.addEventListener('click', function() {
+                        const collapsed = pre.classList.toggle('collapsed');
+                        btn.textContent = collapsed ? '展開' : '折りたたむ';
+                    });
+                    container.appendChild(btn);
+                });
+            }
+
+            // 最初はすべて折りたたみ状態にする
+            function collapseAllCodeBlocks() {
+                document.querySelectorAll('pre#pythonCode').forEach(function(pre) {
+                    pre.classList.add('collapsed');
+                });
+            }
+
+            // すべてのコピー用ボタンを近傍コピー動作に差し替える
+            function wireCopyButtons() {
+                document.querySelectorAll('button[onclick^="copyCode"]').forEach(function(btn) {
+                    btn.onclick = function(e) {
+                        e.preventDefault();
+                        copyCode(btn);
+                    };
+                });
+            }
+
+            // 初期化
+            document.addEventListener('DOMContentLoaded', function() {
+                collapseAllCodeBlocks();
+                addToggleButtons();
+                wireCopyButtons();
+            });
         /*]]>*/
         </script>
         <style>
@@ -104,9 +162,9 @@
                 margin: 1.5rem 0;
             }
             #copyButton {
-                position: absolute; 
-                top: 10px; 
-                right: 10px; 
+                position: absolute;
+                top: 10px;
+                right: 10px;
                 padding: 0.5rem 1rem; 
                 background-color: #036; 
                 color: white; 
@@ -115,6 +173,38 @@
                 cursor: pointer; 
                 font-size: 0.9rem; 
                 z-index: 1;
+            }
+            .toggle-button {
+                position: absolute;
+                top: 10px;
+                left: 10px; /* 左上に配置して重なりを回避 */
+                padding: 0.5rem 1rem;
+                background-color: #666;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 0.9rem;
+                z-index: 1;
+            }
+            /* コードコンテナは相対配置にしてボタン位置を安定化 */
+            div[style*="position: relative"] {
+                position: relative !important;
+            }
+            /* 折りたたみ時は最初の3行だけ見えるように高さを制限 */
+            pre#pythonCode.collapsed {
+                max-height: calc(1.4em * 3 + 1.2rem); /* 3行 + 上下パディング相当 */
+                overflow: hidden;
+                position: relative;
+            }
+            pre#pythonCode.collapsed::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 2.5rem;
+                background: linear-gradient(to bottom, rgba(248,249,250,0), rgba(248,249,250,1));
             }
             
             /* 動的セクションのスタイル */
@@ -142,41 +232,6 @@
 </head>
 <body>
     <h1>音声解析と機械学習の研究メモ <span th:text="'(' + ${#dates.format(lastUpdated, 'yyyy年MM月dd日更新')} + ')'" class="update-info">(動的更新)</span></h1>
-    
-    <!-- 動的に生成される研究項目 -->
-    <div th:each="research : ${researchItems}" class="research-section">
-        <h2 th:text="${research.date} + ' - ' + ${research.title}">研究日付とタイトル</h2>
-        
-        <div th:each="item : ${research.items}" class="research-item">
-            <h3 th:text="${item.title}">項目タイトル</h3>
-            <p th:text="${item.content}">項目内容</p>
-            
-            <!-- 特定の項目に追加情報を表示 -->
-            <div th:if="${item.title} == 'GTX1050にCUDAをダウンロード'">
-                <h4>参考資料</h4>
-                <ul>
-                    <li><a href="https://qiita.com/cabos/items/e8d253ecd9e7b48674ac" target="_blank" rel="noopener noreferrer">【環境構築まとめ】GPUでCUDA / TensorFlowを扱うまでの流れ</a></li>
-                </ul>
-            </div>
-            
-            <div th:if="${item.title} == 'z-score（標準得点）'">
-                <p>z-scoreの式は以下のように表される。</p>
-                <div style="text-align: center; margin: 1.5rem 0;">
-                    $$z = \frac{X - \mu}{\sigma}$$
-                </div>
-                <p>ここで、$X$は各データの値、$\mu$は平均、$\sigma$は標準偏差を表す。</p>
-                <p>z-scoreが0の際は<br/>
-                    データの値が平均と等しい。<br/>
-                    正の値の際はデータの値が平均よりも高い。<br/>
-                    負の値の際はデータの値が平均よりも低い。</p>
-                <p>z-scoreの絶対値は標準偏差と等しくなる。</p>
-                <p>正規分布のうち、<br/>
-                    68%のデータはz-scoreが$-1$から$1$の範囲に収まり、<br/>
-                    95%のデータはz-scoreが$-2$から$2$の範囲に収まり、<br/>
-                    99.7%のデータはz-scoreが$-3$から$3$の範囲に収まる。</p>
-            </div>
-        </div>
-    </div>
 
     <h2>2025/9/9</h2>
     <h3>アイヌ語の勉強</h3>
@@ -202,146 +257,147 @@
     
     <div style="position: relative; margin: 1.5rem 0;">
         <button id="copyButton" onclick="copyCode()">コードをコピー</button>
-        <pre id="pythonCode"><code>#!/usr/bin/env python3
-"""
-浅井タケ昔話集からすべての音声ファイルをダウンロードする
-https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/asai01.html
-"""
-
-import requests
-from bs4 import BeautifulSoup
-import re
-from urllib.parse import urljoin
-import os
-import time
-from pathlib import Path
-import json
-from tqdm import tqdm
-
-def download_asai_collection():
-    # ダウンロード用のディレクトリを作成
-    base_dir = Path('data/samples')
-    asai_dir = base_dir / 'asai_take_stories'
-    asai_dir.mkdir(exist_ok=True)
-    
-    # ダウンロード状況を記録するメタデータファイルを作成
-    metadata_file = asai_dir / 'metadata.json'
-    metadata = {
-        'collection': 'Asai Take Folktale Collection',
-        'source': 'https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/asai01.html',
-        'stories': {}
-    }
-    
-    # 物語コレクションのベースURL
-    base_url = 'https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/'
-    
-    print('浅井タケ音声コレクション全体のダウンロードを開始します...')
-    print(f'保存先ディレクトリ: {asai_dir}')
-    
-    # すべての物語ページのURLを生成（At01からAt54まで）
-    story_urls = []
-    for i in range(1, 55):  # 1から54まで
-        story_url = f'{base_url}at{i:02d}aj.html'
-        story_urls.append((i, story_url))
-    
-    print(f'処理対象の物語ページ数: {len(story_urls)}')
-    
-    total_downloaded = 0
-    total_audio_files = 0
-    
-    # プログレスバー付きですべての物語を処理
-    for story_num, story_url in tqdm(story_urls, desc="物語を処理中"):
-        story_id = f"At{story_num:02d}"
-        print(f'\\n{story_id}を処理中: {story_url}')
-        
-        try:
-            response = requests.get(story_url, timeout=30)
-            response.raise_for_status()
-            soup = BeautifulSoup(response.content, 'html.parser')
-            
-            # このページ内の音声リンクを検索
-            audio_links = []
-            for link in soup.find_all('a', href=True):
-                href = link['href']
-                if any(ext in href.lower() for ext in ['.wav', '.mp3', '.au', '.aiff']):
-                    full_url = urljoin(story_url, href)
-                    audio_links.append(full_url)
-            
-            print(f'  発見した音声ファイル数: {len(audio_links)}')
-            total_audio_files += len(audio_links)
-            
-            # プログレスバー付きで各音声ファイルをダウンロード
-            story_downloaded = 0
-            for i, audio_url in enumerate(tqdm(audio_links, desc=f"  {story_id} 音声", leave=False)):
-                filename = f'{story_id}_{i+1:03d}.wav'
-                filepath = asai_dir / filename
-                
-                # 既に存在する場合はスキップ
-                if filepath.exists():
-                    print(f'    ⚡ スキップ（既存）: {filename}')
-                    story_downloaded += 1
-                    continue
-                
-                try:
-                    audio_response = requests.get(audio_url, timeout=30)
-                    audio_response.raise_for_status()
+        <pre id="pythonCode"><code>
+            #!/usr/bin/env python3
+            """
+            浅井タケ昔話集からすべての音声ファイルをダウンロードする
+            https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/asai01.html
+            """
                     
-                    with open(filepath, 'wb') as f:
-                        f.write(audio_response.content)
+            import requests
+            from bs4 import BeautifulSoup
+            import re
+            from urllib.parse import urljoin
+            import os
+            import time
+            from pathlib import Path
+            import json
+            from tqdm import tqdm
                     
-                    story_downloaded += 1
-                    print(f'    ✓ ダウンロード完了: {filename} ({len(audio_response.content)} バイト)')
+            def download_asai_collection():
+                # ダウンロード用のディレクトリを作成
+                base_dir = Path('data/samples')
+                asai_dir = base_dir / 'asai_take_stories'
+                asai_dir.mkdir(exist_ok=True)
                     
-                except Exception as e:
-                    print(f'    ✗ ダウンロード失敗 {audio_url}: {e}')
+                # ダウンロード状況を記録するメタデータファイルを作成
+                metadata_file = asai_dir / 'metadata.json'
+                metadata = {
+                    'collection': 'Asai Take Folktale Collection',
+                    'source': 'https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/asai01.html',
+                    'stories': {}
+                }
                 
-                time.sleep(0.3)  # サーバーに配慮した待機時間
-            
-            total_downloaded += story_downloaded
-            
-            # メタデータを更新
-            metadata['stories'][story_id] = {
-                'url': story_url,
-                'audio_files_found': len(audio_links),
-                'audio_files_downloaded': story_downloaded,
-                'title': f'物語 {story_num}'  # 実際のタイトルでさらに改善可能
-            }
-            
-            print(f'  ✓ {story_id}: {story_downloaded}/{len(audio_links)} ファイルをダウンロード')
-            
-        except Exception as e:
-            print(f'  ✗ {story_url}の処理中にエラー: {e}')
-            metadata['stories'][story_id] = {
-                'url': story_url,
-                'error': str(e)
-            }
-        
-        # 定期的にメタデータを保存
-        if story_num % 5 == 0:
-            with open(metadata_file, 'w', encoding='utf-8') as f:
-                json.dump(metadata, f, indent=2, ensure_ascii=False)
-    
-    # 最終的なメタデータ保存
-    metadata['total_stories'] = len(story_urls)
-    metadata['total_audio_files_found'] = total_audio_files
-    metadata['total_audio_files_downloaded'] = total_downloaded
-    
-    with open(metadata_file, 'w', encoding='utf-8') as f:
-        json.dump(metadata, f, indent=2, ensure_ascii=False)
-    
-    print(f'\\n🎉 ダウンロード完了！')
-    print(f'📊 統計情報:')
-    print(f'   処理した物語数: {len(story_urls)}')
-    print(f'   発見した音声ファイル総数: {total_audio_files}')
-    print(f'   ダウンロード成功数: {total_downloaded}')
-    print(f'   保存ディレクトリ: {asai_dir}')
-    print(f'   メタデータ保存先: {metadata_file}')
-    
-    return asai_dir, total_downloaded, total_audio_files
-
-if __name__ == '__main__':
-    download_asai_collection()
-</code></pre>
+                # 物語コレクションのベースURL
+                base_url = 'https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/'
+                
+                print('浅井タケ音声コレクション全体のダウンロードを開始します...')
+                print(f'保存先ディレクトリ: {asai_dir}')
+                
+                # すべての物語ページのURLを生成（At01からAt54まで）
+                story_urls = []
+                for i in range(1, 55):  # 1から54まで
+                    story_url = f'{base_url}at{i:02d}aj.html'
+                    story_urls.append((i, story_url))
+                
+                print(f'処理対象の物語ページ数: {len(story_urls)}')
+                
+                total_downloaded = 0
+                total_audio_files = 0
+                
+                # プログレスバー付きですべての物語を処理
+                for story_num, story_url in tqdm(story_urls, desc="物語を処理中"):
+                    story_id = f"At{story_num:02d}"
+                    print(f'\\n{story_id}を処理中: {story_url}')
+                    
+                    try:
+                        response = requests.get(story_url, timeout=30)
+                        response.raise_for_status()
+                        soup = BeautifulSoup(response.content, 'html.parser')
+                        
+                        # このページ内の音声リンクを検索
+                        audio_links = []
+                        for link in soup.find_all('a', href=True):
+                            href = link['href']
+                            if any(ext in href.lower() for ext in ['.wav', '.mp3', '.au', '.aiff']):
+                                full_url = urljoin(story_url, href)
+                                audio_links.append(full_url)
+                        
+                        print(f'  発見した音声ファイル数: {len(audio_links)}')
+                        total_audio_files += len(audio_links)
+                        
+                        # プログレスバー付きで各音声ファイルをダウンロード
+                        story_downloaded = 0
+                        for i, audio_url in enumerate(tqdm(audio_links, desc=f"  {story_id} 音声", leave=False)):
+                            filename = f'{story_id}_{i+1:03d}.wav'
+                            filepath = asai_dir / filename
+                            
+                            # 既に存在する場合はスキップ
+                            if filepath.exists():
+                                print(f'    ⚡ スキップ（既存）: {filename}')
+                                story_downloaded += 1
+                                continue
+                            
+                            try:
+                                audio_response = requests.get(audio_url, timeout=30)
+                                audio_response.raise_for_status()
+                                
+                                with open(filepath, 'wb') as f:
+                                    f.write(audio_response.content)
+                                
+                                story_downloaded += 1
+                                print(f'    ✓ ダウンロード完了: {filename} ({len(audio_response.content)} バイト)')
+                                
+                            except Exception as e:
+                                print(f'    ✗ ダウンロード失敗 {audio_url}: {e}')
+                            
+                            time.sleep(0.3)  # サーバーに配慮した待機時間
+                        
+                        total_downloaded += story_downloaded
+                        
+                        # メタデータを更新
+                        metadata['stories'][story_id] = {
+                            'url': story_url,
+                            'audio_files_found': len(audio_links),
+                            'audio_files_downloaded': story_downloaded,
+                            'title': f'物語 {story_num}'  # 実際のタイトルでさらに改善可能
+                        }
+                        
+                        print(f'  ✓ {story_id}: {story_downloaded}/{len(audio_links)} ファイルをダウンロード')
+                        
+                    except Exception as e:
+                        print(f'  ✗ {story_url}の処理中にエラー: {e}')
+                        metadata['stories'][story_id] = {
+                            'url': story_url,
+                            'error': str(e)
+                        }
+                    
+                    # 定期的にメタデータを保存
+                    if story_num % 5 == 0:
+                        with open(metadata_file, 'w', encoding='utf-8') as f:
+                            json.dump(metadata, f, indent=2, ensure_ascii=False)
+                    
+                # 最終的なメタデータ保存
+                metadata['total_stories'] = len(story_urls)
+                metadata['total_audio_files_found'] = total_audio_files
+                metadata['total_audio_files_downloaded'] = total_downloaded
+                    
+                with open(metadata_file, 'w', encoding='utf-8') as f:
+                    json.dump(metadata, f, indent=2, ensure_ascii=False)
+                    
+                print(f'\\n🎉 ダウンロード完了！')
+                print(f'📊 統計情報:')
+                print(f'   処理した物語数: {len(story_urls)}')
+                print(f'   発見した音声ファイル総数: {total_audio_files}')
+                print(f'   ダウンロード成功数: {total_downloaded}')
+                print(f'   保存ディレクトリ: {asai_dir}')
+                print(f'   メタデータ保存先: {metadata_file}')
+                    
+                return asai_dir, total_downloaded, total_audio_files
+                    
+            if __name__ == '__main__':
+                download_asai_collection()
+        </code></pre>
     </div>
     
   <div th:replace="~{fragments/ad :: adBanner}"></div>
@@ -398,11 +454,129 @@ if __name__ == '__main__':
 
       <div th:replace="~{fragments/ad :: adBanner}"></div>
 
+
+    <h2>2025/09/25</h2>
+    <h3>Pythonの勉強</h3>
+    <h4>librosa.feature.mfccの引数について</h4>
+    <p>
+        y: 音声データそのもの<br/>
+        sr: サンプリング周波数<br/>
+        n_mfcc: mfccの次元数
+    </p>
+
+    <h3>GMMs(Gaussian Mixture Models)を用いたモデルを作成する</h3>
+    <p>以下のコードのようにn_componentsを16に設定することで16個の正規分布の重ね合わせによるモデルを実現している。</p>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            gmm = GaussianMixture(n_components=16, random_state=0)
+        </code></pre>
+    </div>
+    <h4>GMMs適用時のエラーの対処法</h4>
+    <p>以下のようなエラーコードが出た際は、モデルの統計データの計算が正しく行われていないことが示唆されている。大抵は、MFCCのデータが小さすぎたり、似すぎていたり、アルゴリズムが働くほどにデータにバリエーションがないことが多い。<br/>
+    そのため、</p>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            ---------------------------------------------------------------------------
+            LinAlgError                               Traceback (most recent call last)
+            File ~/OneDrive/5years/graduation_research/ainu/venv/lib/python3.12/site-packages/sklearn/mixture/_gaussian_mixture.py:334, in _compute_precision_cholesky(covariances, covariance_type)
+                333 try:
+            --> 334     cov_chol = linalg.cholesky(covariance, lower=True)
+                335 except linalg.LinAlgError:
+            
+            File ~/OneDrive/5years/graduation_research/ainu/venv/lib/python3.12/site-packages/scipy/_lib/_util.py:1233, in _apply_over_batch.&lt;locals&gt;.decorator.&lt;locals&gt;.wrapper(*args, **kwargs)
+               1232 if not any(batch_shapes):
+            -> 1233     return f(*arrays, *other_args, **kwargs)
+               1235 # Determine broadcasted batch shape
+            
+            File ~/OneDrive/5years/graduation_research/ainu/venv/lib/python3.12/site-packages/scipy/linalg/_decomp_cholesky.py:106, in cholesky(a, lower, overwrite_a, check_finite)
+                 52 """
+                 53 Compute the Cholesky decomposition of a matrix.
+                 54 
+               (...)    104 
+                105 """
+            --> 106 c, lower = _cholesky(a, lower=lower, overwrite_a=overwrite_a, clean=True,
+                107                      check_finite=check_finite)
+                108 return c
+            
+            File ~/OneDrive/5years/graduation_research/ainu/venv/lib/python3.12/site-packages/scipy/linalg/_decomp_cholesky.py:39, in _cholesky(a, lower, overwrite_a, clean, check_finite)
+                 38 if info &gt; 0:
+            --> 39     raise LinAlgError(
+                 40         f"{info}-th leading minor of the array is not positive definite"
+                 41     )
+                 42 if info &lt; 0:
+            
+            LinAlgError: 17-th leading minor of the array is not positive definite
+            
+            During handling of the above exception, another exception occurred:
+            
+            ValueError                                Traceback (most recent call last)
+            Cell In[8], line 6
+                  4 for speaker, features in speaker_features.items():
+                  5     gmm = GaussianMixture(n_components=16, random_state=0)
+            ----&gt; 6     gmm.fit(features)
+                  7     gmm_models[speaker] = gmm
+                  8     print(f"Model for {speaker} trained successfully.")
+            
+            File ~/OneDrive/5years/graduation_research/ainu/venv/lib/python3.12/site-packages/sklearn/mixture/_base.py:182, in BaseMixture.fit(self, X, y)
+                156 """Estimate model parameters with the EM algorithm.
+                157 
+                158 The method fits the model ``n_init`` times and sets the parameters with
+               (...)    179     The fitted mixture.
+                180 """
+                181 # parameters are validated in fit_predict
+            --&gt; 182 self.fit_predict(X, y)
+                183 return self
+            
+            File ~/OneDrive/5years/graduation_research/ainu/venv/lib/python3.12/site-packages/sklearn/base.py:1365, in _fit_context.&lt;locals&gt;.decorator.&lt;locals&gt;.wrapper(estimator, *args, **kwargs)
+               1358     estimator._validate_params()
+               1360 with config_context(
+               1361     skip_parameter_validation=(
+               1362         prefer_skip_nested_validation or global_skip_validation
+               1363     )
+               1364 ):
+            -&gt; 1365     return fit_method(estimator, *args, **kwargs)
+            
+            File ~/OneDrive/5years/graduation_research/ainu/venv/lib/python3.12/site-packages/sklearn/mixture/_base.py:251, in BaseMixture.fit_predict(self, X, y)
+                248 prev_lower_bound = lower_bound
+                250 log_prob_norm, log_resp = self._e_step(X)
+            --&gt; 251 self._m_step(X, log_resp)
+                252 lower_bound = self._compute_lower_bound(log_resp, log_prob_norm)
+                253 current_lower_bounds.append(lower_bound)
+            
+            File ~/OneDrive/5years/graduation_research/ainu/venv/lib/python3.12/site-packages/sklearn/mixture/_gaussian_mixture.py:834, in GaussianMixture._m_step(self, X, log_resp)
+                830 self.weights_, self.means_, self.covariances_ = _estimate_gaussian_parameters(
+                831     X, np.exp(log_resp), self.reg_covar, self.covariance_type
+                832 )
+                833 self.weights_ /= self.weights_.sum()
+            --&gt; 834 self.precisions_cholesky_ = _compute_precision_cholesky(
+                835     self.covariances_, self.covariance_type
+                836 )
+            
+            File ~/OneDrive/5years/graduation_research/ainu/venv/lib/python3.12/site-packages/sklearn/mixture/_gaussian_mixture.py:336, in _compute_precision_cholesky(covariances, covariance_type)
+                334             cov_chol = linalg.cholesky(covariance, lower=True)
+                335         except linalg.LinAlgError:
+            --&gt; 336             raise ValueError(estimate_precision_error_message)
+                337         precisions_chol[k] = linalg.solve_triangular(
+                338             cov_chol, np.eye(n_features, dtype=dtype), lower=True
+                339         ).T
+                340 elif covariance_type == "tied":
+            
+            ValueError: Fitting the mixture model failed because some components have ill-defined empirical covariance (for instance caused by singleton or collapsed samples). Try to decrease the number of components, increase reg_covar, or scale the input data. The numerical accuracy can also be improved by passing float64 data instead of float32.
+            
+             (See &lt;attachments&gt; above for file contents. You may not need to search or read the file again.)
+        </code></pre>
+    </div>
+
+      <div th:replace="~{fragments/ad :: adBanner}"></div>
+
+
+
     <!-- 動的フッター -->
     <footer style="margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; text-align: center; color: #666;">
         <p>&copy; <span th:text="${currentYear}">2025</span> 音声研究ノート - 最終更新: <span th:text="${#dates.format(lastUpdated, 'yyyy年MM月dd日 HH:mm')}">動的</span></p>
     </footer>
 
 </body>
-</html>
 </html>
