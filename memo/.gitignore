@@ -15,3 +15,9 @@
 
 # Logs
 *.log
+
+# Dev helper and runtime artifacts
+dev-run.sh
+app.out
+app.pid
+logs/
