@@ -1078,6 +1078,54 @@
         </code></pre>
     </div>
 
+    <h3>GPUが全く使われていなかった。</h3>
+    <p>
+        事前学習モデルを使用する際に、run_optsでGPUを指定していなかったため、CPUで処理が行われていた。
+        そのため、以下のようにGPUの設定をし直してGPUを使用できるようにした。
+    </p>
+
+    <h4>修正前のプログラム</h4>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            language_id = EncoderClassifier.from_hparams(
+                source="speechbrain/spkrec-ecapa-voxceleb",
+                savedir = root_path + "/models/pretrained_models/ecapa-tdnn"
+                )
+
+            print("Pre-trained model loaded successfully.")
+
+            ...
+
+            audio_tensor = torch.from_numpy(chunk)
+
+            embedding = model.encode_batch(audio_tensor)
+        </code></pre>
+    </div>
+
+    <h4>修正後のプログラム</h4>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+
+            language_id = EncoderClassifier.from_hparams(
+                source="speechbrain/spkrec-ecapa-voxceleb",
+                savedir = root_path + "/models/pretrained_models/ecapa-tdnn",
+                run_opts={"device": device}
+                )
+
+            print(f"Device is {device}")
+            print("Pre-trained model loaded successfully.")
+
+            ...
+
+            audio_tensor = torch.from_numpy(chunk)
+            audio_tensor = audio_tensor.to(device)
+            embedding = model.encode_batch(audio_tensor)
+        </code></pre>
+    </div>
+
       <div th:replace="~{fragments/ad :: adBanner}"></div>
 
     <!-- 動的フッター -->
