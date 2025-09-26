@@ -1020,7 +1020,63 @@
     <p>
         この状態では一回に読み込む音声ファイルが数分であり長いためメモリを余分に使ってしまう。
         そのため、以下のように音声ファイルを細かく分けて組み込みに使用することとした。
+        そうすることでメモリの使用量を抑えることに成功した。
     </p>
+
+    <h4>修正後のプログラム</h4>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+        def get_embedding_chunked(file_path, model, chunk_length_sec=10):
+            try:
+                signal, fs = librosa.load(file_path, sr=16000)
+
+                chunk_size = chunk_length_sec * fs
+                chunk_embeddings = []
+
+                for i in range(0, len(signal), chunk_size):
+                    chunk = signal[i:i+chunk_size]
+
+                    if len(chunk) < fs * 1:
+                        #Skip chunks that are too short
+                        continue
+
+                    audio_tensor = torch.from_numpy(chunk)
+
+                    embedding = model.encode_batch(audio_tensor)
+                    embedding = embedding.squeeze().cpu().numpy()
+
+                    chunk_embeddings.append(embedding)
+
+                if not chunk_embeddings:
+                    print(f"Warning: No valid chunks found for {os.path.basename(file_path)}")
+                    return None
+
+                final_embedding = np.mean(chunk_embeddings, axis=0)
+                return final_embedding
+
+            except Exception as e:
+                print(f"Error processing {file_path}: {e}")
+                return None
+
+        speaker_embedding_db = {}
+
+        print("Creating speaker embedding database from training data(using chunking)...")
+        for speaker, paths in speaker_paths_train.items():
+            embeddings = []
+            for path in paths[:3]:
+                embedding = get_embedding_chunked(path, language_id)
+                if embedding is not None:
+                    embeddings.append(embedding)
+                    print(f"Processed {os.path.basename(path)}")
+
+            if embeddings:
+                speaker_embedding_db[speaker] = np.mean(embeddings, axis=0)
+                print(f"Created average embedding for {speaker}.")
+
+        print("/n--- Speaker Embedding Database Complete ---")
+        </code></pre>
+    </div>
 
       <div th:replace="~{fragments/ad :: adBanner}"></div>
 
