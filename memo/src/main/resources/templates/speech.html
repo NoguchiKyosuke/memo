@@ -105,6 +105,15 @@
                     btn.textContent = pre.classList.contains('collapsed') ? '展開' : '折りたたむ';
                     btn.addEventListener('click', function() {
                         const collapsed = pre.classList.toggle('collapsed');
+                        // 直前にあるMarkdownテーブルも同時にトグル
+                        const tableWrap = container.previousElementSibling;
+                        if (tableWrap && tableWrap.classList && tableWrap.classList.contains('md-table-wrap')) {
+                            if (collapsed) {
+                                tableWrap.classList.add('collapsed');
+                            } else {
+                                tableWrap.classList.remove('collapsed');
+                            }
+                        }
                         btn.textContent = collapsed ? '展開' : '折りたたむ';
                     });
                     container.appendChild(btn);
@@ -115,6 +124,13 @@
             function collapseAllCodeBlocks() {
                 document.querySelectorAll('pre#pythonCode').forEach(function(pre) {
                     pre.classList.add('collapsed');
+                    const container = pre.parentElement;
+                    if (container) {
+                        const tableWrap = container.previousElementSibling;
+                        if (tableWrap && tableWrap.classList && tableWrap.classList.contains('md-table-wrap')) {
+                            tableWrap.classList.add('collapsed');
+                        }
+                    }
                 });
             }
 
@@ -128,10 +144,37 @@
                 });
             }
 
+            // Markdownテーブル自体にもトグルボタンを付与
+            function addTableToggleButtons() {
+                document.querySelectorAll('.md-table-wrap').forEach(function(wrap) {
+                    if (wrap.querySelector('.table-toggle-button')) return;
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'table-toggle-button';
+                    btn.textContent = wrap.classList.contains('collapsed') ? '展開' : '折りたたむ';
+                    btn.addEventListener('click', function() {
+                        const collapsed = wrap.classList.toggle('collapsed');
+                        // 後続のコードブロックも同期
+                        const container = wrap.nextElementSibling;
+                        if (container) {
+                            const pre = container.querySelector('pre#pythonCode');
+                            if (pre) {
+                                if (collapsed) pre.classList.add('collapsed'); else pre.classList.remove('collapsed');
+                            }
+                            const codeBtn = container.querySelector('.toggle-button');
+                            if (codeBtn) codeBtn.textContent = collapsed ? '展開' : '折りたたむ';
+                        }
+                        btn.textContent = collapsed ? '展開' : '折りたたむ';
+                    });
+                    wrap.appendChild(btn);
+                });
+            }
+
             // 初期化
             document.addEventListener('DOMContentLoaded', function() {
                 collapseAllCodeBlocks();
                 addToggleButtons();
+                addTableToggleButtons();
                 wireCopyButtons();
             });
         /*]]>*/
@@ -227,6 +270,38 @@
             .research-item h3 {
                 color: #036;
                 margin-top: 0;
+            }
+            /* Markdown table styling */
+            .md-table-wrap { overflow-x: auto; margin: 0.5rem 0 1rem; }
+            .md-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+            .md-table th, .md-table td { border: 1px solid #ddd; padding: .5rem .6rem; vertical-align: top; }
+            .md-table thead th { background: #f1f3f5; text-align: left; }
+            .md-table tbody tr:nth-child(odd) { background: #fafbfc; }
+            .md-table tbody tr:hover { background: #f6f8fa; }
+            /* 折りたたみ時は最初の3行だけ表示（theadは常に表示） */
+            .md-table-wrap.collapsed { position: relative; display: block; }
+            .md-table-wrap.collapsed tbody tr { display: none; }
+            .md-table-wrap.collapsed tbody tr:nth-child(-n+3) { display: table-row; }
+            .md-table-wrap.collapsed::after {
+                content: '';
+                position: absolute;
+                left: 0; right: 0; bottom: 0;
+                height: 2.5rem;
+                background: linear-gradient(to bottom, rgba(255,255,255,0), #fff);
+            }
+            .md-table-wrap { position: relative; }
+            .table-toggle-button {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                padding: 0.35rem 0.7rem;
+                background-color: #666;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 0.85rem;
+                z-index: 1;
             }
         </style>
 </head>
@@ -702,7 +777,248 @@
 
       <div th:replace="~{fragments/ad :: adBanner}"></div>
 
+    <h2>2025/09/26</h2>
+    <h3>Deep Learningのデータ組込時のRAMエラーの対処法</h3>
+    <p>
+        以下のプログラムとエラーログより、学習済みのモデルを扱う際に膨大なRAMを消費したことが原因であると推測することができる。
+    </p>
 
+    <h4>プログラム</h4>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            def get_embedding(file_path, model):
+                try:
+                    signal, fs = librosa.load(file_path, sr=16000)
+                    audio_tensor = torch.from_numpy(signal)
+
+                    embedding = model.encode_batch(audio_tensor)
+                    embedding = embedding.squeeze().cpu().numpy()
+
+                    return embedding
+                except Exception as e:
+                    print(f"Error processing {file_path}: {e}")
+                    return None
+
+            speaker_embedding_db = {}
+
+            print("Creating speaker embedding database from training data...")
+            for speaker, paths in speaker_paths_train.items():
+                embeddings = []
+                for path in paths:
+                    embedding = get_embedding(path, language_id)
+                    if embedding is not None:
+                        embeddings.append(embedding)
+
+                if embeddings:
+                    speaker_embedding_db[speaker] = np.mean(embeddings, axis=0)
+                    print(f"Created avarage embedding for {speaker}.")
+
+            print("/n--- Speaker Embedding Database Complete ---")
+        </code></pre>
+    </div>
+
+    <h4>app.log</h4>
+    <div class="md-table-wrap">
+        <table class="md-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Level</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Sep 26, 2025, 11:02:06 AM</td><td>WARNING</td><td>0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.</td></tr>
+                <tr><td>Sep 26, 2025, 11:02:06 AM</td><td>WARNING</td><td>0.00s - to python to disable frozen modules.</td></tr>
+                <tr><td>Sep 26, 2025, 11:02:06 AM</td><td>WARNING</td><td>0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off</td></tr>
+                <tr><td>Sep 26, 2025, 11:02:06 AM</td><td>WARNING</td><td>0.00s - Debugger warning: It seems that frozen modules are being used, which may</td></tr>
+                <tr><td>Sep 26, 2025, 11:02:05 AM</td><td>WARNING</td><td>kernel 527821a1-c507-43c3-805c-40394db7bda6 restarted</td></tr>
+                <tr><td>Sep 26, 2025, 11:02:05 AM</td><td>INFO</td><td>AsyncIOLoopKernelRestarter: restarting kernel (1/5), keep random ports</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:54 AM</td><td>WARNING</td><td>0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:54 AM</td><td>WARNING</td><td>0.00s - to python to disable frozen modules.</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:54 AM</td><td>WARNING</td><td>0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:54 AM</td><td>WARNING</td><td>0.00s - Debugger warning: It seems that frozen modules are being used, which may</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:53 AM</td><td>INFO</td><td>Kernel restarted: 527821a1-c507-43c3-805c-40394db7bda6</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:02 AM</td><td>WARNING</td><td>0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:02 AM</td><td>WARNING</td><td>0.00s - to python to disable frozen modules.</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:02 AM</td><td>WARNING</td><td>0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:02 AM</td><td>WARNING</td><td>0.00s - Debugger warning: It seems that frozen modules are being used, which may</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:01 AM</td><td>WARNING</td><td>kernel 527821a1-c507-43c3-805c-40394db7bda6 restarted</td></tr>
+                <tr><td>Sep 26, 2025, 10:58:01 AM</td><td>INFO</td><td>AsyncIOLoopKernelRestarter: restarting kernel (1/5), keep random ports</td></tr>
+                <tr><td>Sep 26, 2025, 10:53:05 AM</td><td>WARNING</td><td>0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.</td></tr>
+                <tr><td>Sep 26, 2025, 10:53:05 AM</td><td>WARNING</td><td>0.00s - to python to disable frozen modules.</td></tr>
+                <tr><td>Sep 26, 2025, 10:53:05 AM</td><td>WARNING</td><td>0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off</td></tr>
+                <tr><td>Sep 26, 2025, 10:53:05 AM</td><td>WARNING</td><td>0.00s - Debugger warning: It seems that frozen modules are being used, which may</td></tr>
+                <tr><td>Sep 26, 2025, 10:53:04 AM</td><td>WARNING</td><td>kernel 527821a1-c507-43c3-805c-40394db7bda6 restarted</td></tr>
+                <tr><td>Sep 26, 2025, 10:53:04 AM</td><td>INFO</td><td>AsyncIOLoopKernelRestarter: restarting kernel (1/5), keep random ports</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:47 AM</td><td>INFO</td><td>Connecting to kernel 527821a1-c507-43c3-805c-40394db7bda6.</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:46 AM</td><td>WARNING</td><td>0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:46 AM</td><td>WARNING</td><td>0.00s - to python to disable frozen modules.</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:46 AM</td><td>WARNING</td><td>0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:46 AM</td><td>WARNING</td><td>0.00s - Debugger warning: It seems that frozen modules are being used, which may</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:46 AM</td><td>INFO</td><td>Kernel started: 527821a1-c507-43c3-805c-40394db7bda6</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:46 AM</td><td>WARNING</td><td>validate_schema(_schema)</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:46 AM</td><td>WARNING</td><td>/usr/local/lib/python3.12/dist-packages/jupyter_events/schema.py:68: JupyterEventsVersionWarning: The `version` property of an event schema must be a string. It has been type coerced, but in a future version of this library, it will fail to validate. Please update schema: https://events.jupyter.org/jupyter_server/kernel_actions/v1</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:45 AM</td><td>WARNING</td><td>0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:45 AM</td><td>WARNING</td><td>0.00s - to python to disable frozen modules.</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:45 AM</td><td>WARNING</td><td>0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off</td></tr>
+                <tr><td>Sep 26, 2025, 10:48:45 AM</td><td>WARNING</td><td>0.00s - Debugger warning: It seems that frozen modules are being used, which may</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>http://127.0.0.1:9000/</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>http://172.28.0.12:9000/</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>Jupyter Server 2.14.0 is running at:</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>Serving notebooks from local directory: /</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>panel.io.jupyter_server_extension</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>nbclassic</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>jupyterlab_jupytext</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>[Jupytext Server Extension] Deriving an AsyncTextFileContentsManager from AsyncLargeFileManager</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>jupyter_server_terminals</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>ipyparallel</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>Loading IPython parallel extension</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>google.colab._serverextension</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>google.colab server extension initialized.</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>google.colab</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>notebook_shim</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>WARNING</td><td>Customizing authentication via ServerApp.login_handler_class=&lt;class 'google.colab._login_handler.ColabLoginHandler'&gt; is deprecated in Jupyter Server 2.0. Use ServerApp.identity_provider_class. Falling back on legacy authentication.</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>panel.io.jupyter_server_extension</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>INFO</td><td>notebook_shim</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>WARNING</td><td>/root/.jupyter/jupyter_notebook_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>WARNING</td><td>/root/.local/etc/jupyter/jupyter_notebook_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>WARNING</td><td>/usr/etc/jupyter/jupyter_notebook_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_notebook_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_notebook_config.d/panel-client-jupyter.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_notebook_config.d/jupytext.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_notebook_config.d/ipyparallel.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:45:02 AM</td><td>WARNING</td><td>/etc/jupyter/jupyter_notebook_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>validate_schema(_schema)</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/lib/python3.12/dist-packages/jupyter_events/schema.py:68: JupyterEventsVersionWarning: The `version` property of an event schema must be a string. It has been type coerced, but in a future version of this library, it will fail to validate. Please update schema: https://events.jupyter.org/jupyter_server/gateway_client/v1</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>validate_schema(_schema)</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/lib/python3.12/dist-packages/jupyter_events/schema.py:68: JupyterEventsVersionWarning: The `version` property of an event schema must be a string. It has been type coerced, but in a future version of this library, it will fail to validate. Please update schema: https://events.jupyter.org/jupyter_server/contents_service/v1</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/root/.jupyter/jupyter_server_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/root/.local/etc/jupyter/jupyter_server_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/etc/jupyter/jupyter_server_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.d/nbclassic.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.d/google.colab.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.d/panel-client-jupyter.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.d/notebook_shim.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.d/nbclassic.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.d/jupytext.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.d/jupyter_server_terminals.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.d/ipyparallel.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/usr/local/etc/jupyter/jupyter_server_config.d/google.colab._serverextension.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>/etc/jupyter/jupyter_server_config.json</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>ServerApp.iopub_data_rate_limit config is deprecated in 2.0. Use ZMQChannelsWebsocketConnection.iopub_data_rate_limit.</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>[W 2025-09-26 01:44:59.341 ServerApp] ServerApp.token config is deprecated in 2.0. Use IdentityProvider.token.</td></tr>
+                <tr><td>Sep 26, 2025, 10:44:59 AM</td><td>WARNING</td><td>warn(</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="position: relative; margin: 1.5rem 0;">
+        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        <pre id="pythonCode"><code>
+            |Timestamp|Level|Message|
+            |---|---|---|
+            |Sep 26, 2025, 11:02:06 AM|WARNING|0\.00s - Note: Debugging will proceed\. Set PYDEVD\_DISABLE\_FILE\_VALIDATION=1 to disable this validation\.|
+            |Sep 26, 2025, 11:02:06 AM|WARNING|0\.00s - to python to disable frozen modules\.|
+            |Sep 26, 2025, 11:02:06 AM|WARNING|0\.00s - make the debugger miss breakpoints\. Please pass -Xfrozen\_modules=off|
+            |Sep 26, 2025, 11:02:06 AM|WARNING|0\.00s - Debugger warning: It seems that frozen modules are being used, which may|
+            |Sep 26, 2025, 11:02:05 AM|WARNING|kernel 527821a1-c507-43c3-805c-40394db7bda6 restarted|
+            |Sep 26, 2025, 11:02:05 AM|INFO|AsyncIOLoopKernelRestarter: restarting kernel \(1/5\), keep random ports|
+            |Sep 26, 2025, 10:58:54 AM|WARNING|0\.00s - Note: Debugging will proceed\. Set PYDEVD\_DISABLE\_FILE\_VALIDATION=1 to disable this validation\.|
+            |Sep 26, 2025, 10:58:54 AM|WARNING|0\.00s - to python to disable frozen modules\.|
+            |Sep 26, 2025, 10:58:54 AM|WARNING|0\.00s - make the debugger miss breakpoints\. Please pass -Xfrozen\_modules=off|
+            |Sep 26, 2025, 10:58:54 AM|WARNING|0\.00s - Debugger warning: It seems that frozen modules are being used, which may|
+            |Sep 26, 2025, 10:58:53 AM|INFO|Kernel restarted: 527821a1-c507-43c3-805c-40394db7bda6|
+            |Sep 26, 2025, 10:58:02 AM|WARNING|0\.00s - Note: Debugging will proceed\. Set PYDEVD\_DISABLE\_FILE\_VALIDATION=1 to disable this validation\.|
+            |Sep 26, 2025, 10:58:02 AM|WARNING|0\.00s - to python to disable frozen modules\.|
+            |Sep 26, 2025, 10:58:02 AM|WARNING|0\.00s - make the debugger miss breakpoints\. Please pass -Xfrozen\_modules=off|
+            |Sep 26, 2025, 10:58:02 AM|WARNING|0\.00s - Debugger warning: It seems that frozen modules are being used, which may|
+            |Sep 26, 2025, 10:58:01 AM|WARNING|kernel 527821a1-c507-43c3-805c-40394db7bda6 restarted|
+            |Sep 26, 2025, 10:58:01 AM|INFO|AsyncIOLoopKernelRestarter: restarting kernel \(1/5\), keep random ports|
+            |Sep 26, 2025, 10:53:05 AM|WARNING|0\.00s - Note: Debugging will proceed\. Set PYDEVD\_DISABLE\_FILE\_VALIDATION=1 to disable this validation\.|
+            |Sep 26, 2025, 10:53:05 AM|WARNING|0\.00s - to python to disable frozen modules\.|
+            |Sep 26, 2025, 10:53:05 AM|WARNING|0\.00s - make the debugger miss breakpoints\. Please pass -Xfrozen\_modules=off|
+            |Sep 26, 2025, 10:53:05 AM|WARNING|0\.00s - Debugger warning: It seems that frozen modules are being used, which may|
+            |Sep 26, 2025, 10:53:04 AM|WARNING|kernel 527821a1-c507-43c3-805c-40394db7bda6 restarted|
+            |Sep 26, 2025, 10:53:04 AM|INFO|AsyncIOLoopKernelRestarter: restarting kernel \(1/5\), keep random ports|
+            |Sep 26, 2025, 10:48:47 AM|INFO|Connecting to kernel 527821a1-c507-43c3-805c-40394db7bda6\.|
+            |Sep 26, 2025, 10:48:46 AM|WARNING|0\.00s - Note: Debugging will proceed\. Set PYDEVD\_DISABLE\_FILE\_VALIDATION=1 to disable this validation\.|
+            |Sep 26, 2025, 10:48:46 AM|WARNING|0\.00s - to python to disable frozen modules\.|
+            |Sep 26, 2025, 10:48:46 AM|WARNING|0\.00s - make the debugger miss breakpoints\. Please pass -Xfrozen\_modules=off|
+            |Sep 26, 2025, 10:48:46 AM|WARNING|0\.00s - Debugger warning: It seems that frozen modules are being used, which may|
+            |Sep 26, 2025, 10:48:46 AM|INFO|Kernel started: 527821a1-c507-43c3-805c-40394db7bda6|
+            |Sep 26, 2025, 10:48:46 AM|WARNING|  validate\_schema\(\_schema\)|
+            |Sep 26, 2025, 10:48:46 AM|WARNING|/usr/local/lib/python3\.12/dist-packages/jupyter\_events/schema\.py:68: JupyterEventsVersionWarning: The `version` property of an event schema must be a string\. It has been type coerced, but in a future version of this library, it will fail to validate\. Please update schema: https://events\.jupyter\.org/jupyter\_server/kernel\_actions/v1|
+            |Sep 26, 2025, 10:48:45 AM|WARNING|0\.00s - Note: Debugging will proceed\. Set PYDEVD\_DISABLE\_FILE\_VALIDATION=1 to disable this validation\.|
+            |Sep 26, 2025, 10:48:45 AM|WARNING|0\.00s - to python to disable frozen modules\.|
+            |Sep 26, 2025, 10:48:45 AM|WARNING|0\.00s - make the debugger miss breakpoints\. Please pass -Xfrozen\_modules=off|
+            |Sep 26, 2025, 10:48:45 AM|WARNING|0\.00s - Debugger warning: It seems that frozen modules are being used, which may|
+            |Sep 26, 2025, 10:45:02 AM|INFO|Use Control-C to stop this server and shut down all kernels \(twice to skip confirmation\)\.|
+            |Sep 26, 2025, 10:45:02 AM|INFO|    http://127\.0\.0\.1:9000/|
+            |Sep 26, 2025, 10:45:02 AM|INFO|http://172\.28\.0\.12:9000/|
+            |Sep 26, 2025, 10:45:02 AM|INFO|Jupyter Server 2\.14\.0 is running at:|
+            |Sep 26, 2025, 10:45:02 AM|INFO|Serving notebooks from local directory: /|
+            |Sep 26, 2025, 10:45:02 AM|INFO|panel\.io\.jupyter\_server\_extension |
+            |Sep 26, 2025, 10:45:02 AM|INFO|nbclassic |
+            |Sep 26, 2025, 10:45:02 AM|INFO|jupyterlab\_jupytext |
+            |Sep 26, 2025, 10:45:02 AM|INFO|\[Jupytext Server Extension\] Deriving an AsyncTextFileContentsManager from AsyncLargeFileManager|
+            |Sep 26, 2025, 10:45:02 AM|INFO|jupyter\_server\_terminals |
+            |Sep 26, 2025, 10:45:02 AM|INFO|ipyparallel |
+            |Sep 26, 2025, 10:45:02 AM|INFO|Loading IPython parallel extension|
+            |Sep 26, 2025, 10:45:02 AM|INFO|google\.colab\._serverextension |
+            |Sep 26, 2025, 10:45:02 AM|INFO|google\.colab server extension initialized\.|
+            |Sep 26, 2025, 10:45:02 AM|INFO|google\.colab |
+            |Sep 26, 2025, 10:45:02 AM|INFO|notebook\_shim |
+            |Sep 26, 2025, 10:45:02 AM|WARNING|Customizing authentication via ServerApp\.login\_handler\_class=\<class 'google\.colab\._login\_handler.ColabLoginHandler'\> is deprecated in Jupyter Server 2\.0\. Use ServerApp\.identity\_provider\_class\. Falling back on legacy authentication.|
+            |Sep 26, 2025, 10:45:02 AM|INFO|panel\.io\.jupyter\_server\_extension |
+            |Sep 26, 2025, 10:45:02 AM|INFO|notebook\_shim |
+            |Sep 26, 2025, 10:45:02 AM|WARNING|    \t/root/\.jupyter/jupyter\_notebook\_config\.json|
+            |Sep 26, 2025, 10:45:02 AM|WARNING|    \t/root/\.local/etc/jupyter/jupyter\_notebook\_config\.json|
+            |Sep 26, 2025, 10:45:02 AM|WARNING|    \t/usr/etc/jupyter/jupyter\_notebook\_config\.json|
+            |Sep 26, 2025, 10:45:02 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_notebook\_config\.json|
+            |Sep 26, 2025, 10:45:02 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_notebook\_config\.d/panel-client-jupyter\.json|
+            |Sep 26, 2025, 10:45:02 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_notebook\_config\.d/jupytext\.json|
+            |Sep 26, 2025, 10:45:02 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_notebook\_config\.d/ipyparallel\.json|
+            |Sep 26, 2025, 10:45:02 AM|WARNING|    \t/etc/jupyter/jupyter\_notebook\_config\.json|
+            |Sep 26, 2025, 10:45:02 AM|WARNING|    \t/root/\.jupyter/jupyter\_notebook\_config\.json|
+            |Sep 26, 2025, 10:45:02 AM|INFO|Writing Jupyter server cookie secret to /root/\.local/share/jupyter/runtime/jupyter\_cookie\_secret|
+            |Sep 26, 2025, 10:45:02 AM|INFO|nbclassic |
+            |Sep 26, 2025, 10:45:02 AM|INFO|jupyterlab\_jupytext |
+            |Sep 26, 2025, 10:45:02 AM|INFO|jupyter\_server\_terminals |
+            |Sep 26, 2025, 10:45:02 AM|INFO|ipyparallel |
+            |Sep 26, 2025, 10:45:02 AM|INFO|google\.colab\._serverextension |
+            |Sep 26, 2025, 10:45:02 AM|INFO|google\.colab |
+            |Sep 26, 2025, 10:45:02 AM|INFO|Extension package panel\.io\.jupyter\_server\_extension took 1\.8744s to import|
+            |Sep 26, 2025, 10:45:00 AM|WARNING|A `\_jupyter\_server\_extension\_points` function was not found in nbclassic\. Instead, a `\_jupyter\_server\_extension\_paths` function was found and will be used for now\. This function name will be deprecated in future releases of Jupyter Server.|
+            |Sep 26, 2025, 10:45:00 AM|INFO|Extension package jupyterlab\_jupytext took 0\.1630s to import|
+            |Sep 26, 2025, 10:45:00 AM|WARNING|A `\_jupyter\_server\_extension\_points` function was not found in ipyparallel\. Instead, a `\_jupyter\_server\_extension\_paths` function was found and will be used for now\. This function name will be deprecated in future releases of Jupyter Server.|
+            |Sep 26, 2025, 10:45:00 AM|INFO|Extension package ipyparallel took 0\.2001s to import|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|  validate\_schema\(\_schema\)|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|/usr/local/lib/python3\.12/dist-packages/jupyter\_events/schema\.py:68: JupyterEventsVersionWarning: The `version` property of an event schema must be a string\. It has been type coerced, but in a future version of this library, it will fail to validate\. Please update schema: https://events\.jupyter\.org/jupyter\_server/gateway\_client/v1|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|  validate\_schema\(\_schema\)|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|/usr/local/lib/python3\.12/dist-packages/jupyter\_events/schema\.py:68: JupyterEventsVersionWarning: The `version` property of an event schema must be a string\. It has been type coerced, but in a future version of this library, it will fail to validate\. Please update schema: https://events\.jupyter\.org/jupyter\_server/contents\_service/v1|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/root/\.jupyter/jupyter\_server\_config\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/root/\.local/etc/jupyter/jupyter\_server\_config\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/etc/jupyter/jupyter\_server\_config\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_server\_config\.d/nbclassic\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_server\_config\.d/google\.colab\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_server\_config\.d/panel-client-jupyter\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_server\_config\.d/notebook\_shim\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_server\_config\.d/nbclassic\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_server\_config\.d/jupytext\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_server\_config\.d/jupyter\_server\_terminals\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_server\_config\.d/ipyparallel\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/usr/local/etc/jupyter/jupyter\_server\_config\.d/google\.colab\._serverextension\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|    \t/etc/jupyter/jupyter\_server\_config\.json|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|ServerApp\.iopub\_data\_rate\_limit config is deprecated in 2\.0\. Use ZMQChannelsWebsocketConnection\.iopub\_data\_rate\_limit.|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|\[W 2025-09-26 01:44:59\.341 ServerApp\] ServerApp\.token config is deprecated in 2\.0\. Use IdentityProvider\.token.|
+            |Sep 26, 2025, 10:44:59 AM|WARNING|  warn\(|
+        </code></pre>
+    </div>
+
+      <div th:replace="~{fragments/ad :: adBanner}"></div>
 
     <!-- 動的フッター -->
     <footer style="margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; text-align: center; color: #666;">
