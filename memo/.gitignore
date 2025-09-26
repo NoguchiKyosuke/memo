@@ -20,4 +20,4 @@
 dev-run.sh
 app.out
 app.pid
-logs/
+memo/logs/
