@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Disallow sensitive directories
+Disallow: /includes/
+Disallow: /script/
+Disallow: /log/
+Disallow: /mail/
+Disallow: /htpasswd/
+Disallow: /xserver_php/
+
+# Allow important files
+Allow: /assets/
+Allow: /ads.txt
+Allow: /sitemap.xml
+
+# Sitemap location
+Sitemap: https://memo-site.com/sitemap.xml
+
+# Crawl delay (in seconds)
+Crawl-delay: 1
