@@ -1509,9 +1509,65 @@ pre#pythonCode.collapsed::after {
     <p>
         Google DriveのマウントをUbuntuで行う場合、多くのサイトで"google-drive-ocamlfuse"を推奨されるが、"rclone"を使用した場合のほうが良かった。大きいサイズのファイルを扱う場合に"rclone"のほうが安定している。
     </p>
+    <h3>cost function(目的関数)とは</h3>
+    <p>
+        cost function(別名: loss function, objective function)とは、機械学習におけるコンセプトである。</br>
+        モデルが出力した値がどれほど正解から離れているかを計算する関数である。この値が大きければ大きいほどロスが多いということになる。</br>
+        目的関数には、以下のような種類がある。
+    </p>
+    <h4>1. 平均二乗誤差</h4>
+    <div style="text-align: center; margin: 1.5rem 0;">
+        $$ J(\theta) = \frac{1}{m} \sum_{i=1}^{m} (\hat{y}^{(i)} - y^{(i)})^2 $$
+    </div>
+    <p>ただし記号は以下の通りに定義する。</p>
+    <div style="text-align: center; margin: 1.5rem 0;">
+        $$ m: 訓練データの数 $$<br>
+        $$ \hat{y}^{(i)}: i番目のモデルが予測した値 $$<br>
+        $$ y^{(i)}: i番目のモデルの正解の値 $$<br>
+    </div>
+    <p>特徴</p>
+    <ul>
+        <li>誤差が大きい場合に、ペナルティ(関数の出力値)を大きくすることができる。</li>
+        <li>外れ値に影響されやすい。</li>
+        <li>微分可能であるため、勾配降下法で使用できる。</li>
+    </ul>
+
+    <h4>2. 二値交差エントロピー</h4>
+    <div style="text-align: center; margin: 1.5rem 0;">
+        $$ J(\theta) = -\frac{1}{m} \sum_{i=1}^{m} [y^{(i)} \log(\hat{y}^{(i)}) + (1-y^{(i)}) \log(1-\hat{y}^{(i)})] $$
+    </div>
+    <p>特徴</p>
+    <ul>
+        <li>モデルの出力値に影響を大きく受ける。</li>
+        <li>予想が外れている際に勾配が強く出る。</li>
+    </ul>
+
+    <h4>3. カテゴリカル交差エントロピー</h4>
+    <div style="text-align: center; margin: 1.5rem 0;">
+        $$ [ J(\theta) = -\frac{1}{m} \sum_{i=1}^{m} \sum_{j=1}^{C} y_j^{(i)} \log(\hat{y}_j^{(i)}) $$
+    </div>
+    <div style="text-align: center; margin: 1.5rem 0;">
+        $$ C: クラスの数 $$
+    </div>
+
+
+
+
     </section>
 
     <?php renderAdBanner(); ?>
+
+    <section>
+    <h2>2025/10/04</h2>
+    <h3>なりすまし音声用のデータセット</h3>
+    <p>
+        なりすまし音声のデータセット<a href="https://github.com/takamichi-lab/j-spaw">j-spaw</a>について、今後使用するにあたって調べた。
+        それを求めたページは<a href="https://takamichi-lab.github.io/datasets/j-spaw/">こちら</a>である。
+    </p>
+    </section>
+
+    <?php renderAdBanner(); ?>
+
     
     <footer style="margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; text-align: center; color: #666;">
         <p>&copy; <?php echo date('Y'); ?> 音声研究ノート - 最終更新: <?php echo date('Y年m月d日 H:i', filemtime(__FILE__)); ?></p>

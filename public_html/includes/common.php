@@ -11,6 +11,7 @@ function renderNavigation($currentPage = '') {
       <a href="/" <?php echo ($currentPage === 'home') ? 'class="active"' : ''; ?>>ホーム</a>
       <a href="/sdv.php" <?php echo ($currentPage === 'sdv') ? 'class="active"' : ''; ?>>SDV</a>
       <a href="/speech.php" <?php echo ($currentPage === 'speech') ? 'class="active"' : ''; ?>>音声</a>
+      <a href="/jspaw.php" <?php echo ($currentPage === 'jspaw') ? 'class="active"' : ''; ?>>J-SPAW</a>
       <a href="/api/v1/health" target="_blank" rel="noopener">API 状態</a>
     </nav>
   </div>

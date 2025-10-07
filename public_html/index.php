@@ -37,6 +37,14 @@ renderHead($title, $description, $keywords);
         <p>音声解析に関するメモと数式。機械学習による音声処理技術について解説します。</p>
         <div class="badge" data-service="speech">loading...</div>
       </a>
+
+      <a class="card" href="/jspaw.php">
+        <div class="card-head">
+          <h3>J-SPAW研究文献</h3>
+        </div>
+        <p>音声言語処理に関する最新研究文献の紹介。J-SPAW 2024で発表された論文について詳しく解説します。</p>
+        <div class="badge" data-service="jspaw">loading...</div>
+      </a>
     </div>
   </section>
 </main>
