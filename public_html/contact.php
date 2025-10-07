@@ -5,6 +5,20 @@ declare(strict_types=1);
  * お問い合わせフォーム送信処理
  */
 
+// レート制限: セッションベースで同一ユーザーの連続送信を防ぐ
+session_start();
+$now = time();
+$cooldownPeriod = 60; // 60秒のクールダウン
+
+if (isset($_SESSION['last_contact_time'])) {
+    $timeSinceLastSubmit = $now - $_SESSION['last_contact_time'];
+    if ($timeSinceLastSubmit < $cooldownPeriod) {
+        // クールダウン期間中は静かに成功として返す（攻撃者に情報を与えない）
+        $redirectTarget = sanitizeRedirect($_POST['redirect'] ?? '/');
+        redirectWithStatus($redirectTarget, 'success');
+    }
+}
+
 $redirectTarget = sanitizeRedirect($_POST['redirect'] ?? '/');
 $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
 
@@ -17,10 +31,27 @@ if ($honeypot !== '') {
     redirectWithStatus($redirectTarget, 'success');
 }
 
+// スパム検出: 疑わしいパターンをチェック
 $name = trim((string)($_POST['name'] ?? ''));
 $email = trim((string)($_POST['email'] ?? ''));
 $message = trim((string)($_POST['message'] ?? ''));
 $topic = trim((string)($_POST['topic'] ?? 'general'));
+
+// スパムキーワードチェック（大文字小文字区別なし）
+$spamKeywords = ['viagra', 'cialis', 'casino', 'bitcoin', 'crypto', 'loan', 'prize', 'winner', 'click here', 'buy now'];
+$messageL = mb_strtolower($message, 'UTF-8');
+foreach ($spamKeywords as $keyword) {
+    if (mb_strpos($messageL, $keyword) !== false) {
+        // スパムとして静かに成功を返す
+        redirectWithStatus($redirectTarget, 'success');
+    }
+}
+
+// URL の過剰な埋め込みチェック（5個以上のリンクはスパム）
+if (preg_match_all('/https?:\/\//', $message) > 5) {
+    redirectWithStatus($redirectTarget, 'success');
+}
+
 $allowedTopics = ['general', 'partnership', 'media', 'feedback'];
 
 $errors = [];
@@ -64,6 +95,9 @@ $filePath = $storageDir . '/' . $fileName;
 if (file_put_contents($filePath, json_encode($submission, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)) === false) {
     redirectWithStatus($redirectTarget, 'error');
 }
+
+// レート制限: 送信成功時にタイムスタンプを記録
+$_SESSION['last_contact_time'] = $now;
 
 $recipient = getenv('CONTACT_RECIPIENT');
 $recipient = is_string($recipient) ? trim($recipient) : '';
@@ -141,18 +175,19 @@ function redirectWithStatus(string $url, string $status): void
 
 function buildEmailBody(array $submission): string
 {
+    // XSS やインジェクション対策としてすべての値をエスケープ
     $lines = [
         'Memo Site から新しいお問い合わせが届きました。',
         '',
-        'お名前: ' . $submission['name'],
-        'メールアドレス: ' . $submission['email'],
-        'ご用件: ' . $submission['topic'],
-        '送信日時: ' . $submission['submitted_at'],
-        '送信元IP: ' . $submission['ip'],
-        'ユーザーエージェント: ' . $submission['user_agent'],
+        'お名前: ' . htmlspecialchars($submission['name'], ENT_QUOTES, 'UTF-8'),
+        'メールアドレス: ' . htmlspecialchars($submission['email'], ENT_QUOTES, 'UTF-8'),
+        'ご用件: ' . htmlspecialchars($submission['topic'], ENT_QUOTES, 'UTF-8'),
+        '送信日時: ' . htmlspecialchars($submission['submitted_at'], ENT_QUOTES, 'UTF-8'),
+        '送信元IP: ' . htmlspecialchars($submission['ip'], ENT_QUOTES, 'UTF-8'),
+        'ユーザーエージェント: ' . htmlspecialchars($submission['user_agent'], ENT_QUOTES, 'UTF-8'),
         '',
         '--- お問い合わせ内容 ---',
-        $submission['message'],
+        htmlspecialchars($submission['message'], ENT_QUOTES, 'UTF-8'),
     ];
 
     return implode("\n", $lines);
@@ -160,12 +195,23 @@ function buildEmailBody(array $submission): string
 
 function buildEmailHeaders(string $replyTo): string
 {
+    // Reply-To のメールヘッダーインジェクション対策を強化
+    $replyTo = filter_var($replyTo, FILTER_SANITIZE_EMAIL);
+    $replyTo = str_replace(["\r", "\n", "%0a", "%0d"], '', $replyTo);
+    
+    // 無効なメールアドレスの場合はデフォルトを使用
+    if (!filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+        $replyTo = 'noreply@memo-site.com';
+    }
+    
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/plain; charset=UTF-8',
         'Content-Transfer-Encoding: 8bit',
         'From: noreply@memo-site.com',
         'Reply-To: ' . $replyTo,
+        'X-Mailer: PHP/' . phpversion(),
+        'X-Priority: 3',
     ];
 
     return implode("\r\n", $headers);
