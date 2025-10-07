@@ -117,3 +117,8 @@ mvn test
 
 ## Contact
 Author email intentionally removed from runtime footer; see repository root instructions if needed.
+
+### Footer Contact Form (2025-10)
+- すべてのページのフッターに問い合わせフォームを追加しました。
+- フォーム送信内容は `mail/memo-site.com/inquiries/` に JSON 形式で保存されます。
+- メール通知は既定で `k.noguchi2005@gmail.com` に送信されます。必要があれば環境変数 `CONTACT_RECIPIENT` を設定して上書きできます。
