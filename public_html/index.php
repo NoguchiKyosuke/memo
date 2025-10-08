@@ -30,20 +30,12 @@ renderHead($title, $description, $keywords);
         <div class="badge" data-service="sdv">loading...</div>
       </a>
 
-      <a class="card" href="/speech.php">
+      <a class="card" href="/voice/">
         <div class="card-head">
-          <h3>音声解析</h3>
+          <h3>音声研究メモ</h3>
         </div>
-        <p>音声解析に関するメモと数式。機械学習による音声処理技術について解説します。</p>
-        <div class="badge" data-service="speech">loading...</div>
-      </a>
-
-      <a class="card" href="/jspaw.php">
-        <div class="card-head">
-          <h3>J-SPAW研究文献</h3>
-        </div>
-        <p>音声言語処理に関する最新研究文献の紹介。J-SPAW 2024で発表された論文について詳しく解説します。</p>
-        <div class="badge" data-service="jspaw">loading...</div>
+        <p>音声解析と音声言語処理に関する研究メモ。MFCC、DTW、機械学習、最新の研究論文など、音声処理技術について学べます。</p>
+        <div class="badge ok">記事 <?php require_once 'includes/voice-articles.php'; echo getVoiceArticleCount(); ?> 件</div>
       </a>
     </div>
   </section>

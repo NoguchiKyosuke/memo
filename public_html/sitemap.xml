@@ -13,9 +13,21 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://memo-site.com/speech</loc>
-    <lastmod><?php echo date('c', filemtime(__DIR__ . '/speech.php')); ?></lastmod>
+    <loc>https://memo-site.com/voice/</loc>
+    <lastmod><?php echo date('c', filemtime(__DIR__ . '/voice/index.php')); ?></lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://memo-site.com/voice/speech</loc>
+    <lastmod><?php echo date('c', filemtime(__DIR__ . '/voice/speech.php')); ?></lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://memo-site.com/voice/jspaw</loc>
+    <lastmod><?php echo date('c', filemtime(__DIR__ . '/voice/jspaw.php')); ?></lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

@@ -11,7 +11,11 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 # Redirect old HTML files to new PHP files
 RewriteRule ^index\.html$ /index.php [R=301,L]
 RewriteRule ^sdv\.html$ /sdv.php [R=301,L] 
-RewriteRule ^speech\.html$ /speech.php [R=301,L]
+RewriteRule ^speech\.html$ /voice/speech.php [R=301,L]
+
+# Redirect old article paths to new voice/ structure
+RewriteRule ^speech\.php$ /voice/speech.php [R=301,L]
+RewriteRule ^jspaw\.php$ /voice/jspaw.php [R=301,L]
 
 # Remove .php extension from URLs
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -40,7 +40,39 @@ JavaベースのThymeleafテンプレートエンジンからPHPへの完全移�
 アクセス:
 - Root: https://memo-site.com/
 - SDV: https://memo-site.com/sdv
-- 音声解析: https://memo-site.com/speech
+- 音声研究: https://memo-site.com/voice/
+  - 音声解析: https://memo-site.com/voice/speech
+  - J-SPAW研究: https://memo-site.com/voice/jspaw
+
+### ファイル構造 (2025-10)
+```
+public_html/
+  index.php              # 全体のホームページ（SDV & 音声研究）
+  sdv.php               # SDV記事
+  contact.php           # 問い合わせフォームハンドラー
+  
+  voice/                # 音声研究ディレクトリ
+    index.php           # 音声研究ホーム（記事一覧）
+    speech.php          # 記事: 音声解析と機械学習
+    jspaw.php           # 記事: J-SPAW 2024研究文献
+  
+  includes/
+    common.php          # 共通関数（ナビゲーション、フッター）
+    head.php            # HTMLヘッダー
+    ad.php              # 広告表示
+    voice-articles.php  # 音声記事のメタデータ管理
+  
+  assets/
+    css/
+      app.css           # 統合スタイルシート
+    js/
+      health.js         # ヘルスチェック
+```
+
+新しい音声研究記事を追加するには:
+1. `voice/` ディレクトリに新しい記事ファイル (例: `new-article.php`) を作成
+2. `includes/voice-articles.php` の配列に記事メタデータを追加
+3. `sitemap.xml` に新しいURLを追加
 
 ---
 
