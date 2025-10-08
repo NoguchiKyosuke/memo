@@ -26,6 +26,15 @@ function getVoiceArticles(): array
             'date' => '2024-10',
             'icon' => '📄',
         ],
+        [
+            'id' => 'onedrive_error',
+            'title' => 'OneDrive エラー対処法',
+            'slug' => 'onedrive_error.php',
+            'description' => 'OneDriveで発生する同期エラーやアクセス問題の解決方法。研究データの安全な管理とバックアップのベストプラクティスも紹介します。',
+            'tags' => ['OneDrive', 'トラブルシューティング', 'データ管理', 'バックアップ'],
+            'date' => '2025-10',
+            'icon' => '☁️',
+        ],
     ];
 }
 
