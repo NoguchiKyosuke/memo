@@ -48,9 +48,6 @@ function renderHead($title = 'プラットフォームポータル', $descriptio
   <!-- Styles -->
   <link rel="stylesheet" href="/assets/css/app.css" />
   
-  <!-- Scripts -->
-  <script defer src="/assets/js/health.js"></script>
-  
   <!-- 広告スクリプト（修正版） -->
   <script src="https://adm.shinobi.jp/s/945ac836d868082489bc5e309de2b366" async></script>
   
