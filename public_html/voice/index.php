@@ -18,7 +18,6 @@ renderHead($title, $description, $keywords, $canonical);
   <section class="hero">
     <h1>音声研究メモ</h1>
     <p class="lead">音声解析と音声言語処理に関する技術メモと研究文献のコレクション。基礎技術から最新研究まで幅広くカバーします。</p>
-    <div class="status-row" id="global-status" aria-live="polite"></div>
   </section>
 
   <?php renderAdBanner(); ?>

@@ -27,6 +27,15 @@ function getVoiceArticles(): array
             'icon' => '📄',
         ],
         [
+            'id' => 'v2s_attack',
+            'title' => 'V2S Attack 論文解説',
+            'slug' => 'V2S-attack_paper.php',
+            'description' => 'ASVを突破するためのDNNベース音声変換攻撃「V2S Attack」の仕組みと評価、防御策を整理した解説です。',
+            'tags' => ['音声セキュリティ', 'Spoofing', 'Voice Conversion', 'ASV'],
+            'date' => '2025-10',
+            'icon' => '🛡️',
+        ],
+        [
             'id' => 'onedrive_error',
             'title' => 'OneDrive エラー対処法',
             'slug' => 'onedrive_error.php',

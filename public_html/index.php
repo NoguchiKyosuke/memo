@@ -16,7 +16,6 @@ renderHead($title, $description, $keywords);
   <section class="hero">
     <h1>メモ帳</h1>
     <p class="lead">対象領域: Software Defined Vehicle (SDV) と 音声解析。統合された安全で可視化可能なバックエンド。</p>
-    <div class="status-row" id="global-status" aria-live="polite"></div>
   </section>
 
   <section>

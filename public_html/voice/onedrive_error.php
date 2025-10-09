@@ -28,173 +28,38 @@ renderHead($title, $description, $keywords);
     
     <section>
       <h2>今回発生したエラー</h2>
-      以下のようなエラーがUbuntu環境で発生した。
-      <img src="/images/curl_error_screenshot.png" alt="OneDrive curl error screenshot" style="max-width:100%;border:1px solid var(--border);border-radius:8px;margin-top:1rem;"/>
+      以下のようなエラーがUbuntu環境で発生した。<br/>
+      <img src="./images/curl_error_screenshot.png" alt="OneDrive curl error screenshot" style="max-width:100%;border:1px solid var(--border);border-radius:8px;margin-top:1rem;"/>
     <p>
-        このエラーは、Onedriveの同期を取る際にcurlのバージョンが不適合だった場合に表示される。
+        このエラーは、Onedriveの同期を取る際にcurlのバージョンが不適合だった場合に表示される。<br/>
+        そのため、以下のコマンドを入力してaptのアップデートを実行した後に、curlのバージョンを確認する。
     </p>
-      <h3>1. 同期エラー</h3>
-      <p>OneDrive がファイルを同期できない場合、以下の原因が考えられます：</p>
-      <ul>
-        <li><strong>ファイル名の問題</strong> - 使用できない文字（`<`, `>`, `:`, `"`, `/`, `\`, `|`, `?`, `*`）が含まれている</li>
-        <li><strong>ファイルサイズ制限</strong> - 単一ファイルが 250GB を超えている</li>
-        <li><strong>パスの長さ制限</strong> - ファイルパスが 400 文字を超えている</li>
-        <li><strong>ストレージ容量不足</strong> - OneDrive の空き容量が不足している</li>
-        <li><strong>ネットワーク問題</strong> - インターネット接続が不安定</li>
-      </ul>
-
-      <h4>対処法：</h4>
-      <ol>
-        <li>ファイル名とフォルダ名を確認し、使用できない文字を削除</li>
-        <li>長いパスを短縮（フォルダ階層を浅くする）</li>
-        <li>不要なファイルを削除してストレージ容量を確保</li>
-        <li>OneDrive を一時停止して再開する</li>
-        <li>OneDrive を再起動する</li>
-      </ol>
-    </section>
-
-    <section>
-      <h3>2. アクセス拒否エラー</h3>
-      <p>ファイルやフォルダへのアクセスが拒否される場合：</p>
-      
-      <h4>Windows での対処法：</h4>
-      <ol>
-        <li>ファイルまたはフォルダを右クリック → プロパティ</li>
-        <li>「セキュリティ」タブ → 「編集」をクリック</li>
-        <li>自分のユーザーアカウントに「フルコントロール」権限を付与</li>
-        <li>「適用」→「OK」をクリック</li>
-      </ol>
-
-      <h4>Linux での対処法：</h4>
-      <pre><code>sudo chmod -R 755 /path/to/OneDrive/folder
-sudo chown -R $USER:$USER /path/to/OneDrive/folder</code></pre>
-    </section>
-
-    <section>
-      <h3>3. 「ファイルが使用中」エラー</h3>
-      <p>他のプログラムがファイルを開いている場合に発生します。</p>
-      
-      <h4>対処法：</h4>
-      <ul>
-        <li>対象のファイルを使用しているアプリケーションを閉じる</li>
-        <li>タスクマネージャーで該当プロセスを終了</li>
-        <li>コンピュータを再起動</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>OneDrive のリセット方法</h2>
-      <p>上記の方法で解決しない場合、OneDrive をリセットすることで問題が解決することがあります。</p>
-
-      <h3>Windows でのリセット：</h3>
-      <ol>
-        <li>Windows キー + R を押して「ファイル名を指定して実行」を開く</li>
-        <li>以下のコマンドを入力して Enter：</li>
-      </ol>
-      <pre><code>%localappdata%\Microsoft\OneDrive\onedrive.exe /reset</code></pre>
-      
-      <p>数分後、OneDrive が自動的に再起動します。再起動しない場合は手動で起動してください：</p>
-      <pre><code>%localappdata%\Microsoft\OneDrive\onedrive.exe</code></pre>
-
-      <h3>macOS でのリセット：</h3>
-      <ol>
-        <li>ターミナルを開く</li>
-        <li>以下のコマンドを実行：</li>
-      </ol>
-      <pre><code>killall OneDrive
-open ~/Library/Application\ Support/OneDrive/onedrive.app</code></pre>
-    </section>
-
-    <section>
-      <h2>研究データの管理ベストプラクティス</h2>
-      
-      <h3>1. フォルダ構造の最適化</h3>
-      <ul>
-        <li><strong>階層を浅く保つ</strong> - 3〜4階層以内に収める</li>
-        <li><strong>命名規則を統一</strong> - 日付を含める（例: `2025-10_実験データ`）</li>
-        <li><strong>説明的な名前</strong> - 内容が一目でわかる名前をつける</li>
-      </ul>
-
-      <h3>2. バージョン管理</h3>
-      <p>OneDrive は過去 30 日間のバージョン履歴を保持します。重要なファイルの変更履歴を確認できます。</p>
-      <ul>
-        <li>ファイルを右クリック → バージョン履歴</li>
-        <li>過去のバージョンを表示・復元可能</li>
-      </ul>
-
-      <h3>3. 選択的同期の活用</h3>
-      <p>すべてのファイルをローカルに同期する必要はありません。</p>
-      <ul>
-        <li>OneDrive アイコンをクリック → 設定 → アカウント → フォルダーの選択</li>
-        <li>必要なフォルダだけを同期対象にする</li>
-        <li>ストレージ容量とネットワーク帯域を節約</li>
-      </ul>
-
-      <h3>4. 共同研究での共有設定</h3>
-      <ul>
-        <li><strong>編集権限</strong> - 共同編集者には編集権限を付与</li>
-        <li><strong>閲覧権限</strong> - レビュアーには閲覧のみ許可</li>
-        <li><strong>リンクの有効期限</strong> - 一時的な共有にはリンクに期限を設定</li>
-        <li><strong>パスワード保護</strong> - 機密データには追加のパスワード保護を設定</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>音声データの扱い方</h2>
-      <p>音声研究で大容量の音声ファイルを扱う場合の注意点：</p>
-
-      <h3>推奨される方法：</h3>
-      <ul>
-        <li><strong>圧縮形式の使用</strong> - FLAC（可逆圧縮）や MP3（非可逆圧縮）を検討</li>
-        <li><strong>メタデータの記録</strong> - 各音声ファイルの情報を CSV や JSON で管理</li>
-        <li><strong>大容量ファイルの分割</strong> - 1ファイルあたり 100GB 以下に抑える</li>
-        <li><strong>定期的なバックアップ</strong> - 外部ストレージにも定期的にバックアップ</li>
-      </ul>
-
-      <h3>Python での音声ファイル管理例：</h3>
-      <pre><code>import os
-import json
-from pathlib import Path
-
-def create_audio_index(directory):
-    """音声ファイルのインデックスを作成"""
-    audio_files = []
-    
-    for file_path in Path(directory).rglob("*.wav"):
-        file_info = {
-            "path": str(file_path.relative_to(directory)),
-            "name": file_path.name,
-            "size_mb": file_path.stat().st_size / (1024 * 1024),
-            "modified": file_path.stat().st_mtime
-        }
-        audio_files.append(file_info)
-    
-    # インデックスをJSONで保存
-    with open("audio_index.json", "w", encoding="utf-8") as f:
-        json.dump(audio_files, f, indent=2, ensure_ascii=False)
-    
-    return audio_files
-
-# 使用例
-audio_index = create_audio_index("./OneDrive/研究データ/音声ファイル")
-print(f"Total files: {len(audio_index)}")
-print(f"Total size: {sum(f['size_mb'] for f in audio_index):.2f} MB")</code></pre>
-    </section>
-
-    <section>
-      <h2>トラブルシューティングチェックリスト</h2>
-      <ol>
-        <li>✓ インターネット接続を確認</li>
-        <li>✓ OneDrive のストレージ容量を確認</li>
-        <li>✓ ファイル名に使用できない文字がないか確認</li>
-        <li>✓ パスの長さが 400 文字以内か確認</li>
-        <li>✓ OneDrive を再起動</li>
-        <li>✓ Windows/macOS を再起動</li>
-        <li>✓ OneDrive をリセット</li>
-        <li>✓ OneDrive を最新バージョンに更新</li>
-        <li>✓ ウイルス対策ソフトが OneDrive をブロックしていないか確認</li>
-        <li>✓ ファイアウォール設定を確認</li>
-      </ol>
+      <pre><code>
+        sudo apt update
+        sudo apt upgrade curl
+        curl --version
+      </code></pre>
+    <p>
+      curlのバージョンが、エラーメッセージで表示されたバージョン(今回は8.9.1)よりも大きければ、問題が解決している。<br/>
+      しかし、私を含め、これでも解決しない人は以下のようにコマンドを実行してcurlを更新する。<br/>
+      なお、コマンドを実行する際に<a href="https://curl.se/docs/releases.html">公式サイト</a>でcurlの最新バージョンを確かめるべきである。
+    </p>
+      <pre><code>
+        sudo apt install libpsl-dev libidn2-dev libnghttp2-dev librtmp-dev
+        # curlのバージョンは適宜確認して入力する。
+        wget https://curl.se/download/curl-8.16.0.tar.gz
+        tar -xvf curl-8.16.0.tar.gz
+        cd curl-8.16.0
+        ./configure --with-ssl
+        make -j$(nproc)
+        sudo make install
+        sudo ldconfig
+        curl --version
+      </code></pre>
+      <p>
+        これでcurlのバージョンが更新されるため、再度OneDriveの同期を試みる。<br/>
+        なお、curlのバージョンが更新されない場合は、PCを再起動してから再度バージョンを確認する。
+      </p>
     </section>
 
     <section>
