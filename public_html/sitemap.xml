@@ -37,6 +37,12 @@
     <priority>0.75</priority>
   </url>
   <url>
+    <loc>https://memo-site.com/voice/kaggle_t4x2_guide.php</loc>
+    <lastmod><?php echo date('c', filemtime(__DIR__ . '/voice/kaggle_t4x2_guide.php')); ?></lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
     <loc>https://memo-site.com/voice/onedrive_error</loc>
     <lastmod><?php echo date('c', filemtime(__DIR__ . '/voice/onedrive_error.php')); ?></lastmod>
     <changefreq>monthly</changefreq>

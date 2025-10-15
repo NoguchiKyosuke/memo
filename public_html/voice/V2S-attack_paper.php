@@ -222,7 +222,7 @@ renderHead($title, $description, $keywords, $canonical);
   },
   "publisher": {
     "@type": "Organization",
-    "name": "プラットフォームポータル"
+    "name": "メモ帳"
   },
   "inLanguage": "ja",
   "url": "<?php echo htmlspecialchars($canonical, ENT_QUOTES, 'UTF-8'); ?>",

@@ -4,7 +4,7 @@ require_once '../includes/common.php';
 require_once '../includes/ad.php';
 require_once '../includes/voice-articles.php';
 
-$title = '音声研究メモ - プラットフォームポータル';
+$title = '音声研究メモ - メモ帳';
 $description = '音声解析と音声言語処理に関する研究メモの一覧。MFCC、DTW、機械学習、最新の研究論文など、音声処理技術について学べます。';
 $keywords = '音声研究,音声解析,音声処理,機械学習,研究メモ,MFCC,DTW,J-SPAW';
 $canonical = 'https://memo-site.com/voice/';
@@ -47,7 +47,7 @@ renderHead($title, $description, $keywords, $canonical);
         </div>
         
         <div class="article-meta">
-          <span class="date">📅 <?php echo htmlspecialchars($article['date'], ENT_QUOTES, 'UTF-8'); ?></span>
+          <span class="date"> <?php echo htmlspecialchars($article['date'], ENT_QUOTES, 'UTF-8'); ?></span>
         </div>
       </a>
       <?php endforeach; ?>
@@ -59,7 +59,7 @@ renderHead($title, $description, $keywords, $canonical);
     <div class="card-grid">
       <div class="card">
         <div class="card-head">
-          <h3>🔗 外部リンク</h3>
+          <h3>外部リンク</h3>
         </div>
         <ul class="api-list" style="margin-top:.8rem;">
           <li><a href="https://github.com/takamichi-lab/j-spaw" target="_blank" rel="noopener">J-SPAW Dataset (GitHub)</a></li>

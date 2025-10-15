@@ -3,7 +3,7 @@ require_once 'includes/head.php';
 require_once 'includes/common.php';
 require_once 'includes/ad.php';
 
-$title = 'SDV (Software Defined Vehicle) - プラットフォームポータル';
+$title = 'SDV (Software Defined Vehicle) - メモ帳';
 $description = 'Software Defined Vehicle (SDV) に関する技術解説。従来の車との違い、アーキテクチャ、利点と課題、今後の展望について詳しく説明します。';
 $keywords = 'SDV,Software Defined Vehicle,車載ソフトウェア,ECU,OTA,アップデート,自動運転,V2X';
 
@@ -117,7 +117,7 @@ renderHead($title, $description, $keywords);
   "description": "<?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8'); ?>",
   "author": {
     "@type": "Organization",
-    "name": "プラットフォームポータル"
+    "name": "メモ帳"
   },
   "datePublished": "2025-01-01",
   "dateModified": "<?php echo date('c', filemtime(__FILE__)); ?>",

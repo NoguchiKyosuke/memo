@@ -3,7 +3,7 @@ require_once '../includes/head.php';
 require_once '../includes/common.php';
 require_once '../includes/ad.php';
 
-$title = '音声解析と機械学習の研究メモ - プラットフォームポータル';
+$title = '音声解析と機械学習の研究メモ - メモ帳';
 $description = '音声解析と機械学習に関する技術メモ。MFCCやDTW、z-score、Pythonライブラリの使い方など、音声処理技術について詳しく解説します。';
 $keywords = '音声解析,機械学習,MFCC,DTW,z-score,Python,librosa,音声処理,アイヌ語,研究メモ';
 
@@ -1558,12 +1558,7 @@ pre#pythonCode.collapsed::after {
     <?php renderAdBanner(); ?>
 
     <section>
-    <h2>2025/10/04</h2>
-    <h3>なりすまし音声用のデータセット</h3>
-    <p>
-        なりすまし音声のデータセット<a href="https://github.com/takamichi-lab/j-spaw">j-spaw</a>について、今後使用するにあたって調べた。
-        それを求めたページは<a href="https://takamichi-lab.github.io/datasets/j-spaw/">こちら</a>である。
-    </p>
+    <h2>2025/10/15</h2>
     </section>
 
     <?php renderAdBanner(); ?>
@@ -1586,7 +1581,7 @@ pre#pythonCode.collapsed::after {
   "description": "<?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8'); ?>",
   "author": {
     "@type": "Organization",
-    "name": "プラットフォームポータル"
+    "name": "メモ帳"
   },
   "datePublished": "2025-09-09",
   "dateModified": "<?php echo date('c', filemtime(__FILE__)); ?>",

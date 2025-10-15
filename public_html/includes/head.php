@@ -6,7 +6,7 @@
  * @param string $keywords キーワード（SEO用）
  * @param string $canonical 正規URL
  */
-function renderHead($title = 'プラットフォームポータル', $description = 'Software Defined Vehicle (SDV) と音声解析に関する技術メモとリソース', $keywords = 'SDV,Software Defined Vehicle,音声解析,機械学習,技術メモ', $canonical = '') {
+function renderHead($title = 'メモ帳', $description = 'Software Defined Vehicle (SDV) と音声解析に関する技術メモとリソース', $keywords = 'SDV,Software Defined Vehicle,音声解析,機械学習,技術メモ', $canonical = '') {
     $baseUrl = 'https://memo-site.com';
     if (empty($canonical)) {
         $canonical = $baseUrl . $_SERVER['REQUEST_URI'];
@@ -19,7 +19,7 @@ function renderHead($title = 'プラットフォームポータル', $descriptio
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="<?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8'); ?>" />
   <meta name="keywords" content="<?php echo htmlspecialchars($keywords, ENT_QUOTES, 'UTF-8'); ?>" />
-  <meta name="author" content="プラットフォームポータル" />
+  <meta name="author" content="メモ帳" />
   <meta name="robots" content="index,follow" />
   
   <!-- Open Graph -->
@@ -27,7 +27,7 @@ function renderHead($title = 'プラットフォームポータル', $descriptio
   <meta property="og:description" content="<?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8'); ?>" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="<?php echo htmlspecialchars($canonical, ENT_QUOTES, 'UTF-8'); ?>" />
-  <meta property="og:site_name" content="プラットフォームポータル" />
+  <meta property="og:site_name" content="メモ帳" />
   <meta property="og:locale" content="ja_JP" />
   
   <!-- Twitter Card -->
@@ -47,6 +47,7 @@ function renderHead($title = 'プラットフォームポータル', $descriptio
   
   <!-- Styles -->
   <link rel="stylesheet" href="/assets/css/app.css" />
+  <script defer src="/assets/js/code-enhancer.js"></script>
   
   <!-- 広告スクリプト（修正版） -->
   <script src="https://adm.shinobi.jp/s/945ac836d868082489bc5e309de2b366" async></script>
@@ -56,13 +57,13 @@ function renderHead($title = 'プラットフォームポータル', $descriptio
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "プラットフォームポータル",
+    "name": "メモ帳",
     "url": "<?php echo $baseUrl; ?>",
     "description": "<?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8'); ?>",
     "inLanguage": "ja",
     "author": {
       "@type": "Organization",
-      "name": "プラットフォームポータル"
+      "name": "メモ帳"
     }
   }
   </script>

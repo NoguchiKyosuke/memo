@@ -2,6 +2,7 @@
 require_once '../includes/head.php';
 require_once '../includes/common.php';
 require_once '../includes/ad.php';
+require_once '../includes/image-helper.php';
 
 $title = 'OneDrive curl エラー対処法';
 $description = 'OneDrive で発生するcurlに関するエラーの対処法について解説します。';
@@ -29,7 +30,10 @@ renderHead($title, $description, $keywords);
     <section>
       <h2>今回発生したエラー</h2>
       以下のようなエラーがUbuntu環境で発生した。<br/>
-      <img src="./images/curl_error_screenshot.png" alt="OneDrive curl error screenshot" style="max-width:100%;border:1px solid var(--border);border-radius:8px;margin-top:1rem;"/>
+      <picture>
+        <source srcset="./images/curl_error_screenshot.webp" type="image/webp">
+        <img src="./images/curl_error_screenshot.png" alt="OneDrive curl error screenshot" style="max-width:100%;border:1px solid var(--border);border-radius:8px;margin-top:1rem;"/>
+      </picture>
     <p>
         このエラーは、Onedriveの同期を取る際にcurlのバージョンが不適合だった場合に表示される。<br/>
         そのため、以下のコマンドを入力してaptのアップデートを実行した後に、curlのバージョンを確認する。
@@ -111,7 +115,7 @@ renderHead($title, $description, $keywords);
   "description": "OneDrive で発生する同期エラーやアクセス問題の対処法について解説",
   "author": {
     "@type": "Organization",
-    "name": "プラットフォームポータル"
+    "name": "メモ帳"
   },
   "datePublished": "2025-10-08",
   "dateModified": "2025-10-08"

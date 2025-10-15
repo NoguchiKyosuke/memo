@@ -3,7 +3,7 @@ require_once 'includes/head.php';
 require_once 'includes/common.php';
 require_once 'includes/ad.php';
 
-$title = 'プラットフォームポータル - SDVと音声解析の技術リソース';
+$title = 'メモ帳 - SDVと音声解析の技術リソース';
 $description = 'Software Defined Vehicle (SDV) と音声解析に関する技術メモとリソース。最新の自動車ソフトウェア技術と機械学習による音声処理について学べます。';
 $keywords = 'SDV,Software Defined Vehicle,音声解析,機械学習,自動車ソフトウェア,技術メモ,プラットフォーム';
 

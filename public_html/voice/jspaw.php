@@ -93,7 +93,7 @@ MathJax = {
         <h3>関連技術ページ:</h3>
         <ul>
           <li><a href="/speech.php">音声解析と機械学習の研究メモ</a></li>
-          <li><a href="/">プラットフォームポータル ホーム</a></li>
+          <li><a href="/">メモ帳 ホーム</a></li>
         </ul>
       </div>
     </section>
@@ -121,7 +121,7 @@ MathJax = {
   "datePublished": "2024-01-01",
   "publisher": {
     "@type": "Organization",
-    "name": "プラットフォームポータル"
+    "name": "メモ帳"
   },
   "about": {
     "@type": "Thing",

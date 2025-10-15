@@ -6,7 +6,7 @@ function renderNavigation($currentPage = '') {
 ?>
 <header class="site-header">
   <div class="container flex-between">
-    <div class="brand">プラットフォームポータル</div>
+    <div class="brand">メモ帳</div>
     <nav class="main-nav">
       <a href="/" <?php echo ($currentPage === 'home') ? 'class="active"' : ''; ?>>ホーム</a>
       <a href="/sdv.php" <?php echo ($currentPage === 'sdv') ? 'class="active"' : ''; ?>>SDV</a>
@@ -101,7 +101,7 @@ function renderFooter() {
     </div>
     <?php endif; ?>
 
-    <div class="footer-meta small">&copy; <?php echo date('Y'); ?> プラットフォームポータル</div>
+    <div class="footer-meta small">&copy; <?php echo date('Y'); ?> メモ帳</div>
   </div>
 
   <?php if ($feedbackMessage !== ''): ?>
