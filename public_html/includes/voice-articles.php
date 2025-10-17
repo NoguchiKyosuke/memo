@@ -45,6 +45,15 @@ function getVoiceArticles(): array
             'icon' => '',
         ],
         [
+            'id' => 'plda_overview',
+            'title' => 'PLDA の基礎と応用',
+            'slug' => 'plda_overview.php',
+            'description' => 'Probabilistic Linear Discriminant Analysis (PLDA) の理論と話者認証への応用、実装時のコツをまとめた解説記事です。',
+            'tags' => ['PLDA', '話者認証', '音声セキュリティ', '機械学習'],
+            'date' => '2025-10',
+            'icon' => '📊',
+        ],
+        [
             'id' => 'onedrive_error',
             'title' => 'OneDrive エラー対処法',
             'slug' => 'onedrive_error.php',
