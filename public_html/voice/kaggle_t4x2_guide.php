@@ -156,6 +156,29 @@ mp.set_start_method('spawn', force=True)
             しかし、Linux環境では"fork"がデフォルトであるため、上記のコードを追加し、"spawn"にする必要がある。
         </p>
         <li>
+          AttributeError が発生する場合。
+        </li>
+        <pre id="pythonCode">
+        <code>
+AttributeError: Can't get attribute 'worker' on <module '__main__' (built-in)>
+        </code>
+        </pre>
+        <p>
+          pythonがマルチプロセスを実行する際に、新たなプロセスを実行するにあたって子プロセスを実行することができなかった際にに発生する。<br/>
+          notebookのセル内で関数を定義している場合に発生しやすい。<br/>
+          そのため、外部からpythonファイルで実行すれば解決するのだが、Kaggle notebook上で実行する場合は、if __name__ == '__main__':を使用して、メインプロセスであることを明示的に示すことで解決できる。<br/>
+          その上で、multiprocessingの代わりに、multiprocessを使用する必要がある。
+        </p>
+        <pre id="pythonCode">
+        <code>
+pip install multiprocess
+import multiprocess as mp
+        </code>
+        </pre>
+
+      <li>
+        
+      </li>
       </ol>
     </section>
 

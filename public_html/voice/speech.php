@@ -23,104 +23,6 @@ MathJax = {
     }
 };
 
-// コードをクリップボードにコピーする関数
-function copyCode(btn) {
-    const button = btn || document.activeElement;
-    let container = null;
-    if (button && typeof button.closest === 'function') {
-        container = button.closest('div');
-    }
-    const candidate = container ? (container.querySelector('pre code') || container.querySelector('#pythonCode code') || container.querySelector('pre')) : null;
-    const codeElement = candidate || document.querySelector('#pythonCode code') || document.querySelector('pre code') || document.querySelector('pre');
-    const codeText = codeElement ? (codeElement.textContent || codeElement.innerText || '') : '';
-
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(codeText).then(function() {
-            showCopySuccess(button);
-        }).catch(function(err) {
-            console.error('クリップボードAPIでコピーに失敗:', err);
-            fallbackCopyMethod(codeText, button);
-        });
-    } else {
-        fallbackCopyMethod(codeText, button);
-    }
-}
-
-function showCopySuccess(buttonEl) {
-    const button = buttonEl || document.querySelector('button[onclick^="copyCode"]');
-    if (!button) return;
-    const originalText = button.getAttribute('data-original-text') || button.textContent;
-    const originalBg = button.getAttribute('data-original-bg') || button.style.backgroundColor;
-
-    if (!button.getAttribute('data-original-text')) button.setAttribute('data-original-text', originalText);
-    if (!button.getAttribute('data-original-bg')) button.setAttribute('data-original-bg', originalBg);
-
-    button.textContent = 'コピー完了！';
-    button.style.backgroundColor = '#28a745';
-
-    setTimeout(function() {
-        button.textContent = button.getAttribute('data-original-text');
-        button.style.backgroundColor = button.getAttribute('data-original-bg');
-    }, 2000);
-}
-
-function fallbackCopyMethod(text, button) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-
-    try {
-        const successful = document.execCommand('copy');
-        if (successful) {
-            showCopySuccess(button);
-        } else {
-            showCopyError();
-        }
-    } catch (err) {
-        console.error('フォールバック方法でコピーに失敗:', err);
-        showCopyError();
-    } finally {
-        document.body.removeChild(textArea);
-    }
-}
-
-function showCopyError() {
-    alert('コピーに失敗しました。\\n\\n手動でコードを選択してコピーしてください：\\n1. コードエリアをクリック\\n2. Ctrl+A（全選択）\\n3. Ctrl+C（コピー）');
-}
-
-// コードブロックの折りたたみ機能
-function addToggleButtons() {
-    const targets = document.querySelectorAll('pre#pythonCode');
-    targets.forEach(function(pre) {
-        const container = pre.parentElement;
-        if (!container) return;
-        if (container.querySelector('.toggle-button')) return;
-
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'toggle-button';
-        btn.textContent = pre.classList.contains('collapsed') ? '展開' : '折りたたむ';
-        btn.addEventListener('click', function() {
-            const collapsed = pre.classList.toggle('collapsed');
-            const tableWrap = container.previousElementSibling;
-            if (tableWrap && tableWrap.classList && tableWrap.classList.contains('md-table-wrap')) {
-                if (collapsed) {
-                    tableWrap.classList.add('collapsed');
-                } else {
-                    tableWrap.classList.remove('collapsed');
-                }
-            }
-            btn.textContent = collapsed ? '展開' : '折りたたむ';
-        });
-        container.appendChild(btn);
-    });
-}
-
 function collapseAllCodeBlocks() {
     document.querySelectorAll('pre#pythonCode').forEach(function(pre) {
         pre.classList.add('collapsed');
@@ -134,45 +36,9 @@ function collapseAllCodeBlocks() {
     });
 }
 
-function wireCopyButtons() {
-    document.querySelectorAll('button[onclick^="copyCode"]').forEach(function(btn) {
-        btn.onclick = function(e) {
-            e.preventDefault();
-            copyCode(btn);
-        };
-    });
-}
-
-function addTableToggleButtons() {
-    document.querySelectorAll('.md-table-wrap').forEach(function(wrap) {
-        if (wrap.querySelector('.table-toggle-button')) return;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'table-toggle-button';
-        btn.textContent = wrap.classList.contains('collapsed') ? '展開' : '折りたたむ';
-        btn.addEventListener('click', function() {
-            const collapsed = wrap.classList.toggle('collapsed');
-            const container = wrap.nextElementSibling;
-            if (container) {
-                const pre = container.querySelector('pre#pythonCode');
-                if (pre) {
-                    if (collapsed) pre.classList.add('collapsed'); else pre.classList.remove('collapsed');
-                }
-                const codeBtn = container.querySelector('.toggle-button');
-                if (codeBtn) codeBtn.textContent = collapsed ? '展開' : '折りたたむ';
-            }
-            btn.textContent = collapsed ? '展開' : '折りたたむ';
-        });
-        wrap.appendChild(btn);
-    });
-}
-
 // 初期化
 document.addEventListener('DOMContentLoaded', function() {
     collapseAllCodeBlocks();
-    addToggleButtons();
-    addTableToggleButtons();
-    wireCopyButtons();
 });
 </script>
 
@@ -204,48 +70,8 @@ a:hover{text-decoration:underline;color:#004499;}
     margin: 1.5rem 0;
     color: #2c3e50;
 }
-#copyButton {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 0.5rem 1rem; 
-    background-color: #0066cc; 
-    color: white; 
-    border: none; 
-    border-radius: 4px; 
-    cursor: pointer; 
-    font-size: 0.9rem; 
-    z-index: 1;
-}
-.toggle-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 0.5rem 1rem;
-    background-color: #666;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    z-index: 1;
-}
 div[style*="position: relative"] {
     position: relative !important;
-}
-pre#pythonCode.collapsed {
-    max-height: calc(1.4em * 3 + 1.2rem);
-    overflow: hidden;
-    position: relative;
-}
-pre#pythonCode.collapsed::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 2.5rem;
-    background: linear-gradient(to bottom, rgba(248,249,250,0), rgba(248,249,250,1));
 }
 
 .research-section {
@@ -269,36 +95,6 @@ pre#pythonCode.collapsed::after {
     margin-top: 0;
 }
 
-.md-table-wrap { overflow-x: auto; margin: 0.5rem 0 1rem; }
-.md-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-.md-table th, .md-table td { border: 1px solid #ddd; padding: .5rem .6rem; vertical-align: top; }
-.md-table thead th { background: #f8f9fa; text-align: left; }
-.md-table tbody tr { background: #f9f9f9; }
-.md-table tbody tr:hover { background: #e9ecef; }
-.md-table-wrap.collapsed { position: relative; display: block; }
-.md-table-wrap.collapsed tbody tr { display: none; }
-.md-table-wrap.collapsed tbody tr:nth-child(-n+3) { display: table-row; }
-.md-table-wrap.collapsed::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0; bottom: 0;
-    height: 2.5rem;
-    background: linear-gradient(to bottom, rgba(255,255,255,0), #fff);
-}
-.md-table-wrap { position: relative; }
-.table-toggle-button {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 0.35rem 0.7rem;
-    background-color: #666;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    z-index: 1;
-}
 </style>
 
 <main class="container fade-in" style="max-width:880px;margin:0 auto;padding:2.2rem 0 3rem;">
@@ -332,7 +128,7 @@ pre#pythonCode.collapsed::after {
     <p>今回は<a href="https://www.aa.tufs.ac.jp/~mmine/kiki_gen/murasaki/">『浅井タケ昔話全集 I, II』 （村崎恭子 編訳）</a>の音声ファイルを一括でダウンロードした。このときのダウンロード用のPythonコードを以下に示す。</p>
     
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             #!/usr/bin/env python3
             """
@@ -491,7 +287,7 @@ pre#pythonCode.collapsed::after {
     <h4>suffix.lower()の使い方</h4>
     <p>以下のコードにおける"suffix.lower()"は、ファイルのパスを格納している"p"の拡張子が"AUDIO_EXTS"ファイルに含まれているかを判定するために使用されている。</p>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             def list_audio_files(folder: Path) -> List[Path]:
             # AUDIO_EXTSには音声ファイルの拡張子が格納されている。
@@ -501,7 +297,7 @@ pre#pythonCode.collapsed::after {
     <h4>audio_urilsのtrim_silenceについて</h4>
     <p>以下のコードのように"trim_silence"は"top_db"で指定したデシベル以下の音声をカットする関数である。また、0.01秒の間隔でカットを行うため、0.01秒以上の無音部分をカットすることができる。</p>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             TRIM_DB = 30.0
             trimmed_audio = trim_silence(rec_audio, top_db=TRIM_DB)
@@ -525,7 +321,7 @@ pre#pythonCode.collapsed::after {
     <h4>tqdmとは</h4>
     <p>tqdmとは、notebookなどでデータの処理の際に視覚的にわかりやすいデザインにしてくれるプラグインである。</p>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             TDTW scoring: 100%|██████████| 2815/2815 [00:11<00:00, 243.06it/s]
         </code></pre>
@@ -547,7 +343,7 @@ pre#pythonCode.collapsed::after {
     <h3>GMMs(Gaussian Mixture Models)を用いたモデルを作成する</h3>
     <p>以下のコードのようにn_componentsを16に設定することで16個の正規分布の重ね合わせによるモデルを実現している。</p>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             gmm = GaussianMixture(n_components=16, random_state=0)
         </code></pre>
@@ -556,7 +352,7 @@ pre#pythonCode.collapsed::after {
     <p>以下のようなエラーコードが出た際は、モデルの統計データの計算が正しく行われていないことが示唆されている。大抵は、MFCCのデータが小さすぎたり、似すぎていたり、アルゴリズムが働くほどにデータにバリエーションがないことが多い。<br/>
     そのため、scikit-learnを使用してコードを正規化することで解決することができる。機械学習においては、正規化を常に行うことが慣例となっている。</p>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             ---------------------------------------------------------------------------
             LinAlgError                               Traceback (most recent call last)
@@ -651,7 +447,7 @@ pre#pythonCode.collapsed::after {
 
     <p>以上のエラーを以下のようなコードでall_featuresを正規化した。</p>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
                 from sklearn.preprocessing import StandardScaler
                 scaler = StandardScaler()
@@ -661,7 +457,7 @@ pre#pythonCode.collapsed::after {
 
     <p>また、以下のようにreg_covarをGaussianMixtureに設定することで、共分散を正の正規化するので収束時に不安定になることを防ぐことができる。</p>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
                 gmm = GaussianMixture(n_components=16, random_state=0, reg_covar=1e-6)
         </code></pre>
@@ -671,7 +467,7 @@ pre#pythonCode.collapsed::after {
     <p>GMMsによる分類の結果が、特定の対象のみに偏った場合、以下のようなプロセスが原因だと考えられる。</p>
     <h4>コード</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             def extract_features(file_path):
                 try:
@@ -711,7 +507,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>結果</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             Extracting features for Speaker1...
             Finished extracting features for Speaker1. Shape: (711208, 20)
@@ -733,7 +529,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>修正前</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             def predict_speaker(file_path, models):
                 unknown_features = extract_features(file_path)
@@ -752,7 +548,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>修正後</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             def predict_speaker(file_path, models, scalers):
                 unknown_features = extract_features(file_path)
@@ -790,7 +586,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>プログラム</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             def get_embedding(file_path, model):
                 try:
@@ -921,7 +717,7 @@ pre#pythonCode.collapsed::after {
         </table>
     </div>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             |Timestamp|Level|Message|
             |---|---|---|
@@ -1030,7 +826,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>修正後のプログラム</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
         def get_embedding_chunked(file_path, model, chunk_length_sec=10):
             try:
@@ -1091,7 +887,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>修正前のプログラム</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             language_id = EncoderClassifier.from_hparams(
                 source="speechbrain/spkrec-ecapa-voxceleb",
@@ -1110,7 +906,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>修正後のプログラム</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -1202,7 +998,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>TTS使用時のエラー</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             ---------------------------------------------------------------------------
             RuntimeError                              Traceback (most recent call last)
@@ -1394,7 +1190,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>mecabのインストール</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             sudo apt-get update
             sudo apt-get install mecab libmecab-dev mecab-ipadic-utf8
@@ -1407,7 +1203,7 @@ pre#pythonCode.collapsed::after {
     </p>
     <h4>generateのエラー</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             An error occurred: 'GPT2InferenceModel' object has no attribute 'generate'
         </code></pre>
@@ -1415,7 +1211,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>coqui-ttsのインストール</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             %pip install coqui-tts transformers==4.35.2
         </code></pre>
@@ -1427,7 +1223,7 @@ pre#pythonCode.collapsed::after {
     </p>
     <h4>generateのエラー</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             An error occurred: 'list' object has no attribute 'strip'
         </code></pre>
@@ -1435,7 +1231,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>修正前のコード</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             print("Starting batch processing")
 
@@ -1469,7 +1265,7 @@ pre#pythonCode.collapsed::after {
 
     <h4>修正後のコード</h4>
     <div style="position: relative; margin: 1.5rem 0;">
-        <button id="copyButton" onclick="copyCode()">コードをコピー</button>
+        
         <pre id="pythonCode"><code>
             print("Starting batch processing")
             try:

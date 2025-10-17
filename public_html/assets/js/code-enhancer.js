@@ -128,6 +128,78 @@
 
   }
 
+  function shouldCollapseTable(tableEl) {
+    var rows = 0;
+    if (tableEl.tBodies && tableEl.tBodies.length) {
+      for (var i = 0; i < tableEl.tBodies.length; i += 1) {
+        rows += tableEl.tBodies[i].rows.length;
+      }
+    } else if (tableEl.rows) {
+      rows = tableEl.rows.length;
+    }
+    return rows > 8;
+  }
+
+  function enhanceTable(tableEl) {
+    if (tableEl.dataset.tableEnhanced === 'true') {
+      return;
+    }
+
+    tableEl.dataset.tableEnhanced = 'true';
+    if (!tableEl.classList.contains('md-table')) {
+      tableEl.classList.add('md-table');
+    }
+
+    var wrapper = tableEl.closest('.md-table-wrap');
+    if (!wrapper) {
+      wrapper = document.createElement('div');
+      wrapper.className = 'md-table-wrap';
+      var parent = tableEl.parentNode;
+      parent.insertBefore(wrapper, tableEl);
+      wrapper.appendChild(tableEl);
+    }
+
+    if (wrapper.dataset.tableEnhanced === 'true') {
+      return;
+    }
+
+    wrapper.dataset.tableEnhanced = 'true';
+
+    var toolbar = document.createElement('div');
+    toolbar.className = 'md-table-toolbar';
+
+    var toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.className = 'table-toggle-button';
+    toggleBtn.textContent = '折りたたむ';
+    toggleBtn.setAttribute('aria-label', '表を折りたたむ');
+
+    toolbar.appendChild(toggleBtn);
+    wrapper.insertBefore(toolbar, tableEl);
+
+    var shouldCollapse = shouldCollapseTable(tableEl);
+    if (!shouldCollapse) {
+      toggleBtn.style.display = 'none';
+    } else {
+      wrapper.classList.add('collapsed');
+      toggleBtn.textContent = '展開';
+      toggleBtn.setAttribute('aria-label', '表を展開');
+    }
+
+    toggleBtn.addEventListener('click', function () {
+      var collapsed = wrapper.classList.toggle('collapsed');
+      toggleBtn.textContent = collapsed ? '展開' : '折りたたむ';
+      toggleBtn.setAttribute('aria-label', collapsed ? '表を展開' : '表を折りたたむ');
+    });
+  }
+
+  function enhanceTables() {
+    var tables = document.querySelectorAll('table');
+    tables.forEach(function (tableEl) {
+      enhanceTable(tableEl);
+    });
+  }
+
   function normalizePreElements() {
     var preEls = document.querySelectorAll('pre');
     preEls.forEach(function (pre) {
@@ -151,6 +223,7 @@
     blocks.forEach(function (codeEl, idx) {
       enhanceBlock(codeEl, idx);
     });
+    enhanceTables();
   }
 
   onReady(function () {

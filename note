@@ -1,1 +1,0 @@
-Error processing /kaggle/input/j-spaw-main/j-spaw-main/wav/ASV/M001_R1_E2_M3_BF.wav: 'DataParallel' object has no attribute 'encode_batch'
