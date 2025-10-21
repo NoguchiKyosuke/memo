@@ -1,7 +1,6 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
-require_once '../includes/ad.php';
 require_once '../includes/image-helper.php';
 
 $title = 'PLDA (Probabilistic Linear Discriminant Analysis) の基礎と応用';
@@ -25,12 +24,18 @@ renderHead($title, $description, $keywords, $canonical);
         <span class="tag">音声セキュリティ</span>
       </div>
     </header>
-
-    <?php renderAdBanner(); ?>
-
     <section class="research-section">
       <h2>PLDA とは何か</h2>
-      <p>PLDA (Probabilistic Linear Discriminant Analysis) は、線形判別分析を確率的に拡張したモデルで、クラス内・クラス間の分散構造を明示的にモデリングする手法です。話者認証では i-vector や x-vector の埋め込みを PLDA で判別するのが一般的なパイプラインとなっています。</p>
+      <p>PLDA (Probabilistic Linear Discriminant Analysis) は、同じ答えのデータごとにグループを作り、確率的にどのグループに属するかで答えを判別する手法です。話者認証では i-vector や x-vector の埋め込みを コサイン類似度を使って判別する手法が多く用いられていますが、より統計的に強力なPLDA で判別する手法も取られます。</p>
+      <div class="figure-wrap" style="text-align:center;">
+        <?php echo renderImage('/voice/images/cosine_similarity_vectors.png', 'ベクトルAとベクトルBのコサイン類似度を三次元空間で可視化した図'); ?>
+        <p style="font-size:0.85rem;color:var(--text-subtle);margin-top:0.5rem;">図1. ベクトル間の角度 &theta; が小さいほどコサイン類似度が高くなる</p>
+      </div>
+      <p>PLDA はベクトル空間内で同一話者の埋め込みが共通の確率分布に従うと仮定し、クラスごとの広がりや重なり具合を統計的にモデリングします。下図は、2 次元上で発話ごとの特徴点が話者ごとにクラスタを形成しているイメージです。</p>
+      <div class="figure-wrap" style="text-align:center;">
+        <?php echo renderImage('/voice/images/plda_concept_clusters.png', 'PLDA が想定する話者ごとのクラスタ構造イメージ'); ?>
+        <p style="font-size:0.85rem;color:var(--text-subtle);margin-top:0.5rem;">図2. 同じ話者に属する埋め込みは同心的な分布を形成し、PLDA がクラス間の境界を推定する</p>
+      </div>
       <ul>
         <li>各発話が話者固有ベクトル + セッション雑音の線形結合として生成されると仮定</li>
         <li>話者固有ベクトルと雑音は多変量ガウス分布に従うと想定</li>
@@ -194,10 +199,6 @@ class PLDA:
     </section>
   </article>
 </main>
-
-<div class="hero-ad" style="margin-top:1.6rem;display:flex;justify-content:center;">
-  <?php renderAdBanner(); ?>
-</div>
 
 <?php renderFooter(); ?>
 

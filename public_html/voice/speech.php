@@ -1,7 +1,6 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
-require_once '../includes/ad.php';
 
 $title = '音声解析と機械学習の研究メモ - メモ帳';
 $description = '音声解析と機械学習に関する技術メモ。MFCCやDTW、z-score、Pythonライブラリの使い方など、音声処理技術について詳しく解説します。';
@@ -102,9 +101,6 @@ div[style*="position: relative"] {
     <header>
       <h1>音声解析と機械学習の研究メモ <span class="update-info">(<?php echo date('Y年m月d日更新', filemtime(__FILE__)); ?>)</span></h1>
     </header>
-    
-    <?php renderAdBanner(); ?>
-
     <section><h2>2025/9/9</h2>
     <h3>アイヌ語の勉強</h3>
     <h4>z-scoreとは</h4>
@@ -272,9 +268,6 @@ div[style*="position: relative"] {
         </code></pre>
     </div>
     </section>
-
-    <?php renderAdBanner(); ?>
-
     <section>
       <h2>2025/09/11</h2>
     <h3>アイヌ語のサイト</h3>
@@ -307,8 +300,6 @@ div[style*="position: relative"] {
     <h4>notebookの記述のコツ</h4>
     <p>notebookのセルをまたぐ際に、一つ前のセルの最初で変更する予定の変数をゼロリセットすることで、次のセルの最初に条件分岐によって一つ前のセルが実行されたかを判定することができる。</p>
 
-      <div th:replace="~{fragments/ad :: adBanner}"></div>
-
     <h2>2025/09/12</h2>
     <h3>DTWとは</h3>
     <p>DTW(Dynamic Time Warping)は、2つの時間軸のシーケンスの類似度を図るアルゴリズムである。このとき、2つのシーケンスは時間が一致する必要がない。</br>
@@ -327,9 +318,6 @@ div[style*="position: relative"] {
         </code></pre>
     </div>
     </section>
-
-    <?php renderAdBanner(); ?>
-
     <section>
     <h2>2025/09/25</h2>
     <h3>Pythonの勉強</h3>
@@ -574,9 +562,6 @@ div[style*="position: relative"] {
     </p>
     
     </section>
-
-    <?php renderAdBanner(); ?>
-
     <section>
     <h2>2025/09/26</h2>
     <h3>Deep Learningのデータ組込時のRAMエラーの対処法</h3>
@@ -927,9 +912,6 @@ div[style*="position: relative"] {
         </code></pre>
 
     </section>
-
-    <?php renderAdBanner(); ?>
-
     <section>
     <h2>2025/09/28</h2>
     <h3>t-SNEとは</h3>
@@ -939,9 +921,6 @@ div[style*="position: relative"] {
     </p>
 
     </section>
-
-    <?php renderAdBanner(); ?>
-
     <section>
     <h2>2025/09/29</h2>
     <h3>t-SNEのパラメータ"n_iter"が使えない</h3>
@@ -986,9 +965,6 @@ div[style*="position: relative"] {
     </p>
 
     </section>
-
-    <?php renderAdBanner(); ?>
-
     <section>
     <h2>2025/10/02</h2>
     <h3>TTSの使用時のランタイムエラー</h3>
@@ -1296,9 +1272,6 @@ div[style*="position: relative"] {
 
 
     </section>
-
-    <?php renderAdBanner(); ?>
-
     <section>
     <h2>2025/10/03</h2>
     <h3>Google Driveのマウント</h3>
@@ -1350,15 +1323,9 @@ div[style*="position: relative"] {
 
 
     </section>
-
-    <?php renderAdBanner(); ?>
-
     <section>
     <h2>2025/10/15</h2>
     </section>
-
-    <?php renderAdBanner(); ?>
-
     
     <footer style="margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; text-align: center; color: #666;">
         <p>&copy; <?php echo date('Y'); ?> 音声研究ノート - 最終更新: <?php echo date('Y年m月d日 H:i', filemtime(__FILE__)); ?></p>

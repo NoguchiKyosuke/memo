@@ -49,8 +49,9 @@ function renderHead($title = 'メモ帳', $description = 'Software Defined Vehic
   <link rel="stylesheet" href="/assets/css/app.css" />
   <script defer src="/assets/js/code-enhancer.js"></script>
   
-  <!-- 広告スクリプト（修正版） -->
-  <script src="https://adm.shinobi.jp/s/945ac836d868082489bc5e309de2b366" async></script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9731395870548647"
+    crossorigin="anonymous"></script>
   
   <!-- 構造化データ -->
   <script type="application/ld+json">

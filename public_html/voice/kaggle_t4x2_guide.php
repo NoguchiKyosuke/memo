@@ -1,7 +1,6 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
-require_once '../includes/ad.php';
 require_once '../includes/image-helper.php';
 
 $title = 'Kaggle で GPU T4×2 を使いこなす手順ガイド';
@@ -32,10 +31,6 @@ renderHead($title, $description, $keywords, $canonical);
 
     </section>
 
-<div class="hero-ad" style="margin-top:1.6rem;display:flex;justify-content:center;">
-  <?php renderAdBanner(); ?>
-</div>
-
     <section>
       <h2>T4×2 を有効化する手順</h2>
       <ol>
@@ -47,10 +42,6 @@ renderHead($title, $description, $keywords, $canonical);
         </li>
       </ol>
     </section>
-
-<div class="hero-ad" style="margin-top:1.6rem;display:flex;justify-content:center;">
-  <?php renderAdBanner(); ?>
-</div>
 
     <section>
         <h2>マルチGPUを活用するためのコードの記述方法</h2>
@@ -126,10 +117,6 @@ torch.from_numpy(signal).float().unsqueeze(0).to(next(model.parameters()).device
     </ul>
     </section>
 
-<div class="hero-ad" style="margin-top:1.6rem;display:flex;justify-content:center;">
-  <?php renderAdBanner(); ?>
-</div>
-
     <section>
       <h2>トラブルシューティング</h2>
       <ol>
@@ -181,10 +168,6 @@ import multiprocess as mp
       </li>
       </ol>
     </section>
-
-<div class="hero-ad" style="margin-top:1.6rem;display:flex;justify-content:center;">
-  <?php renderAdBanner(); ?>
-</div>
 
     <section>
       <h2>関連リソース</h2>

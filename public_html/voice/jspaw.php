@@ -1,7 +1,6 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
-require_once '../includes/ad.php';
 
 $title = '音声コーパスJ-SpAWに関する文献調査';
 $description = 'J-SpAW: 話者照合となりすまし音声検出のための
@@ -100,10 +99,6 @@ MathJax = {
 
   </article>
 </main>
-
-<div class="hero-ad" style="margin-top:1.6rem;display:flex;justify-content:center;">
-  <?php renderAdBanner(); ?>
-</div>
 
 <?php renderFooter(); ?>
 

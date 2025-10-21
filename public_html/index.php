@@ -1,7 +1,6 @@
 <?php
 require_once 'includes/head.php';
 require_once 'includes/common.php';
-require_once 'includes/ad.php';
 
 $title = 'メモ帳 - SDVと音声解析の技術リソース';
 $description = 'Software Defined Vehicle (SDV) と音声解析に関する技術メモとリソース。最新の自動車ソフトウェア技術と機械学習による音声処理について学べます。';
@@ -39,10 +38,6 @@ renderHead($title, $description, $keywords);
     </div>
   </section>
 </main>
-
-<div class="hero-ad" style="margin-top:1.6rem;display:flex;justify-content:center;">
-  <?php renderAdBanner(); ?>
-</div>
 
 <?php renderFooter(); ?>
 

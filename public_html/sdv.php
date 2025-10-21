@@ -1,7 +1,6 @@
 <?php
 require_once 'includes/head.php';
 require_once 'includes/common.php';
-require_once 'includes/ad.php';
 
 $title = 'SDV (Software Defined Vehicle) - メモ帳';
 $description = 'Software Defined Vehicle (SDV) に関する技術解説。従来の車との違い、アーキテクチャ、利点と課題、今後の展望について詳しく説明します。';
@@ -18,8 +17,6 @@ renderHead($title, $description, $keywords);
       <h1>Software Defined Vehicle (SDV)</h1>
       <p class="lead">車載ソフトウェアとアーキテクチャに関するノート。</p>
     </header>
-    
-    <?php renderAdBanner(); ?>
     
     <section>
       <h2>SDVとは</h2>
