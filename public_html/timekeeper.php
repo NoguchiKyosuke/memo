@@ -20,6 +20,10 @@ renderHead($title, $description, $keywords, $canonical);
   <section class="timekeeper-hero">
     <h1>ローカルタイムマネージャ</h1>
     <p class="hero-lead">ブラウザが検出した現在地のタイムゾーンに合わせて時刻を表示し、最大5件のアラームを日次で運用できます。アラーム設定はブラウザに保存され、次回アクセス時も保持されます。</p>
+    <div class="pwa-actions">
+      <button type="button" class="install-button" data-install-button hidden>アプリとしてインストール</button>
+      <span class="install-hint" data-install-hint>ブラウザのメニューから「ホーム画面に追加」を選択することでもインストールできます。</span>
+    </div>
     <div class="clock-panel" aria-live="polite">
       <div class="clock-display" data-clock>00:00:00</div>
       <div class="date-display" data-date>----年--月--日 (----)</div>

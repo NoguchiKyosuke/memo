@@ -75,6 +75,7 @@ public_html/
 - worldtimeapi.org を利用したサーバー同期型の時刻取得（クライアント環境に依存しない表示）
 - カウントダウン表示、アラーム発火時のサウンド・バイブレーション通知、画面オーバーレイ
 - 位置情報取得 (任意) による現在地推定とタイムゾーン検証
+- PWA 対応（`static/manifest.json` と `assets/js/timekeeper-sw.js`）：ホーム画面インストールボタン、オフライン用キャッシュ、`static/timekeeper-offline.html` によるフォールバック
 ```
 
 新しい音声研究記事を追加するには:

@@ -21,6 +21,7 @@ function renderHead($title = 'メモ帳', $description = 'Software Defined Vehic
   <meta name="keywords" content="<?php echo htmlspecialchars($keywords, ENT_QUOTES, 'UTF-8'); ?>" />
   <meta name="author" content="メモ帳" />
   <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#0066cc" />
   
   <!-- Open Graph -->
   <meta property="og:title" content="<?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?>" />
@@ -37,6 +38,7 @@ function renderHead($title = 'メモ帳', $description = 'Software Defined Vehic
   
   <!-- Canonical URL -->
   <link rel="canonical" href="<?php echo htmlspecialchars($canonical, ENT_QUOTES, 'UTF-8'); ?>" />
+  <link rel="manifest" href="/static/manifest.json" />
   
   <title><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
   

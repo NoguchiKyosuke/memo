@@ -18,7 +18,9 @@
     overlay: null,
     overlayMessage: null,
     overlayTime: null,
-    stopButton: null
+    stopButton: null,
+    installButton: null,
+    installHint: null
   };
 
   var statusMessages = { location: '', time: '' };
@@ -30,6 +32,7 @@
   var overlayTimer = null;
   var audioContext = null;
   var syncTimer = null;
+  var deferredInstallPrompt = null;
 
   var timeState = {
     baseUtcMs: null,
@@ -675,6 +678,8 @@
     dom.overlayMessage = dom.overlay ? dom.overlay.querySelector('[data-alarm-message]') : null;
     dom.overlayTime = dom.overlay ? dom.overlay.querySelector('[data-alarm-overlay-time]') : null;
     dom.stopButton = dom.overlay ? dom.overlay.querySelector('[data-stop-button]') : null;
+    dom.installButton = document.querySelector('[data-install-button]');
+    dom.installHint = document.querySelector('[data-install-hint]');
   }
 
   function bindOverlay() {
@@ -742,6 +747,71 @@
       enableHighAccuracy: false,
       maximumAge: 600000,
       timeout: 7000
+    });
+  }
+
+  function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) {
+      if (dom.installButton) {
+        dom.installButton.hidden = true;
+      }
+      return;
+    }
+    navigator.serviceWorker.register('/assets/js/timekeeper-sw.js').catch(function () {
+      /* noop */
+    });
+  }
+
+  function setupInstallPrompt() {
+    if (!dom.installButton) {
+      return;
+    }
+
+    var installButton = dom.installButton;
+    var hint = dom.installHint;
+
+    function hideInstallButton() {
+      installButton.hidden = true;
+      installButton.disabled = false;
+    }
+
+    hideInstallButton();
+
+    installButton.addEventListener('click', function () {
+      if (!deferredInstallPrompt) {
+        installButton.blur();
+        if (hint) {
+          hint.textContent = 'ブラウザのメニューから「ホーム画面に追加」を選択してください。';
+        }
+        return;
+      }
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.then(function (choice) {
+        if (choice.outcome === 'accepted') {
+          installButton.textContent = 'インストール済み';
+          installButton.disabled = true;
+        }
+        deferredInstallPrompt = null;
+        hideInstallButton();
+      });
+    });
+
+    window.addEventListener('beforeinstallprompt', function (event) {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      installButton.hidden = false;
+      if (hint) {
+        hint.textContent = '「アプリとしてインストール」を押すとホーム画面に追加できます。';
+      }
+    });
+
+    window.addEventListener('appinstalled', function () {
+      deferredInstallPrompt = null;
+      installButton.textContent = 'インストール済み';
+      installButton.disabled = true;
+      if (hint) {
+        hint.textContent = 'インストールが完了しました。ホーム画面から起動できます。';
+      }
     });
   }
 
@@ -871,6 +941,8 @@
     detectLocation();
     bindOverlay();
     startClockLoop();
+  registerServiceWorker();
+  setupInstallPrompt();
     fetchRemoteTime();
 
     window.addEventListener('focus', function () {
