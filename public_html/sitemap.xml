@@ -54,4 +54,10 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://memo-site.com/voice/safear_jspaw_evaluation.php</loc>
+    <lastmod><?php echo date('c', filemtime(__DIR__ . '/voice/safear_jspaw_evaluation.php')); ?></lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
 </urlset>

@@ -56,6 +56,14 @@ function getVoiceArticles(): array
             'tags' => ['OneDrive', 'トラブルシューティング', 'データ管理', 'バックアップ'],
             'date' => '2025-10',
         ],
+        [
+            'id' => 'safear_jspaw',
+            'title' => 'SafeEar × J-SPAW 検証レポート',
+            'slug' => 'safear_jspaw_evaluation.php',
+            'description' => 'SafeEar を使用して J-SPAW データセットのスプーフィング検出性能を評価した結果と運用上の示唆をまとめました。',
+            'tags' => ['SafeEar', 'J-SPAW', '音声セキュリティ', '評価レポート'],
+            'date' => '2025-10',
+        ],
     ];
 }
 
