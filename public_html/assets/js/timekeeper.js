@@ -3,27 +3,43 @@
 
   var MAX_ALARMS = 5;
   var STORAGE_KEY = 'memo-timekeeper-alarms-v1';
-  var COUNTDOWN_THRESHOLD_MS = 3600000; // 1 hour
-  var TRIGGER_WINDOW_MS = 15000; // 15 seconds tolerance
+  var COUNTDOWN_THRESHOLD_MS = 3600000;
+  var TRIGGER_WINDOW_MS = 15000;
+  var RESYNC_INTERVAL_MS = 5 * 60 * 1000;
+  var TIME_API_ENDPOINTS = ['https://worldtimeapi.org/api/ip'];
 
-  var clockEl;
-  var dateEl;
-  var timezoneEl;
-  var locationStatusEl;
-  var alarmListEl;
-  var alarmTemplate;
-  var overlayEl;
-  var overlayMessageEl;
-  var overlayTimeEl;
-  var stopButtonEl;
+  var dom = {
+    clock: null,
+    date: null,
+    timezone: null,
+    locationStatus: null,
+    alarmList: null,
+    alarmTemplate: null,
+    overlay: null,
+    overlayMessage: null,
+    overlayTime: null,
+    stopButton: null
+  };
 
+  var statusMessages = { location: '', time: '' };
   var alarms = [];
   var alarmCards = [];
   var activeAlarmId = null;
   var clockTimer = null;
   var soundTimer = null;
+  var overlayTimer = null;
   var audioContext = null;
-  var overlayDismissTimer = null;
+  var syncTimer = null;
+
+  var timeState = {
+    baseUtcMs: null,
+    baseOffsetMs: 0,
+    timezone: '',
+    source: '',
+    lastSyncLocalMs: null,
+    apiUrl: '',
+    failureCount: 0
+  };
 
   function onReady(fn) {
     if (document.readyState === 'loading') {
@@ -37,14 +53,6 @@
     return num < 10 ? '0' + num : String(num);
   }
 
-  function formatTime(date) {
-    return pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
-  }
-
-  function formatTimeShort(date) {
-    return pad(date.getHours()) + ':' + pad(date.getMinutes());
-  }
-
   function formatCountdown(ms) {
     if (ms < 0) {
       ms = 0;
@@ -56,13 +64,48 @@
     return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
   }
 
-  function formatDateString(date) {
+  function formatDisplayTime(localDate, includeSeconds) {
+    var hours = pad(localDate.getUTCHours());
+    var minutes = pad(localDate.getUTCMinutes());
+    if (!includeSeconds) {
+      return hours + ':' + minutes;
+    }
+    var seconds = pad(localDate.getUTCSeconds());
+    return hours + ':' + minutes + ':' + seconds;
+  }
+
+  function formatDisplayDate(localDate) {
     var weekdays = ['日', '月', '火', '水', '木', '金', '土'];
-    return (
-      date.getFullYear() + '年' +
-      pad(date.getMonth() + 1) + '月' +
-      pad(date.getDate()) + '日 (' + weekdays[date.getDay()] + ')'
-    );
+    var year = localDate.getUTCFullYear();
+    var month = pad(localDate.getUTCMonth() + 1);
+    var day = pad(localDate.getUTCDate());
+    var weekday = weekdays[localDate.getUTCDay()] || '';
+    return year + '年' + month + '月' + day + '日 (' + weekday + ')';
+  }
+
+  function formatOffset(offsetSeconds) {
+    if (!Number.isFinite(offsetSeconds)) {
+      offsetSeconds = 0;
+    }
+    var sign = offsetSeconds >= 0 ? '+' : '-';
+    var abs = Math.abs(offsetSeconds);
+    var hours = Math.floor(abs / 3600);
+    var minutes = Math.floor((abs % 3600) / 60);
+    return 'UTC' + sign + pad(hours) + ':' + pad(minutes);
+  }
+
+  function parseOffsetString(offsetStr) {
+    if (typeof offsetStr !== 'string') {
+      return null;
+    }
+    var match = offsetStr.match(/^([+-])(\d{2}):(\d{2})$/);
+    if (!match) {
+      return null;
+    }
+    var sign = match[1] === '-' ? -1 : 1;
+    var hours = parseInt(match[2], 10);
+    var minutes = parseInt(match[3], 10);
+    return sign * (hours * 3600 + minutes * 60);
   }
 
   function safeLocalStorage() {
@@ -132,7 +175,7 @@
       time: '',
       label: '',
       enabled: false,
-      target: null,
+      targetUtc: null,
       triggered: false
     };
   }
@@ -141,8 +184,8 @@
     if (!alarm) {
       return;
     }
-    if (typeof alarm.target === 'undefined') {
-      alarm.target = null;
+    if (typeof alarm.targetUtc === 'undefined') {
+      alarm.targetUtc = null;
     }
     if (typeof alarm.triggered === 'undefined') {
       alarm.triggered = false;
@@ -150,128 +193,157 @@
   }
 
   function parseTimeValue(value) {
-    if (typeof value !== 'string') {
-      return null;
-    }
-    if (!/^\d{2}:\d{2}$/.test(value)) {
+    if (typeof value !== 'string' || !/^\d{2}:\d{2}$/.test(value)) {
       return null;
     }
     var parts = value.split(':');
     var hours = parseInt(parts[0], 10);
     var minutes = parseInt(parts[1], 10);
-    if (hours > 23 || minutes > 59) {
+    if (!Number.isFinite(hours) || !Number.isFinite(minutes) || hours > 23 || minutes > 59) {
       return null;
     }
-    return {
-      hours: hours,
-      minutes: minutes
-    };
+    return { hours: hours, minutes: minutes };
   }
 
-  function computeNextTarget(alarm, reference) {
-    var parsed = parseTimeValue(alarm.time);
-    if (!parsed) {
-      return null;
-    }
-    var base = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate(), parsed.hours, parsed.minutes, 0, 0);
-    if (base.getTime() - reference.getTime() <= -TRIGGER_WINDOW_MS) {
-      base.setDate(base.getDate() + 1);
-    }
-    if (base <= reference) {
-      base.setDate(base.getDate() + 1);
-    }
-    return base;
-  }
-
-  function updateTimezone() {
-    if (!timezoneEl) {
+  function refreshStatus() {
+    if (!dom.locationStatus) {
       return;
     }
-    try {
-      var parts = new Intl.DateTimeFormat('ja-JP', { timeZoneName: 'longOffset' }).formatToParts(new Date());
-      var namePart = null;
-      for (var i = 0; i < parts.length; i += 1) {
-        if (parts[i].type === 'timeZoneName') {
-          namePart = parts[i].value;
-          break;
-        }
-      }
-      if (namePart) {
-        timezoneEl.textContent = namePart;
-      } else {
-        timezoneEl.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || 'タイムゾーンが取得できません。';
-      }
-    } catch (err) {
-      timezoneEl.textContent = 'タイムゾーンが取得できません。';
+    var parts = [];
+    if (statusMessages.location) {
+      parts.push(statusMessages.location);
     }
+    if (statusMessages.time) {
+      parts.push(statusMessages.time);
+    }
+    dom.locationStatus.textContent = parts.join(' / ');
   }
 
-  function detectLocation() {
-    if (!locationStatusEl) {
+  function setLocationStatus(message) {
+    statusMessages.location = message || '';
+    refreshStatus();
+  }
+
+  function setTimeStatus(message) {
+    statusMessages.time = message || '';
+    refreshStatus();
+  }
+
+  function updateTimezoneChip() {
+    if (!dom.timezone) {
       return;
     }
-    if (!navigator.geolocation) {
-      locationStatusEl.textContent = 'ブラウザが位置情報APIに対応していません。タイムゾーンのみを利用します。';
+    var offsetSeconds = Math.round(getOffsetMs() / 1000);
+    if (timeState.timezone) {
+      dom.timezone.textContent = timeState.timezone + ' (' + formatOffset(offsetSeconds) + ')';
+    } else {
+      dom.timezone.textContent = 'タイムゾーンを検出しています...';
+    }
+  }
+
+  function getOffsetMs() {
+    if (typeof timeState.baseOffsetMs === 'number') {
+      return timeState.baseOffsetMs;
+    }
+    return -new Date().getTimezoneOffset() * 60000;
+  }
+
+  function setTimeSource(utcMs, offsetSeconds, timezone, sourceLabel) {
+    if (!Number.isFinite(utcMs)) {
       return;
     }
-    locationStatusEl.textContent = '位置情報を取得しています...';
-    navigator.geolocation.getCurrentPosition(function (position) {
-      var coords = position.coords;
-      var parts = [];
-      if (typeof coords.latitude === 'number') {
-        parts.push('緯度 ' + coords.latitude.toFixed(3));
-      }
-      if (typeof coords.longitude === 'number') {
-        parts.push('経度 ' + coords.longitude.toFixed(3));
-      }
-      if (typeof coords.accuracy === 'number') {
-        parts.push('精度 ±' + Math.round(coords.accuracy) + 'm');
-      }
-      if (parts.length === 0) {
-        locationStatusEl.textContent = '現在地の取得に成功しました。';
-      } else {
-        locationStatusEl.textContent = '現在地の推定: ' + parts.join(' / ');
-      }
-    }, function (err) {
-      switch (err.code) {
-        case err.PERMISSION_DENIED:
-          locationStatusEl.textContent = '位置情報の利用が拒否されました。ブラウザのタイムゾーンを基準に表示します。';
-          break;
-        case err.POSITION_UNAVAILABLE:
-          locationStatusEl.textContent = '位置情報が取得できませんでした。ネットワーク状態をご確認ください。';
-          break;
-        case err.TIMEOUT:
-          locationStatusEl.textContent = '位置情報の取得がタイムアウトしました。再度お試しください。';
-          break;
-        default:
-          locationStatusEl.textContent = '位置情報の取得に失敗しました。';
-          break;
-      }
-    }, {
-      enableHighAccuracy: false,
-      maximumAge: 600000,
-      timeout: 7000
-    });
+    var offsetSecs = Number.isFinite(offsetSeconds) ? offsetSeconds : 0;
+    timeState.baseUtcMs = Math.round(utcMs);
+    timeState.baseOffsetMs = offsetSecs * 1000;
+    timeState.timezone = typeof timezone === 'string' ? timezone : '';
+    timeState.source = sourceLabel || '';
+    timeState.lastSyncLocalMs = Date.now();
+    timeState.failureCount = 0;
+
+    updateTimezoneChip();
+
+    var descriptor = timeState.timezone ? timeState.timezone + ' / ' + formatOffset(offsetSecs) : formatOffset(offsetSecs);
+    var label = sourceLabel || 'サーバー';
+    setTimeStatus('時間ソース: ' + label + ' (' + descriptor + ')');
+
+    recalculateAlarms(getCurrentUtcMs());
+    updateAlarms(getCurrentUtcMs());
   }
 
-  function updateClock(now) {
-    if (clockEl) {
-      clockEl.textContent = formatTime(now);
+  function scheduleResync() {
+    if (syncTimer) {
+      clearTimeout(syncTimer);
     }
-    if (dateEl) {
-      dateEl.textContent = formatDateString(now);
-    }
+    syncTimer = setTimeout(fetchRemoteTime, RESYNC_INTERVAL_MS);
   }
 
-  function scheduleAlarm(alarm, reference) {
+  function getCurrentUtcMs() {
+    if (timeState.baseUtcMs === null || timeState.lastSyncLocalMs === null) {
+      return Date.now();
+    }
+    return timeState.baseUtcMs + (Date.now() - timeState.lastSyncLocalMs);
+  }
+
+  function getLocalDateFromUtc(utcMs) {
+    return new Date(utcMs + getOffsetMs());
+  }
+
+  function updateClock() {
+    var nowUtc = getCurrentUtcMs();
+    var localDate = getLocalDateFromUtc(nowUtc);
+    if (dom.clock) {
+      dom.clock.textContent = formatDisplayTime(localDate, true);
+    }
+    if (dom.date) {
+      dom.date.textContent = formatDisplayDate(localDate);
+    }
+    updateAlarms(nowUtc);
+  }
+
+  function scheduleAlarm(alarm, referenceUtcMs) {
     if (!alarm || !alarm.enabled || !alarm.time) {
-      alarm.target = null;
+      alarm.targetUtc = null;
       alarm.triggered = false;
       return;
     }
-    var next = computeNextTarget(alarm, reference);
-    alarm.target = next;
+    var parsed = parseTimeValue(alarm.time);
+    if (!parsed) {
+      alarm.targetUtc = null;
+      alarm.triggered = false;
+      return;
+    }
+
+    var offsetMs = getOffsetMs();
+    var localReference = new Date(referenceUtcMs + offsetMs);
+    var year = localReference.getUTCFullYear();
+    var month = localReference.getUTCMonth();
+    var day = localReference.getUTCDate();
+
+    var targetUtc = Date.UTC(year, month, day, parsed.hours, parsed.minutes, 0, 0) - offsetMs;
+    var diff = targetUtc - referenceUtcMs;
+
+    if (diff <= -TRIGGER_WINDOW_MS) {
+      var nextDayUtc = Date.UTC(year, month, day + 1, parsed.hours, parsed.minutes, 0, 0) - offsetMs;
+      targetUtc = nextDayUtc;
+    }
+    if (targetUtc <= referenceUtcMs) {
+      targetUtc += 86400000;
+    }
+
+    alarm.targetUtc = targetUtc;
     alarm.triggered = false;
+  }
+
+  function recalculateAlarms(referenceUtcMs) {
+    for (var i = 0; i < alarms.length; i += 1) {
+      var alarm = alarms[i];
+      ensureAlarmRuntimeFields(alarm);
+      if (alarm.enabled && alarm.time) {
+        scheduleAlarm(alarm, referenceUtcMs);
+      } else {
+        alarm.targetUtc = null;
+      }
+    }
   }
 
   function stopAlarmSound() {
@@ -342,49 +414,50 @@
     }
   }
 
-  function showOverlay(alarm, now) {
-    if (!overlayEl || !alarm) {
+  function showOverlay(alarm, nowUtcMs) {
+    if (!dom.overlay || !alarm) {
       return;
     }
-    overlayEl.hidden = false;
-    overlayEl.setAttribute('aria-hidden', 'false');
+    dom.overlay.hidden = false;
+    dom.overlay.setAttribute('aria-hidden', 'false');
     try {
-      if (typeof overlayEl.focus === 'function') {
-        overlayEl.focus({ preventScroll: true });
+      if (typeof dom.overlay.focus === 'function') {
+        dom.overlay.focus({ preventScroll: true });
       }
     } catch (err) {
       // noop
     }
-    if (overlayMessageEl) {
-      overlayMessageEl.textContent = alarm.label ? alarm.label + ' の時間です' : 'アラーム';
+    if (dom.overlayMessage) {
+      dom.overlayMessage.textContent = alarm.label ? alarm.label + ' の時間です' : 'アラーム';
     }
-    if (overlayTimeEl) {
-      overlayTimeEl.textContent = formatTimeShort(now);
+    if (dom.overlayTime) {
+      var localDate = getLocalDateFromUtc(nowUtcMs);
+      dom.overlayTime.textContent = formatDisplayTime(localDate, false);
     }
     playAlarmSound();
-    if (overlayDismissTimer) {
-      clearTimeout(overlayDismissTimer);
-      overlayDismissTimer = null;
+    if (overlayTimer) {
+      clearTimeout(overlayTimer);
     }
-    overlayDismissTimer = setTimeout(function () {
-      overlayDismissTimer = null;
+    overlayTimer = setTimeout(function () {
+      overlayTimer = null;
     }, 60000);
   }
 
   function hideOverlay() {
-    if (!overlayEl) {
+    if (!dom.overlay) {
       return;
     }
-    overlayEl.hidden = true;
-    overlayEl.setAttribute('aria-hidden', 'true');
+    dom.overlay.hidden = true;
+    dom.overlay.setAttribute('aria-hidden', 'true');
     stopAlarmSound();
     activeAlarmId = null;
   }
 
-  function applyAlarmState(alarm, card, now) {
+  function applyAlarmState(alarm, card, nowUtcMs) {
     if (!card) {
       return;
     }
+
     var chipEl = card.querySelector('[data-alarm-state]');
     var countdownEl = card.querySelector('[data-alarm-countdown]');
     var toggleInput = card.querySelector('[data-alarm-toggle]');
@@ -394,7 +467,7 @@
 
     if (!alarm.enabled || !alarm.time) {
       if (toggleInput) {
-        toggleInput.checked = alarm.enabled && Boolean(alarm.time);
+        toggleInput.checked = false;
       }
       if (chipEl) {
         chipEl.textContent = alarm.time ? '待機中' : '未設定';
@@ -405,16 +478,21 @@
       if (timeInput) {
         timeInput.disabled = false;
       }
+      alarm.targetUtc = null;
+      alarm.triggered = false;
       return;
     }
 
+    if (toggleInput) {
+      toggleInput.checked = true;
+    }
     card.classList.add('is-active');
 
-    if (!alarm.target) {
-      scheduleAlarm(alarm, now);
+    if (typeof alarm.targetUtc !== 'number') {
+      scheduleAlarm(alarm, nowUtcMs);
     }
 
-    var diff = alarm.target ? alarm.target.getTime() - now.getTime() : null;
+    var diff = typeof alarm.targetUtc === 'number' ? alarm.targetUtc - nowUtcMs : null;
 
     if (diff !== null && diff <= 0 && diff >= -TRIGGER_WINDOW_MS && !alarm.triggered) {
       alarm.triggered = true;
@@ -426,7 +504,7 @@
       if (countdownEl) {
         countdownEl.textContent = '00:00:00';
       }
-      showOverlay(alarm, now);
+      showOverlay(alarm, nowUtcMs);
       return;
     }
 
@@ -464,12 +542,12 @@
       hideOverlay();
       return;
     }
-    var now = new Date();
+    var nowUtc = getCurrentUtcMs();
     for (var i = 0; i < alarms.length; i += 1) {
       if (alarms[i].id === activeAlarmId) {
         alarms[i].triggered = false;
-        scheduleAlarm(alarms[i], new Date(now.getTime() + 1000));
-        applyAlarmState(alarms[i], alarmCards[i], now);
+        scheduleAlarm(alarms[i], nowUtc + 1000);
+        applyAlarmState(alarms[i], alarmCards[i], nowUtc);
         break;
       }
     }
@@ -496,18 +574,18 @@
           timeInput.value = '';
           alarm.time = '';
           alarm.enabled = false;
-          alarm.target = null;
+          alarm.targetUtc = null;
           alarm.triggered = false;
         } else {
           alarm.time = value;
-          alarm.target = null;
+          alarm.targetUtc = null;
           alarm.triggered = false;
           if (alarm.enabled && value) {
-            scheduleAlarm(alarm, new Date());
+            scheduleAlarm(alarm, getCurrentUtcMs());
           }
         }
         saveAlarms();
-        applyAlarmState(alarm, card, new Date());
+        applyAlarmState(alarm, card, getCurrentUtcMs());
       });
     }
 
@@ -525,96 +603,91 @@
         if (!alarm.time) {
           toggleInput.checked = false;
           alarm.enabled = false;
-          alarm.target = null;
+          alarm.targetUtc = null;
           alarm.triggered = false;
           if (timeInput) {
             timeInput.focus();
           }
           saveAlarms();
-          applyAlarmState(alarm, card, new Date());
+          applyAlarmState(alarm, card, getCurrentUtcMs());
           return;
         }
         alarm.enabled = toggleInput.checked;
         if (alarm.enabled) {
-          scheduleAlarm(alarm, new Date());
+          scheduleAlarm(alarm, getCurrentUtcMs());
         } else {
-          alarm.target = null;
+          alarm.targetUtc = null;
           alarm.triggered = false;
         }
         saveAlarms();
-        applyAlarmState(alarm, card, new Date());
+        applyAlarmState(alarm, card, getCurrentUtcMs());
       });
     }
   }
 
   function renderAlarms() {
-    if (!alarmTemplate || !alarmListEl) {
+    if (!dom.alarmTemplate || !dom.alarmList) {
       return;
     }
-    alarmListEl.innerHTML = '';
+    dom.alarmList.innerHTML = '';
     alarmCards = [];
 
     for (var i = 0; i < alarms.length; i += 1) {
       ensureAlarmRuntimeFields(alarms[i]);
-      var fragment = alarmTemplate.content ? alarmTemplate.content.cloneNode(true) : null;
-      var card = null;
-      if (fragment) {
-        card = fragment.querySelector('[data-alarm-card]');
-      }
-      if (!card && alarmTemplate.firstElementChild) {
-        card = alarmTemplate.firstElementChild.cloneNode(true);
+      var fragment = dom.alarmTemplate.content ? dom.alarmTemplate.content.cloneNode(true) : null;
+      var card = fragment ? fragment.querySelector('[data-alarm-card]') : null;
+      if (!card && dom.alarmTemplate.firstElementChild) {
+        card = dom.alarmTemplate.firstElementChild.cloneNode(true);
       }
       if (!card) {
         continue;
       }
       card.dataset.alarmId = alarms[i].id;
       bindAlarmEvents(alarms[i], card, i);
-      alarmListEl.appendChild(card);
+      dom.alarmList.appendChild(card);
       alarmCards.push(card);
     }
   }
 
-  function updateAlarms(now) {
+  function updateAlarms(nowUtcMs) {
     for (var i = 0; i < alarms.length; i += 1) {
       ensureAlarmRuntimeFields(alarms[i]);
-      applyAlarmState(alarms[i], alarmCards[i], now);
+      applyAlarmState(alarms[i], alarmCards[i], nowUtcMs);
     }
   }
 
   function startClockLoop() {
-    function tick() {
-      var now = new Date();
-      updateClock(now);
-      updateAlarms(now);
+    if (clockTimer) {
+      clearInterval(clockTimer);
     }
-    tick();
-    clockTimer = setInterval(tick, 1000);
+    updateClock();
+    clockTimer = setInterval(updateClock, 1000);
   }
 
   function initElements() {
-    clockEl = document.querySelector('[data-clock]');
-    dateEl = document.querySelector('[data-date]');
-    timezoneEl = document.querySelector('[data-timezone]');
-    locationStatusEl = document.querySelector('[data-location-status]');
-    alarmListEl = document.querySelector('[data-alarm-list]');
-    alarmTemplate = document.getElementById('alarm-card-template');
-    overlayEl = document.querySelector('[data-alarm-overlay]');
-    overlayMessageEl = overlayEl ? overlayEl.querySelector('[data-alarm-message]') : null;
-    overlayTimeEl = overlayEl ? overlayEl.querySelector('[data-alarm-overlay-time]') : null;
-    stopButtonEl = overlayEl ? overlayEl.querySelector('[data-stop-button]') : null;
+    dom.clock = document.querySelector('[data-clock]');
+    dom.date = document.querySelector('[data-date]');
+    dom.timezone = document.querySelector('[data-timezone]');
+    dom.locationStatus = document.querySelector('[data-location-status]');
+    dom.alarmList = document.querySelector('[data-alarm-list]');
+    dom.alarmTemplate = document.getElementById('alarm-card-template');
+    dom.overlay = document.querySelector('[data-alarm-overlay]');
+    dom.overlayMessage = dom.overlay ? dom.overlay.querySelector('[data-alarm-message]') : null;
+    dom.overlayTime = dom.overlay ? dom.overlay.querySelector('[data-alarm-overlay-time]') : null;
+    dom.stopButton = dom.overlay ? dom.overlay.querySelector('[data-stop-button]') : null;
   }
 
   function bindOverlay() {
-    if (!overlayEl) {
+    if (!dom.overlay) {
       return;
     }
-    overlayEl.addEventListener('click', function (event) {
-      if (event.target === overlayEl) {
+    dom.overlay.addEventListener('click', function (event) {
+      if (event.target === dom.overlay) {
         handleStopButtonClick();
       }
     });
-    if (stopButtonEl) {
-      stopButtonEl.addEventListener('click', handleStopButtonClick);
+    if (dom.stopButton) {
+      dom.stopButton.addEventListener('click', handleStopButtonClick);
     }
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape') {
@@ -623,23 +696,168 @@
     });
   }
 
-  function initialize() {
-    initElements();
-    if (!clockEl || !alarmListEl || !alarmTemplate) {
+  function detectLocation() {
+    if (!navigator.geolocation) {
+      setLocationStatus('ブラウザが位置情報APIに対応していません。タイムゾーンのみを利用します。');
       return;
     }
+    setLocationStatus('現在地の解析中です。');
+    navigator.geolocation.getCurrentPosition(function (position) {
+      var coords = position.coords || {};
+      var parts = [];
+      if (typeof coords.latitude === 'number') {
+        parts.push('緯度 ' + coords.latitude.toFixed(3));
+      }
+      if (typeof coords.longitude === 'number') {
+        parts.push('経度 ' + coords.longitude.toFixed(3));
+      }
+      if (typeof coords.accuracy === 'number') {
+        parts.push('精度 ±' + Math.round(coords.accuracy) + 'm');
+      }
+      if (parts.length === 0) {
+        setLocationStatus('現在地の取得に成功しました。');
+      } else {
+        setLocationStatus('現在地の推定: ' + parts.join(' / '));
+      }
+    }, function (err) {
+      if (!err) {
+        setLocationStatus('位置情報の取得に失敗しました。');
+        return;
+      }
+      switch (err.code) {
+        case err.PERMISSION_DENIED:
+          setLocationStatus('位置情報の利用が拒否されました。ブラウザの許可設定をご確認ください。');
+          break;
+        case err.POSITION_UNAVAILABLE:
+          setLocationStatus('位置情報が取得できませんでした。ネットワーク状態をご確認ください。');
+          break;
+        case err.TIMEOUT:
+          setLocationStatus('位置情報の取得がタイムアウトしました。再度お試しください。');
+          break;
+        default:
+          setLocationStatus('位置情報の取得に失敗しました。');
+          break;
+      }
+    }, {
+      enableHighAccuracy: false,
+      maximumAge: 600000,
+      timeout: 7000
+    });
+  }
+
+  function handleWorldTimeApi(data, url) {
+    if (!data || typeof data.utc_datetime !== 'string') {
+      throw new Error('Invalid response');
+    }
+    var utcMs = Date.parse(data.utc_datetime);
+    if (!Number.isFinite(utcMs)) {
+      throw new Error('Invalid UTC datetime');
+    }
+
+    var offsetSeconds = 0;
+    if (typeof data.raw_offset === 'number') {
+      offsetSeconds += data.raw_offset;
+    }
+    if (typeof data.dst_offset === 'number') {
+      offsetSeconds += data.dst_offset;
+    } else if (typeof data.utc_offset === 'string') {
+      var parsedOffset = parseOffsetString(data.utc_offset);
+      if (parsedOffset !== null) {
+        offsetSeconds = parsedOffset;
+      }
+    }
+
+    var timezone = typeof data.timezone === 'string' ? data.timezone : '';
+    timeState.apiUrl = url;
+    setTimeSource(utcMs, offsetSeconds, timezone, 'worldtimeapi.org');
+    scheduleResync();
+  }
+
+  function fetchRemoteTime() {
+    if (syncTimer) {
+      clearTimeout(syncTimer);
+      syncTimer = null;
+    }
+
+    var index = 0;
+    setTimeStatus('時刻情報をAPIから取得しています...');
+
+    function attempt() {
+      if (index >= TIME_API_ENDPOINTS.length) {
+        timeState.failureCount += 1;
+        if (timeState.failureCount > 3) {
+          setTimeStatus('時間ソース: サーバー (' + formatOffset(Math.round(getOffsetMs() / 1000)) + ')');
+        } else {
+          setTimeStatus('時刻APIの取得に失敗しました。サーバー時刻で継続します。');
+        }
+        scheduleResync();
+        return;
+      }
+
+      var url = TIME_API_ENDPOINTS[index];
+      index += 1;
+
+      fetch(url, { cache: 'no-store', credentials: 'omit' })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('HTTP ' + response.status);
+          }
+          return response.json();
+        })
+        .then(function (data) {
+          if (url.indexOf('worldtimeapi') !== -1) {
+            handleWorldTimeApi(data, url);
+          }
+        })
+        .catch(function () {
+          attempt();
+        });
+    }
+
+    attempt();
+  }
+
+  function initializeTimeFromServer() {
+    var dataset = document.body ? document.body.dataset : null;
+    var serverUtc = dataset && dataset.serverUtc ? parseInt(dataset.serverUtc, 10) : NaN;
+    var serverOffset = dataset && dataset.serverOffset ? parseInt(dataset.serverOffset, 10) : NaN;
+    var serverTz = dataset && dataset.serverTz ? dataset.serverTz : '';
+
+    if (Number.isFinite(serverUtc)) {
+      setTimeSource(serverUtc, Number.isFinite(serverOffset) ? serverOffset : 0, serverTz, 'サーバー');
+    } else {
+      var localUtc = Date.now();
+      var localOffsetSeconds = -new Date().getTimezoneOffset() * 60;
+      var fallbackTz = '';
+      try {
+        fallbackTz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      } catch (err) {
+        fallbackTz = '';
+      }
+      setTimeSource(localUtc, localOffsetSeconds, fallbackTz, 'ローカル');
+    }
+  }
+
+  function initialize() {
+    initElements();
+    if (!dom.clock || !dom.alarmList || !dom.alarmTemplate) {
+      return;
+    }
+
+    statusMessages.location = '現在地の解析中です。';
+    statusMessages.time = '時刻情報を取得しています...';
+    refreshStatus();
 
     var stored = loadAlarms();
     alarms = [];
     for (var i = 0; i < MAX_ALARMS; i += 1) {
       if (stored[i]) {
-        var alarm = stored[i];
         alarms.push({
-          id: typeof alarm.id === 'number' ? alarm.id : i,
-          time: typeof alarm.time === 'string' ? alarm.time : '',
-          label: typeof alarm.label === 'string' ? alarm.label : '',
-          enabled: Boolean(alarm.enabled),
-          target: null,
+          id: typeof stored[i].id === 'number' ? stored[i].id : i,
+          time: typeof stored[i].time === 'string' ? stored[i].time : '',
+          label: typeof stored[i].label === 'string' ? stored[i].label : '',
+          enabled: Boolean(stored[i].enabled),
+          targetUtc: null,
           triggered: false
         });
       } else {
@@ -648,10 +866,18 @@
     }
 
     renderAlarms();
-    updateTimezone();
+    initializeTimeFromServer();
+    updateClock();
     detectLocation();
     bindOverlay();
     startClockLoop();
+    fetchRemoteTime();
+
+    window.addEventListener('focus', function () {
+      if (!timeState.lastSyncLocalMs || Date.now() - timeState.lastSyncLocalMs > RESYNC_INTERVAL_MS) {
+        fetchRemoteTime();
+      }
+    });
   }
 
   onReady(initialize);
