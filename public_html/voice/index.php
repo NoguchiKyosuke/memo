@@ -6,7 +6,7 @@ require_once '../includes/voice-articles.php';
 $title = '音声研究メモ - メモ帳';
 $description = '音声解析と音声言語処理に関する研究メモの一覧。MFCC、DTW、機械学習、最新の研究論文など、音声処理技術について学べます。';
 $keywords = '音声研究,音声解析,音声処理,機械学習,研究メモ,MFCC,DTW,J-SPAW';
-$canonical = 'https://memo-site.com/voice/';
+$canonical = 'https://memosite.jp/voice/';
 
 renderHead($title, $description, $keywords, $canonical);
 ?>
@@ -78,13 +78,13 @@ renderHead($title, $description, $keywords, $canonical);
       "@type": "ListItem",
       "position": 1,
       "name": "ホーム",
-      "item": "https://memo-site.com/"
+  "item": "https://memosite.jp/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "音声研究メモ",
-      "item": "https://memo-site.com/voice/"
+  "item": "https://memosite.jp/voice/"
     }
   ]
 }
@@ -97,7 +97,7 @@ renderHead($title, $description, $keywords, $canonical);
   "@type": "CollectionPage",
   "name": "音声研究メモ",
   "description": "音声解析と音声言語処理に関する研究メモの一覧",
-  "url": "https://memo-site.com/voice/",
+  "url": "https://memosite.jp/voice/",
   "about": {
     "@type": "Thing",
     "name": "音声処理技術"

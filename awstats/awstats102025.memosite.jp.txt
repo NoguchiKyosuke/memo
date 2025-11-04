@@ -1,6 +1,6 @@
 AWSTATS DATA FILE 7.9 (build 20230108)
 # If you remove this file, all statistics for date 202510 will be lost/reset.
-# Last config file used to build this data file was /home/mahjong/memo-site.com/awstats/awstats.memo-site.com.conf.
+# Last config file used to build this data file was /home/mahjong/memosite.jp/awstats/awstats.memosite.jp.conf.
 
 # Position (offset in bytes) in this file for beginning of each section for
 # direct I/O access. If you made changes somewhere in this file, you should
@@ -293,7 +293,7 @@ BEGIN_SIDER_404 58
 /.local 1 https://www.google.com/
 /database/.env 1 https://www.google.com/
 /web/.env 1 https://www.google.com/
-/wordpress/ 1 https://memo-site.com/wordpress/
+/wordpress/ 1 https://memosite.jp/wordpress/
 /.production 1 https://www.google.com/
 /uploads/.env 1 https://www.google.com/
 /site/.env 1 https://www.google.com/

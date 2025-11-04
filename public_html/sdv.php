@@ -120,7 +120,7 @@ renderHead($title, $description, $keywords);
   "dateModified": "<?php echo date('c', filemtime(__FILE__)); ?>",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://memo-site.com/sdv.php"
+    "@id": "https://memosite.jp/sdv.php"
   },
   "about": [
     {
@@ -145,13 +145,13 @@ renderHead($title, $description, $keywords);
       "@type": "ListItem",
       "position": 1,
       "name": "ホーム",
-      "item": "https://memo-site.com/"
+  "item": "https://memosite.jp/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "SDV",
-      "item": "https://memo-site.com/sdv.php"
+  "item": "https://memosite.jp/sdv.php"
     }
   ]
 }

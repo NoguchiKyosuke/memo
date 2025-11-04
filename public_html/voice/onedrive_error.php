@@ -85,19 +85,19 @@ renderHead($title, $description, $keywords);
       "@type": "ListItem",
       "position": 1,
       "name": "ホーム",
-      "item": "https://memo-site.com/"
+  "item": "https://memosite.jp/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "音声研究メモ",
-      "item": "https://memo-site.com/voice/"
+  "item": "https://memosite.jp/voice/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "OneDrive エラー対処法",
-      "item": "https://memo-site.com/voice/onedrive_error"
+  "item": "https://memosite.jp/voice/onedrive_error"
     }
   ]
 }

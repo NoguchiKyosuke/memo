@@ -15,7 +15,7 @@ Allow: /ads.txt
 Allow: /sitemap.xml
 
 # Sitemap location
-Sitemap: https://memo-site.com/sitemap.xml
+Sitemap: https://memosite.jp/sitemap.xml
 
 # Crawl delay (in seconds)
 Crawl-delay: 1

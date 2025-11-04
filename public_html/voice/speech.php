@@ -1348,9 +1348,9 @@ div[style*="position: relative"] {
   },
   "datePublished": "2025-09-09",
   "dateModified": "<?php echo date('c', filemtime(__FILE__)); ?>",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://memo-site.com/speech.php"
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://memosite.jp/speech.php"
   },
   "about": [
     {
@@ -1384,13 +1384,13 @@ div[style*="position: relative"] {
       "@type": "ListItem",
       "position": 1,
       "name": "ホーム",
-      "item": "https://memo-site.com/"
+    "item": "https://memosite.jp/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "音声解析",
-      "item": "https://memo-site.com/speech.php"
+    "item": "https://memosite.jp/speech.php"
     }
   ]
 }

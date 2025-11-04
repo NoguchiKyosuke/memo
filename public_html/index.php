@@ -51,7 +51,7 @@ renderHead($title, $description, $keywords);
       "@type": "ListItem",
       "position": 1,
       "name": "ホーム",
-      "item": "https://memo-site.com/"
+  "item": "https://memosite.jp/"
     }
   ]
 }

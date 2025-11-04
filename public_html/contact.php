@@ -82,7 +82,7 @@ $submission = [
     'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown',
 ];
 
-$storageDir = dirname(__DIR__) . '/mail/memo-site.com/inquiries';
+$storageDir = dirname(__DIR__) . '/mail/memosite.jp/inquiries';
 if (!is_dir($storageDir)) {
     if (!mkdir($storageDir, 0775, true) && !is_dir($storageDir)) {
         redirectWithStatus($redirectTarget, 'error');
@@ -201,14 +201,14 @@ function buildEmailHeaders(string $replyTo): string
     
     // 無効なメールアドレスの場合はデフォルトを使用
     if (!filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
-        $replyTo = 'noreply@memo-site.com';
+    $replyTo = 'noreply@memosite.jp';
     }
     
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/plain; charset=UTF-8',
         'Content-Transfer-Encoding: 8bit',
-        'From: noreply@memo-site.com',
+    'From: noreply@memosite.jp',
         'Reply-To: ' . $replyTo,
         'X-Mailer: PHP/' . phpversion(),
         'X-Priority: 3',

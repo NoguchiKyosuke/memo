@@ -7,7 +7,7 @@
  * @param string $canonical 正規URL
  */
 function renderHead($title = 'メモ帳', $description = 'Software Defined Vehicle (SDV) と音声解析に関する技術メモとリソース', $keywords = 'SDV,Software Defined Vehicle,音声解析,機械学習,技術メモ', $canonical = '') {
-    $baseUrl = 'https://memo-site.com';
+  $baseUrl = 'https://memosite.jp';
     if (empty($canonical)) {
         $canonical = $baseUrl . $_SERVER['REQUEST_URI'];
     }

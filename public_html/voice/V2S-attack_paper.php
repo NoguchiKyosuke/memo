@@ -5,7 +5,7 @@ require_once '../includes/common.php';
 $title = 'V2S Attack: 自動話者認証を突破する音声変換の研究解説';
 $description = 'V2S Attack: Building DNN-based Voice Conversion from Automatic Speaker Verification の要点と攻撃パイプライン、評価結果を分かりやすく整理し、防御と実務への示唆をまとめました。';
 $keywords = 'V2S Attack,話者認証,音声変換,ディープラーニング,セキュリティ,spoofing';
-$canonical = 'https://memo-site.com/voice/V2S-attack_paper.php';
+$canonical = 'https://memosite.jp/voice/V2S-attack_paper.php';
 
 renderHead($title, $description, $keywords, $canonical);
 ?>
@@ -236,19 +236,19 @@ renderHead($title, $description, $keywords, $canonical);
       "@type": "ListItem",
       "position": 1,
       "name": "ホーム",
-      "item": "https://memo-site.com/"
+  "item": "https://memosite.jp/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "音声研究メモ",
-      "item": "https://memo-site.com/voice/"
+  "item": "https://memosite.jp/voice/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "V2S Attack 論文解説",
-      "item": "https://memo-site.com/voice/V2S-attack_paper.php"
+  "item": "https://memosite.jp/voice/V2S-attack_paper.php"
     }
   ]
 }

@@ -9,7 +9,7 @@
   - `sdv.php` - SDV 単体記事
   - `voice/index.php` - 音声研究のホームページ（記事一覧）
   - `voice/speech.php`, `voice/jspaw.php` - 音声研究の個別記事
-  - 問い合わせフォームハンドラー `public_html/contact.php` は JSON を `mail/memo-site.com/inquiries/` に保存し、既定で `k.noguchi2005@gmail.com` にメール送信（環境変数 `CONTACT_RECIPIENT` で上書き可能）
+   - 問い合わせフォームハンドラー `public_html/contact.php` は JSON を `mail/memosite.jp/inquiries/` に保存し、既定で `k.noguchi2005@gmail.com` にメール送信（環境変数 `CONTACT_RECIPIENT` で上書き可能）
   - 音声記事のメタデータは `includes/voice-articles.php` で一元管理
 
 ## コーディング指針
@@ -27,7 +27,7 @@
    - すべての外部入力を検証・サニタイズし、XSS や SQL インジェクション（該当する場合）を防止する。
 
 4. **永続化とメール:**
-   - 問い合わせデータは JSON 形式で `mail/memo-site.com/inquiries/` に保存（ディレクトリがなければ作成）。
+   - 問い合わせデータは JSON 形式で `mail/memosite.jp/inquiries/` に保存（ディレクトリがなければ作成）。
    - 通知メールは `mail()` 関数で送信。設定または既定の受信者アドレスを使用。
 
 5. **テストと検証:**

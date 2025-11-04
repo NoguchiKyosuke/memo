@@ -6,7 +6,7 @@ require_once '../includes/image-helper.php';
 $title = 'SafeEar による J-SPAW データセット検証レポート';
 $description = 'SafeEar を用いて J-SPAW コーパスのスプーフィング検出性能を評価した結果をまとめた検証レポート。セットアップ、指標、考察、再現手順を紹介。';
 $keywords = 'SafeEar,J-SPAW,なりすまし検出,音声セキュリティ,評価レポート';
-$canonical = 'https://memo-site.com/voice/safear_jspaw_evaluation.php';
+$canonical = 'https://memosite.jp/voice/safear_jspaw_evaluation.php';
 
 renderHead($title, $description, $keywords, $canonical);
 ?>
@@ -191,7 +191,7 @@ RuntimeError: Failed to load audio from /gpfs-flash/hulab/likai/SafeEar/datas/AS
   "dateModified": "<?php echo date('c', filemtime(__FILE__)); ?>",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://memo-site.com/voice/safear_jspaw_evaluation.php"
+    "@id": "https://memosite.jp/voice/safear_jspaw_evaluation.php"
   },
   "keywords": "SafeEar,J-SPAW,音声セキュリティ,スプーフィング検出",
   "about": [
@@ -217,19 +217,19 @@ RuntimeError: Failed to load audio from /gpfs-flash/hulab/likai/SafeEar/datas/AS
       "@type": "ListItem",
       "position": 1,
       "name": "ホーム",
-      "item": "https://memo-site.com/"
+  "item": "https://memosite.jp/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "音声研究メモ",
-      "item": "https://memo-site.com/voice/"
+  "item": "https://memosite.jp/voice/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "SafeEar 評価レポート",
-      "item": "https://memo-site.com/voice/safear_jspaw_evaluation.php"
+  "item": "https://memosite.jp/voice/safear_jspaw_evaluation.php"
     }
   ]
 }

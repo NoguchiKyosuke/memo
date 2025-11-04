@@ -6,7 +6,7 @@ require_once '../includes/image-helper.php';
 $title = 'Kaggle で GPU T4×2 を使いこなす手順ガイド';
 $description = 'Kaggle Notebooks で GPU T4×2 アクセラレータを有効化し、運用するための設定手順をまとめた。';
 $keywords = 'Kaggle,GPU,T4,ディープラーニング,Notebook,PyTorch,TensorFlow,ハードウェアアクセラレータ';
-$canonical = 'https://memo-site.com/voice/kaggle_t4x2_guide.php';
+$canonical = 'https://memosite.jp/voice/kaggle_t4x2_guide.php';
 
 renderHead($title, $description, $keywords, $canonical);
 ?>
@@ -219,19 +219,19 @@ import multiprocess as mp
       "@type": "ListItem",
       "position": 1,
       "name": "ホーム",
-      "item": "https://memo-site.com/"
+  "item": "https://memosite.jp/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "音声研究メモ",
-      "item": "https://memo-site.com/voice/"
+  "item": "https://memosite.jp/voice/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "Kaggle GPU T4×2 ガイド",
-      "item": "https://memo-site.com/voice/kaggle_t4x2_guide.php"
+  "item": "https://memosite.jp/voice/kaggle_t4x2_guide.php"
     }
   ]
 }

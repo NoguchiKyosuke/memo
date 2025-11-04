@@ -6,7 +6,7 @@ require_once '../includes/image-helper.php';
 $title = 'PLDA (Probabilistic Linear Discriminant Analysis) の基礎と応用';
 $description = 'PLDA の理論背景、ASV への応用、学習フロー、ハイパーパラメータ設計、実装のコツをまとめた技術解説。';
 $keywords = 'PLDA,Probabilistic Linear Discriminant Analysis,音声認証,話者認証,機械学習,Bayesian';
-$canonical = 'https://memo-site.com/voice/plda_overview.php';
+$canonical = 'https://memosite.jp/voice/plda_overview.php';
 
 renderHead($title, $description, $keywords, $canonical);
 ?>
@@ -239,19 +239,19 @@ class PLDA:
       "@type": "ListItem",
       "position": 1,
       "name": "ホーム",
-      "item": "https://memo-site.com/"
+  "item": "https://memosite.jp/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "音声研究メモ",
-      "item": "https://memo-site.com/voice/"
+  "item": "https://memosite.jp/voice/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "PLDA の技術解説",
-      "item": "https://memo-site.com/voice/plda_overview.php"
+  "item": "https://memosite.jp/voice/plda_overview.php"
     }
   ]
 }
