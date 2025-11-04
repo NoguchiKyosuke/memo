@@ -13,6 +13,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+  <loc>https://memosite.jp/timekeeper.php</loc>
+    <lastmod><?php echo date('c', filemtime(__DIR__ . '/timekeeper.php')); ?></lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
   <loc>https://memosite.jp/voice/</loc>
     <lastmod><?php echo date('c', filemtime(__DIR__ . '/voice/index.php')); ?></lastmod>
     <changefreq>weekly</changefreq>

@@ -35,6 +35,14 @@ renderHead($title, $description, $keywords);
         <p>音声解析と音声言語処理に関する研究メモ。MFCC、DTW、機械学習、最新の研究論文など、音声処理技術について学べます。</p>
         <div class="badge ok">記事 <?php require_once 'includes/voice-articles.php'; echo getVoiceArticleCount(); ?> 件</div>
       </a>
+
+      <a class="card" href="/timekeeper.php">
+        <div class="card-head">
+          <h3>タイムマネージャ</h3>
+        </div>
+        <p>ブラウザのタイムゾーンに合わせた現在時刻の表示と最大5件のアラーム管理が行えます。端末に保存されるので再訪時も即座に利用できます。</p>
+        <div class="badge ok">最大5件のアラーム</div>
+      </a>
     </div>
   </section>
 </main>
