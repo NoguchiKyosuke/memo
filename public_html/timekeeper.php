@@ -1,6 +1,7 @@
 <?php
 require_once 'includes/head.php';
 require_once 'includes/common.php';
+require_once 'includes/ad-a8.php';
 
 $title = 'タイムマネージャ - ローカル時計とアラーム';
 $description = 'ユーザーの現在地に基づき正確な現在時刻を表示し、最大5件のアラームを設定・保存できるタイムマネージャ。カウントダウンと派手なアラート演出で時間を見逃しません。';
@@ -33,6 +34,8 @@ renderHead($title, $description, $keywords, $canonical);
       </div>
     </div>
   </section>
+
+  <?php renderA8Ad(); ?>
 
   <section class="alarms-section">
     <h2>アラーム設定</h2>
