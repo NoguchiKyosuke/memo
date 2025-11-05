@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
+require_once '../includes/ad-a8.php';
 
 $title = '音声解析と機械学習の研究メモ - メモ帳';
 $description = '音声解析と機械学習に関する技術メモ。MFCCやDTW、z-score、Pythonライブラリの使い方など、音声処理技術について詳しく解説します。';
@@ -101,6 +102,7 @@ div[style*="position: relative"] {
     <header>
       <h1>音声解析と機械学習の研究メモ <span class="update-info">(<?php echo date('Y年m月d日更新', filemtime(__FILE__)); ?>)</span></h1>
     </header>
+        <?php renderA8Ad(); ?>
     <section><h2>2025/9/9</h2>
     <h3>アイヌ語の勉強</h3>
     <h4>z-scoreとは</h4>

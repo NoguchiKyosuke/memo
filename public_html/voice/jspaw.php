@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
+require_once '../includes/ad-a8.php';
 
 $title = '音声コーパスJ-SpAWに関する文献調査';
 $description = 'J-SpAW: 話者照合となりすまし音声検出のための
@@ -29,6 +30,7 @@ MathJax = {
     <header class="article-header">
       <h1>音声言語処理に関する研究文献</h1>
     </header>
+    <?php renderA8Ad(); ?>
 
     <section class="paper-info">
       <h2>まえがき</h2>

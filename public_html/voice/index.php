@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
+require_once '../includes/ad-a8.php';
 require_once '../includes/voice-articles.php';
 
 $title = '音声研究メモ - メモ帳';
@@ -18,6 +19,7 @@ renderHead($title, $description, $keywords, $canonical);
     <h1>音声研究メモ</h1>
     <p class="lead">音声解析と音声言語処理に関する技術メモと研究文献のコレクション。基礎技術から最新研究まで幅広くカバーします。</p>
   </section>
+  <?php renderA8Ad(); ?>
 
   <section>
     <h2 class="section-title">研究記事一覧</h2>

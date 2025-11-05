@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
+require_once '../includes/ad-a8.php';
 require_once '../includes/image-helper.php';
 
 $title = 'PLDA (Probabilistic Linear Discriminant Analysis) の基礎と応用';
@@ -24,6 +25,7 @@ renderHead($title, $description, $keywords, $canonical);
         <span class="tag">音声セキュリティ</span>
       </div>
     </header>
+    <?php renderA8Ad(); ?>
     <section class="research-section">
       <h2>PLDA とは何か</h2>
       <p>PLDA (Probabilistic Linear Discriminant Analysis) は、同じ答えのデータごとにグループを作り、確率的にどのグループに属するかで答えを判別する手法です。話者認証では i-vector や x-vector の埋め込みを コサイン類似度を使って判別する手法が多く用いられていますが、より統計的に強力なPLDA で判別する手法も取られます。</p>

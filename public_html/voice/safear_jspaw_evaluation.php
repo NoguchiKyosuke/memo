@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
+require_once '../includes/ad-a8.php';
 require_once '../includes/image-helper.php';
 
 $title = 'SafeEar による J-SPAW データセット検証レポート';
@@ -25,6 +26,7 @@ renderHead($title, $description, $keywords, $canonical);
         <span class="tag">評価レポート</span>
       </div>
     </header>
+    <?php renderA8Ad(); ?>
 
     <section class="research-section">
       <h2>SafeEar と J-SPAW の概要</h2>

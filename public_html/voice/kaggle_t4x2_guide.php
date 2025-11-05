@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
+require_once '../includes/ad-a8.php';
 require_once '../includes/image-helper.php';
 
 $title = 'Kaggle で GPU T4×2 を使いこなす手順ガイド';
@@ -24,6 +25,7 @@ renderHead($title, $description, $keywords, $canonical);
         <span class="tag">深層学習</span>
       </div>
     </header>
+    <?php renderA8Ad(); ?>
 
     <section class="research-section">
       <h2>概要</h2>

@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
+require_once '../includes/ad-a8.php';
 require_once '../includes/image-helper.php';
 
 $title = 'OneDrive curl エラー対処法';
@@ -23,6 +24,7 @@ renderHead($title, $description, $keywords);
         <span class="tag">curl</span>
       </div>
     </header>
+    <?php renderA8Ad(); ?>
     
     <section>
       <h2>今回発生したエラー</h2>

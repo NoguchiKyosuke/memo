@@ -19,6 +19,8 @@ code{font-family:'JetBrains Mono','Fira Code',Consolas,monospace;background:var(
 .pwa-actions{display:flex;flex-direction:column;gap:.65rem;align-items:flex-start;}
 .install-button{appearance:none;border:none;border-radius:.7rem;background:linear-gradient(135deg,#2563eb,#38bdf8);color:#fff;font-weight:600;padding:.8rem 1.6rem;font-size:.9rem;letter-spacing:.04em;cursor:pointer;box-shadow:0 12px 24px -14px rgba(37,99,235,.65);transition:transform .2s var(--ease),box-shadow .25s var(--ease);} .install-button:hover{transform:translateY(-1px);box-shadow:0 18px 32px -18px rgba(37,99,235,.75);} .install-button:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
 .install-hint{font-size:.8rem;color:var(--text-dim);}
+.ad-slot{margin:2.4rem auto;display:flex;justify-content:center;max-width:100%;}
+.ad-slot amp-ad{max-width:100%;}
 .clock-panel{display:grid;gap:1rem;padding:1.8rem 2rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);}
 .clock-display{font-size:clamp(2.8rem,6vw,3.6rem);font-weight:700;letter-spacing:.08em;font-variant-numeric:tabular-nums;color:var(--text);} .date-display{font-size:1.05rem;color:var(--text-dim);} .timezone-display{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;font-size:.85rem;color:var(--text-dim);} .timezone-chip{display:inline-flex;align-items:center;padding:.45rem .85rem;border-radius:999px;border:1px solid var(--border);background:var(--bg-alt);font-weight:600;color:var(--text);} .location-status{font-size:.82rem;}
 

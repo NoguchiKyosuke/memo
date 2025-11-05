@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/head.php';
 require_once '../includes/common.php';
+require_once '../includes/ad-a8.php';
 
 $title = 'V2S Attack: 自動話者認証を突破する音声変換の研究解説';
 $description = 'V2S Attack: Building DNN-based Voice Conversion from Automatic Speaker Verification の要点と攻撃パイプライン、評価結果を分かりやすく整理し、防御と実務への示唆をまとめました。';
@@ -23,6 +24,7 @@ renderHead($title, $description, $keywords, $canonical);
         <span class="tag">Automatic Speaker Verification</span>
       </div>
     </header>
+    <?php renderA8Ad(); ?>
 
     <section class="research-section">
       <h2>論文概要</h2>
