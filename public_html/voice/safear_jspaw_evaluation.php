@@ -62,8 +62,6 @@ pip install -r requirements.txt
         次に、J-SPAW データセットをダウンロードし、SafeEar の所定ディレクトリに配置する。
       </p>
 
-
-
       <p>
         その後、Hubert L9 featureファイルを"/SafeEar"以下に生成する。
       </p>
@@ -81,6 +79,124 @@ python dump_hubert_avg_feature.py datasets/ASVSpoof2021 datasets/ASVSpoof2021_Hu
       </code>
       </pre>
 
+    </section>
+
+    <section>
+      <h2>SafeEarのモデルの概要</h2>
+      <p>
+        SafeEarは"safeear"フォルダ直下にモデルのpythonプログラムが配置されている。</br>
+        "safeear"フォルダは、以下の3のサブフォルダで構成されている。
+      </p>
+      <ul>
+        <li>"datas"フォルダ: 音声データや特徴量が配置されている。</li>
+        <li>"losses"フォルダ: 学習時の損失関数が定義されている。</li>
+        <li>"models"フォルダ: モデルの定義や学習に関するコードが配置されている。</li>
+        <li>"trainer"フォルダ: 学習ループや評価ループなどのトレーニング関連の機能が配置されている。</li>
+        <li>"utils"フォルダ: ロギングや設定管理などのユーティリティ関数が配置されている。</li>
+        <li>"__pycache__"フォルダ: コンパイル済みのPythonファイルがキャッシュされる。</li>
+      </ul>
+
+      <h3>utilsフォルダの内容</h3>
+      <p>
+        SafeEarの処理として、最初に実行されるのが音声の前処理である。
+        前処理とは、生の音声データをモデルが扱いやすいように変換することである。</br>
+        "utils"フォルダには、その前処理を実行する以下のPythonファイルが配置されている。
+      </p>
+      <ul>
+        <li>dump_hubert_feature.py: HuBERT特徴量を抽出するためのスクリプト。</li>
+      </ul>
+      <h4>dump_hubert_feature.pyの内容</h4>
+      <p>
+        dump_hubert_feature.pyは、音声データからHuBERT特徴量を抽出するためのスクリプトである。</br>
+        具体的には、以下のような処理が行われている。
+      </p>
+      <p>
+        95行目より、pythonの処理が開始されている。</br>
+        96から106行目は、コマンドライン引数より値を設定できるようにしている。</br>
+        99行目は、生の音声データのフォルダを引数の1番目もしくは"--audio_dir"のあとに記述することで設定できる。(デフォルトは"./datasets/ASVSpoof2019")。100行目は、HuBERT特徴量を保存するフォルダを引数の2番目もしくは"--save_dir"のあとに記述することで設定できる。(デフォルトは"./datasets/ASVSpoof2021/ASVspoof2021_LA_eval/Hubert_L9")。102行目は、使用するhubertモデルのバージョンを引数の3番目もしくは"--ckpt_path"のあとに記述することで設定できる。(デフォルトは"./model_zoo/hubert/hubert_base_ls960.pt")。103行目はレイヤーの数を引数の4番目もしくは"--layer"のあとに記述することで設定できる(デフォルトは"9")。104行目はchunk数の最大値を引数の5番目もしくは"--max_chunk"のあとに記述することで設定できる(デフォルトは"1600000")。</br>
+        108行目より、コマンドラインの引数をmain関数に引き渡している。
+      </p>
+      <p>
+        91行目より、main関数が定義されている。</br>
+        92行目は、HubertFeatureReaderクラスを読み込み、返り値をreaderに代入している。</br>
+        93行目は、dump_feature関数を呼び出している。</br>
+      </p>
+      <p>
+        73行目より、dump_feature関数が定義されている。</br>
+
+      </p>
+      <p>
+        29行目よりHubertFeatureReaderクラスが定義されている。</br>
+      </p>
+      <h5>単語</h5>
+      <ul>
+        <li>chunk数: 音声データを分割する際の単位数。音声データを分割して処理を行わないとメモリ不足などの問題が発生する可能性がある。</li>
+      </ul>
+
+      <h3>modelsフォルダの内容</h3>
+      <p>
+        "models"フォルダには、SafeEarのモデル定義や学習に関するコードが配置されている。具体的には、以下のようなファイルやフォルダが含まれている。
+      </p>
+      <ul>
+        <li>decouple.py: SafeEarのメインモデルが定義されている。</li>
+        <li>discriminator.py: モデル内で使用される各種レイヤーが定義されている。</li>
+        <li>safeear.py: モデルの設定やハイパーパラメータが管理されている。</li>
+      </ul>
+      <h4>decouple.pyの内容</h4>
+      <p>
+        "decouple.py"には、SafeEarのメインモデルが定義されている。
+      </p>
+      <p>
+        14行目より、SpeechTokenizerクラスが定義されている。このクラスは、訓練時に使用するyamlファイルの"decouplemodel"の"_target"において参照されている。</br>
+        15行目は、SpeechTokenizerクラスのコンストラクタであり、引数として以下のパラメータを受け取る。</br>
+      </p>
+      <ul>
+        <li>n_filters: SeaNetのベースチャンネル数</li>
+        <li>dimension: 音声特徴量の次元数</li>
+        <li>strides: 畳み込み層のストライド</li>
+        <li>lstm_layers: LSTM層の数</li>
+        <li>bidirectional: 双方向LSTMの使用有無</li>
+        <li>dilation_base: 膨張畳み込みの基準</li>
+        <li>residual_kernel_size: 残差接続に使用するカーネルサイズ</li>
+        <li>n_residual_layers: 残差接続の層数</li>
+        <li>activation: 活性化関数</li>
+        <li>sample_rate: サンプリングレート</li>
+        <li>n_q: Quantizationのビット数</li>
+        <li>semantic_dimension: セマンティック次元</li>
+        <li>codebook_size: コードブックのサイズ</li>
+      </ul>
+      <h4>safeear.pyの内容</h4>
+      <p>
+        "safeear.py"には、SafeEarのモデルに関する設定やハイパーパラメータが定義されている。具体的には、以下のような内容が含まれている。
+      </p>
+      <p>
+        13行目のconv3x3()は、音声の特徴量を3x3のカーネルサイズのフィルタによって畳み込むための関数である。</br>
+        引数は、2次元の入力平面のチャンネル数、2次元の出力平面のチャンネル数、カーネルサイズ(1で固定)である。</br>
+        15行目より、返り値はnn.conv2d<sup><a href="#ref1">[1]</a></sup>によって生成される畳み込みレイヤー(カーネルサイズが3、ストライドが1、パディングが1、バイアスは無し)である。</br>
+      </p>
+      <h5>
+        単語
+      </h5>
+      <ul>
+        <li>conv2d: 2次元畳み込みレイヤー。画像処理などでよく使用される。</li>
+        <li>カーネルサイズ: 畳み込み演算に使用されるフィルターのサイズ。</li>
+        <li>ストライド: 畳み込み演算を行う際の移動幅。</li>
+        <li>パディング: 入力データの周囲に追加される値。出力サイズを調整するために使用される。</li>
+        <li>バイアス: ニューラルネットワークの各ニューロンに加えられる定数項。</li>
+      </ul>
+      <p>
+        単語についてもっと知りたい人は、<a href="https://qiita.com/kenichiro-yamato/items/60affeb7ca9f67c87a17">kerasのConv2D（2次元畳み込み層）について調べてみた</a>を参考にすると良い。
+      </p>
+
+
+      <h3>datasフォルダの内容</h3>
+      <p>
+        "datas"フォルダには、音声データや特徴量が配置されている。具体的には、以下のようなファイルやフォルダが含まれている。
+      </p>
+      <ul>
+        <li>音声データファイル: 学習や評価に使用する音声データが格納されている。</li>
+        <li>特徴量ファイル: 音声データから抽出した特徴量が格納されている。</li>
+      </ul>
     </section>
 
 
@@ -162,6 +278,18 @@ RuntimeError: Failed to load audio from /gpfs-flash/hulab/likai/SafeEar/datas/AS
       </p>
       
 
+    </section>
+
+    <section>
+      <h2>参考文献</h2>
+      <ol class="references">
+        <li id="ref1">
+          PyTorch Contributors. "torch.nn.Conv2d — PyTorch 2.5 documentation." PyTorch Documentation. 
+          <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html" target="_blank" rel="noopener">
+            https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html
+          </a> (閲覧日 2025-11-07)
+        </li>
+      </ol>
     </section>
 
     <section>

@@ -42,3 +42,6 @@ code{font-family:'JetBrains Mono','Fira Code',Consolas,monospace;background:var(
 @keyframes alarmFlash{0%,100%{box-shadow:0 12px 28px -16px rgba(220,53,69,.55),0 0 0 2px rgba(220,53,69,.35);}50%{box-shadow:0 10px 24px -16px rgba(239,68,68,.6),0 0 0 4px rgba(239,68,68,.45);}}
 
 @media (max-width:720px){.clock-panel{padding:1.4rem 1.5rem;} .alarm-card{padding:1.1rem;}} @media (max-width:540px){.timekeeper-hero{gap:1.4rem;} .clock-display{font-size:clamp(2.4rem,9vw,3rem);} .timezone-display{flex-direction:column;align-items:flex-start;} .alarm-status{flex-direction:column;align-items:flex-start;} .alarm-countdown{font-size:.9rem;}}
+
+/* References section */
+.references{list-style:none;padding:0;margin:1rem 0;counter-reset:ref-counter;} .references li{counter-increment:ref-counter;margin-bottom:.8rem;padding-left:2rem;position:relative;line-height:1.6;font-size:.9rem;} .references li::before{content:"[" counter(ref-counter) "] ";position:absolute;left:0;font-weight:600;color:var(--accent);} .references li a{color:var(--accent);text-decoration:none;transition:color .25s var(--ease);word-break:break-all;} .references li a:hover{color:#004499;text-decoration:underline;} sup a{text-decoration:none;color:var(--accent);font-weight:600;padding:0 .15rem;transition:opacity .25s var(--ease);} sup a:hover{opacity:.75;}
