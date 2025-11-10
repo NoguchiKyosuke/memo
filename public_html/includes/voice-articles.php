@@ -64,6 +64,14 @@ function getVoiceArticles(): array
             'tags' => ['SafeEar', 'J-SPAW', '音声セキュリティ', '評価レポート'],
             'date' => '2025-10',
         ],
+        [
+            'id' => 'seanet_overview',
+            'title' => 'SEANet: 音声符号化のためのニューラルネットワーク',
+            'slug' => 'seanet_overview.php',
+            'description' => 'SEANet（Simple and Efficient Audio Neural Network）の基本構造、エンコーダ・デコーダの設計原理、音声圧縮への応用を詳しく解説します。',
+            'tags' => ['SEANet', '音声符号化', '深層学習', '畳み込みニューラルネットワーク'],
+            'date' => '2025-11',
+        ],
     ];
 }
 
