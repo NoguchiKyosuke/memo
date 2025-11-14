@@ -40,7 +40,7 @@ if ! command -v cwebp &> /dev/null; then
     exit 1
 fi
 
-# convert/magick コマンドの確認（縦サイズ480px超の場合にリサイズするため）
+# convert/magick コマンドの確認（ピクセル数が閾値を超える場合にリサイズするため）
 CONVERT_CMD=""
 if command -v magick &> /dev/null; then
     CONVERT_CMD="magick"
@@ -94,18 +94,33 @@ for ext in "${EXTENSIONS[@]}"; do
         temp_input="$file"
         temp_created=false
 
-        # 画像の高さを取得し、480pxより大きい場合はリサイズ
+        # 画像の総ピクセル数を取得し、345600px (= 720x480 など) を超える場合はリサイズ
         if [ -n "$CONVERT_CMD" ]; then
-            height=$($CONVERT_CMD "$file" -format "%h" info: 2>/dev/null || echo "")
-            if [ -n "$height" ] && [ "$height" -gt 480 ] 2>/dev/null; then
-                temp_input="${base_name}_tmp_resize.${ext}"
-                echo -e "${BLUE}[リサイズ]${NC} $file (高さ ${height}px) → 高さ480pxに縮小"
-                if $CONVERT_CMD "$file" -resize x480 "$temp_input" >/dev/null 2>&1; then
-                    temp_created=true
-                else
-                    echo -e "${RED}[失敗]${NC} $file のリサイズに失敗しました。元画像から変換を試みます。"
-                    temp_input="$file"
-                    temp_created=false
+            size_info=$($CONVERT_CMD "$file" -format "%w %h" info: 2>/dev/null || echo "")
+            width=$(echo "$size_info" | awk '{print $1}')
+            height=$(echo "$size_info" | awk '{print $2}')
+            if [ -n "$width" ] && [ -n "$height" ] && [[ "$width" =~ ^[0-9]+$ ]] && [[ "$height" =~ ^[0-9]+$ ]]; then
+                total_px=$((width * height))
+                if [ "$total_px" -gt 345600 ] 2>/dev/null; then
+                    temp_input="${base_name}_tmp_resize.${ext}"
+                    echo -e "${BLUE}[リサイズ]${NC} $file (${width}x${height}px, ${total_px}px) → 総ピクセル数が約345600pxになるように縮小"
+                    # アスペクト比を維持したまま、総ピクセル数が閾値を下回るように縮小
+                    # ここでは長辺を基準に縮小する（実際の総ピクセル数は近似）
+                    # 正しい縮小計算: scale = sqrt(345600 / (width*height))
+                    scale=$(awk -v tot="$total_px" 'BEGIN{printf "%.8f", sqrt(345600 / tot)}')
+                    # 新しい寸法を計算（整数）
+                    new_width=$(awk -v w="$width" -v s="$scale" 'BEGIN{printf "%d", w*s}')
+                    new_height=$(awk -v h="$height" -v s="$scale" 'BEGIN{printf "%d", h*s}')
+                    if [ "$new_width" -lt 1 ]; then new_width=1; fi
+                    if [ "$new_height" -lt 1 ]; then new_height=1; fi
+                    echo -e "${BLUE}[リサイズ計算]${NC} scale=${scale}, new=${new_width}x${new_height}"
+                    if $CONVERT_CMD "$file" -resize "${new_width}x${new_height}" "$temp_input" >/dev/null 2>&1; then
+                        temp_created=true
+                    else
+                        echo -e "${RED}[失敗]${NC} $file のリサイズに失敗しました。元画像から変換を試みます。"
+                        temp_input="$file"
+                        temp_created=false
+                    fi
                 fi
             fi
         fi

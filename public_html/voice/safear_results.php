@@ -53,21 +53,21 @@ renderHead($title, $description, $keywords, $canonical);
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">DETカーブ (det_curve)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/det_curve.png', 'DET curve for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/det_curve.webp', 'DET curve for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">ROCカーブ (roc_curve)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/roc_curve.png', 'ROC curve for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/roc_curve.webp', 'ROC curve for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">スコア分布 (score_distribution)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/score_distribution.png', 'Score distribution for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/score_distribution.webp', 'Score distribution for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
@@ -139,7 +139,126 @@ renderHead($title, $description, $keywords, $canonical);
         <li>言語・話者の相違: 日本語話者・読み上げ条件の違いにより、HuBERT-L9 が抽出する音響・準言語的特徴の統計がシフト。</li>
       </ul>
       <p>
+        また、発話者ラベルのヒートマップより、全体的に人間の音声も機械の音声も、機械の音声であると認識している傾向に見られた。これは、モデルが話者情報を多く影響しているために違う話者の音声を訓練した際に機械音声として誤認識してしまうと考えられる。また、発話者のヒートマップから、話者ごとのスコアのばらつきが大きいことも確認できる。これは、話者ごとの音響的特徴の違いがスプーフィング検出に影響を与えている可能性を示唆している。
+      </p>
+      <p>
         改善策としては、(a) J-SPAW 一部を開発用に用いた軽微なファインチューニング、(b) チャネル正規化やボコーダ依存成分の抑制、(c) 対敵的学習やドメイン不変表現の導入、(d) 複数特徴（e.g., CQT/Log-Mel + HuBERT）や複数器のアンサンブル (e) HuBERTのレイヤー数を上げることでより言語情報を少なくする、などが挙げられる。
+      </p>
+    </section>
+
+    <?php renderA8Ad(); ?>
+
+    <section>
+      <h2>実験2: J-SPAW-LA学習 → J-SPAW-PA評価</h2>
+
+      <h3>仮説</h3>
+      <p>
+        実験2では、J-SPAW-LA で SafeEar を学習し、そのモデルを J-SPAW-PA に対して評価する。学習・評価ともに日本語コーパスかつ同一ドメインであるため、実験1（ASVspoof2019→J-SPAW）よりもドメインギャップが小さく、EER や ROC/DET の形状が改善することを期待した。
+        ただし、PA（物理攻撃）では再生環境やマイク位置・部屋の反響などのチャネル効果が加わるため、完全な一致は期待できない。
+        また、attentionのdropoutを増加させることで、過学習を抑制し、汎化性能の向上を図る。
+      </p>
+
+      <h3>実験方法</h3>
+      <ul>
+        <li>モデル: SafeEar（J-SPAW-LA で再学習したモデル）</li>
+        <li>学習データ: J-SPAW-LA（LA セット、合成音声と本物音声を利用）</li>
+        <li>評価データ: J-SPAW-PA（物理再生された攻撃音声と本物音声）</li>
+        <li>評価指標: EER、ROC/DET カーブ、環境・マイク・部屋・発話文・話者ごとのスコア分布と相関</li>
+        <li>学習設定: attentionのdropoutを0.1->0.3に増加した。</li>
+      </ul>
+
+      <h3>実験結果（添付画像とファイル）</h3>
+      <p>
+        以下に、<code>/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA</code> フォルダ内の成果物を添付する。
+        画像は WebP を優先表示し、CSV / TXT はダウンロードリンクとして掲載する。
+      </p>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">DETカーブ (det_curve)</h4>
+        <?php
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/det_curve.webp', 'DET curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
+        ?>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">ROCカーブ (roc_curve)</h4>
+        <?php
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/roc_curve.webp', 'ROC curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
+        ?>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">スコア分布 (score_distribution)</h4>
+        <?php
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/score_distribution.webp', 'Score distribution for SafeEar (J-SPAW-LA→J-SPAW-PA)');
+        ?>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">相関サマリー (correlation_summary.csv)</h4>
+        <p>
+          環境、マイク、部屋、発話文、話者ごとのスコア相関の概要は以下の CSV にまとめている。
+          <a href="/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/correlation_summary.csv" target="_blank" rel="noopener">correlation_summary.csv をダウンロード</a>
+        </p>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">スコアファイル (score.csv)</h4>
+        <p>
+          生のスコアは以下の CSV から取得できる。
+          <a href="/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/score.csv" target="_blank" rel="noopener">score.csv をダウンロード</a>
+        </p>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">サマリー (summary.txt)</h4>
+        <p>
+          実験条件や EER などのサマリーは以下のテキストにまとめている。
+          <a href="/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/summary.txt" target="_blank" rel="noopener">summary.txt をダウンロード</a>
+        </p>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">収録環境とスコアの相関ヒートマップ (env_id_heatmap)</h4>
+        <?php
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/env_id_heatmap.webp', 'Correlation heatmap (environment vs score, J-SPAW-LA→J-SPAW-PA)');
+        ?>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">マイク環境とスコアの相関ヒートマップ (mic_id_heatmap)</h4>
+        <?php
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/mic_id_heatmap.webp', 'Correlation heatmap (microphone vs score, J-SPAW-LA→J-SPAW-PA)');
+        ?>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">収録場所とスコアの相関ヒートマップ (room_id_heatmap)</h4>
+        <?php
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/room_id_heatmap.webp', 'Correlation heatmap (room vs score, J-SPAW-LA→J-SPAW-PA)');
+        ?>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">発話テキストとスコアの相関ヒートマップ (sent_id_heatmap)</h4>
+        <?php
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/sent_id_heatmap.webp', 'Correlation heatmap (sentence vs score, J-SPAW-LA→J-SPAW-PA)');
+        ?>
+      </section>
+
+      <section class="attachment-item" style="margin:1rem 0;">
+        <h4 style="font-size:1rem;margin:.2rem 0;">発話者とスコアの相関ヒートマップ (spkr_id_heatmap)</h4>
+        <?php
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/spkr_id_heatmap.webp', 'Correlation heatmap (speaker vs score, J-SPAW-LA→J-SPAW-PA)');
+        ?>
+      </section>
+
+      <h3>考察</h3>
+      <p>
+        実験2では、学習・評価ともに J-SPAW 系コーパスであることから、実験1と比べてドメインギャップが小さい設定となる。そのため、EER や ROC/DET の形状は概ね改善し、特定の環境・マイク・部屋・話者などに対して安定したスコア分布が得られることが期待される。
+      </p>
+      <p>
+        ただし、PA ではスピーカ再生やマイク位置、部屋の反響といった要因が加わるため、一部の環境や話者ではスコアが悪化する傾向も見られる可能性がある。相関ヒートマップを精査し、どの条件で偽受容／偽拒否が増えているかを特定することで、フロントエンド処理やしきい値設定の改善方針を立てることができる。
       </p>
     </section>
 
