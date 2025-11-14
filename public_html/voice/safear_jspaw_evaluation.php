@@ -198,7 +198,10 @@ python dump_hubert_avg_feature.py datasets/ASVSpoof2021 datasets/ASVSpoof2021_Hu
       </p>
       <p>
         68行目より、SEBasicBlockクラスを定義している。</br>
-        このクラスでは、BasicBlockクラスにSELayerを組み合わせている。SELayerは</br>
+        このクラスでは、BasicBlockクラスにSELayerを組み合わせている。SELayerはSqueeze-and-Excitation Layerの略であり、チャネルごとの重要度を学習するためのモジュールである。</br>
+        69行目より、expansionを1に設定している。</br>
+        71から80行目において、reductionを16に設定してレイヤーを作成してる。3x3の畳み込みが2回、バッチ正規化が2回、ReLUが1回、SELayerが1回である。ダウンサンプリングも実装しているが、デフォルトでNoneとしている。</br>
+
       </p>
       <h5>
         単語
@@ -210,6 +213,7 @@ python dump_hubert_avg_feature.py datasets/ASVSpoof2021 datasets/ASVSpoof2021_Hu
         <li>パディング: 入力データの周囲に追加される値。出力サイズを調整するために使用される。</li>
         <li>バイアス: ニューラルネットワークの各ニューロンに加えられる定数項。</li>
         <li>ResNet(Residual Network): 残差(Residual)学習を利用した深層学習モデル。通常のネットワークでは直前の層の出力を全て次のレイヤーに渡すのに対し、ResNetではshortcutを用いて、入力を後の層に直接加えることで学習を容易にしている。層が深くなる際に、通常のネットワークでは複雑になりすぎてしまうため、残差学習を利用することが多い。</li>
+        <li>expansion(ResNet): ResNetの1x1畳み込みによってチャンネル数を増やした際に出力チャンネル数が入力チャンネル数と一致しないことがあるため、このパラメータで調節する。</li>
       </ul>
       <p>
         単語についてもっと知りたい人は、<a href="https://qiita.com/kenichiro-yamato/items/60affeb7ca9f67c87a17">kerasのConv2D（2次元畳み込み層）について調べてみた</a>を参考にすると良い。
