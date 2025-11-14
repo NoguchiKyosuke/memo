@@ -1,0 +1,8 @@
+EER: 0.45263157894736844
+Threshold: 0.0047961478121578
+Bonafide samples: 22800
+Spoof samples: 1520
+Bonafide mean score: 0.059565224206120995
+Spoof mean score: 0.06875938842814425
+Bonafide std: 0.1589911331704477
+Spoof std: 0.18314286807380006
