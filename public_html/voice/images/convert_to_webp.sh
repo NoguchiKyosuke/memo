@@ -11,8 +11,9 @@
 #
 # 必要条件:
 #   - cwebp コマンド (webp パッケージ) がインストールされていること
-#     Ubuntu/Debian: sudo apt install webp
-#     macOS: brew install webp
+#   - 画像のリサイズに ImageMagick の convert (または magick) が利用可能であること
+#     Ubuntu/Debian: sudo apt install webp imagemagick
+#     macOS: brew install webp imagemagick
 #
 # 注意:
 #   - 元の画像ファイルは削除されず、.webp拡張子の新しいファイルが生成されます。
@@ -37,6 +38,16 @@ if ! command -v cwebp &> /dev/null; then
     echo "  Ubuntu/Debian: sudo apt install webp"
     echo "  macOS: brew install webp"
     exit 1
+fi
+
+# convert/magick コマンドの確認（縦サイズ480px超の場合にリサイズするため）
+CONVERT_CMD=""
+if command -v magick &> /dev/null; then
+    CONVERT_CMD="magick"
+elif command -v convert &> /dev/null; then
+    CONVERT_CMD="convert"
+else
+    echo -e "${YELLOW}警告: ImageMagick (convert/magick) が見つかりません。縦サイズの自動リサイズは行われません。${NC}"
 fi
 
 # 品質パラメータの検証
@@ -73,17 +84,35 @@ for ext in "${EXTENSIONS[@]}"; do
         # 出力ファイル名を生成
         base_name="${file%.*}"
         output_file="${base_name}.webp"
-        
-        # 既に WebP ファイルが存在する場合はスキップ
+
+        # WebP ファイルが既に存在していても、リサイズ仕様を反映するため常に再生成する
         if [ -f "$output_file" ]; then
-            echo -e "${YELLOW}[スキップ]${NC} $file (既に $output_file が存在)"
-            skipped=$((skipped + 1))
-            continue
+            echo -e "${YELLOW}[再生成]${NC} 既存の $output_file を上書きします"
         fi
-        
+
+        # 一時ファイル（必要ならリサイズ結果を保存）
+        temp_input="$file"
+        temp_created=false
+
+        # 画像の高さを取得し、480pxより大きい場合はリサイズ
+        if [ -n "$CONVERT_CMD" ]; then
+            height=$($CONVERT_CMD "$file" -format "%h" info: 2>/dev/null || echo "")
+            if [ -n "$height" ] && [ "$height" -gt 480 ] 2>/dev/null; then
+                temp_input="${base_name}_tmp_resize.${ext}"
+                echo -e "${BLUE}[リサイズ]${NC} $file (高さ ${height}px) → 高さ480pxに縮小"
+                if $CONVERT_CMD "$file" -resize x480 "$temp_input" >/dev/null 2>&1; then
+                    temp_created=true
+                else
+                    echo -e "${RED}[失敗]${NC} $file のリサイズに失敗しました。元画像から変換を試みます。"
+                    temp_input="$file"
+                    temp_created=false
+                fi
+            fi
+        fi
+
         # WebP に変換
-        echo -e "${BLUE}[変換中]${NC} $file → $output_file"
-        if cwebp -q "$QUALITY" "$file" -o "$output_file" > /dev/null 2>&1; then
+        echo -e "${BLUE}[変換中]${NC} $temp_input → $output_file"
+        if cwebp -q "$QUALITY" "$temp_input" -o "$output_file" > /dev/null 2>&1; then
             # ファイルサイズを比較
             original_size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null || echo "0")
             webp_size=$(stat -f%z "$output_file" 2>/dev/null || stat -c%s "$output_file" 2>/dev/null || echo "0")
@@ -95,6 +124,10 @@ for ext in "${EXTENSIONS[@]}"; do
                 echo -e "${GREEN}[完了]${NC}"
             fi
             converted=$((converted + 1))
+            # 一時ファイルを削除
+            if [ "$temp_created" = true ] && [ -f "$temp_input" ]; then
+                rm -f "$temp_input"
+            fi
         else
             echo -e "${RED}[失敗]${NC} $file の変換に失敗しました"
             failed=$((failed + 1))

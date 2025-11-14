@@ -72,6 +72,14 @@ function getVoiceArticles(): array
             'tags' => ['SEANet', '音声符号化', '深層学習', '畳み込みニューラルネットワーク'],
             'date' => '2025-11',
         ],
+        [
+            'id' => 'safear_results',
+            'title' => 'SafeEar: ASVspoof2019学習 → J-SPAW評価 実験レポート',
+            'slug' => 'safear_results.php',
+            'description' => 'ASVspoof2019で学習したSafeEarをJ-SPAWでゼロショット評価。EERの伸び悩み要因（ドメインシフト等）を分析し、改善策を提案。',
+            'tags' => ['SafeEar', 'ASVspoof2019', 'J-SPAW', 'スプーフィング検出', '実験'],
+            'date' => '2025-11',
+        ],
     ];
 }
 
