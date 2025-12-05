@@ -37,16 +37,6 @@ $email = trim((string)($_POST['email'] ?? ''));
 $message = trim((string)($_POST['message'] ?? ''));
 $topic = trim((string)($_POST['topic'] ?? 'general'));
 
-// スパムキーワードチェック（大文字小文字区別なし）
-$spamKeywords = ['viagra', 'cialis', 'casino', 'bitcoin', 'crypto', 'loan', 'prize', 'winner', 'click here', 'buy now'];
-$messageL = mb_strtolower($message, 'UTF-8');
-foreach ($spamKeywords as $keyword) {
-    if (mb_strpos($messageL, $keyword) !== false) {
-        // スパムとして静かに成功を返す
-        redirectWithStatus($redirectTarget, 'success');
-    }
-}
-
 // URL の過剰な埋め込みチェック（5個以上のリンクはスパム）
 if (preg_match_all('/https?:\/\//', $message) > 5) {
     redirectWithStatus($redirectTarget, 'success');
@@ -61,7 +51,7 @@ if ($name === '' || stringLength($name) > 80) {
 if ($email === '' || stringLength($email) > 120 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $errors[] = 'email';
 }
-if ($message === '' || stringLength($message) < 10 || stringLength($message) > 2000) {
+if ($message === '' || stringLength($message) < 1 || stringLength($message) > 2000) {
     $errors[] = 'message';
 }
 if ($topic === '' || !in_array($topic, $allowedTopics, true)) {
@@ -84,7 +74,8 @@ $submission = [
 
 $storageDir = dirname(__DIR__) . '/mail/memosite.jp/inquiries';
 if (!is_dir($storageDir)) {
-    if (!mkdir($storageDir, 0775, true) && !is_dir($storageDir)) {
+    if (!mkdir($storageDir, 0777, true) && !is_dir($storageDir)) {
+        error_log("Failed to create directory: $storageDir");
         redirectWithStatus($redirectTarget, 'error');
     }
 }
@@ -93,6 +84,7 @@ $fileName = sprintf('%s_%s.json', (new DateTimeImmutable('now', new DateTimeZone
 $filePath = $storageDir . '/' . $fileName;
 
 if (file_put_contents($filePath, json_encode($submission, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)) === false) {
+    error_log("Failed to write file: $filePath");
     redirectWithStatus($redirectTarget, 'error');
 }
 
