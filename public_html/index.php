@@ -43,6 +43,22 @@ renderHead($title, $description, $keywords);
         <p>ブラウザのタイムゾーンに合わせた現在時刻の表示と最大5件のアラーム管理が行えます。端末に保存されるので再訪時も即座に利用できます。</p>
         <div class="badge ok">最大5件のアラーム</div>
       </a>
+
+      <a class="card" href="/vocabulary_app/">
+        <div class="card-head">
+          <h3>単語帳アプリ</h3>
+        </div>
+        <p>自分だけの単語帳を作成して学習できるWebアプリ。単語の追加、一覧表示、テスト機能などを備えています。</p>
+        <div class="badge ok">Webアプリ</div>
+      </a>
+
+      <a class="card" href="/ocr_app/">
+        <div class="card-head">
+          <h3>AI OCR Converter</h3>
+        </div>
+        <p>画像からテキストを瞬時に抽出するAIツール。ローカルLLM (Ollama) を使用して、プライバシーを確保しながら高精度な文字認識を行います。</p>
+        <div class="badge ok">AIツール</div>
+      </a>
     </div>
   </section>
 </main>

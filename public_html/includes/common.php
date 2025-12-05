@@ -63,7 +63,7 @@ function renderFooter() {
         <h2 class="footer-title">お問い合わせ</h2>
         <p class="footer-description">SDV や音声解析に関するご相談・取材・共同研究のご依頼など、お気軽にご連絡ください。内容に応じて担当者より折り返しさせていただきます。</p>
       </div>
-      <form class="footer-form" action="/contact.php" method="post" accept-charset="UTF-8">
+      <form class="footer-form" action="/contact" method="post" accept-charset="UTF-8">
         <div class="footer-form-field">
           <label for="footer-name">お名前 <span class="required">必須</span></label>
           <input type="text" name="name" id="footer-name" maxlength="80" required placeholder="例: 山田 太郎" />
@@ -74,7 +74,7 @@ function renderFooter() {
         </div>
         <div class="footer-form-field">
           <label for="footer-message">お問い合わせ内容 <span class="required">必須</span></label>
-          <textarea name="message" id="footer-message" rows="4" minlength="10" maxlength="2000" required placeholder="お問い合わせ内容をご記入ください"></textarea>
+          <textarea name="message" id="footer-message" rows="4" maxlength="2000" required placeholder="お問い合わせ内容をご記入ください"></textarea>
         </div>
         <div class="footer-form-field compact">
           <label for="footer-topic">ご用件</label>
