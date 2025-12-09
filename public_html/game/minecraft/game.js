@@ -1,6 +1,7 @@
 /**
  * WebCraft - Minecraft Clone Game Engine
  * Built with Three.js
+ * Survival Mode with P2P Multiplayer
  */
 
 // ===== Block Types =====
@@ -35,16 +36,21 @@ const BLOCK_COLORS = {
 
 // ===== Game Constants =====
 const CHUNK_SIZE = 16;
-const WORLD_SIZE = 8; // Number of chunks in each direction
+const WORLD_SIZE = 8;
 const WORLD_HEIGHT = 64;
 const SEA_LEVEL = 20;
 const GRAVITY = 25;
 const JUMP_FORCE = 10;
-const MOVE_SPEED = 8;
+const MOVE_SPEED = 6;
 const MOUSE_SENSITIVITY = 0.002;
-const RENDER_DISTANCE = 3;
 const PLAYER_HEIGHT = 1.8;
 const PLAYER_WIDTH = 0.6;
+
+// Survival constants
+const HUNGER_DECREASE_INTERVAL = 30000; // 30 seconds
+const HUNGER_DAMAGE_INTERVAL = 5000; // 5 seconds when starving
+const FALL_DAMAGE_THRESHOLD = 4; // blocks
+const FALL_DAMAGE_MULTIPLIER = 2; // damage per block
 
 // ===== Main Game Class =====
 class MinecraftGame {
@@ -57,7 +63,9 @@ class MinecraftGame {
         // Game state
         this.isPlaying = false;
         this.isPaused = false;
+        this.isDead = false;
         this.playerName = 'Player';
+        this.gameMode = 'solo';
 
         // World data
         this.chunks = new Map();
@@ -65,19 +73,20 @@ class MinecraftGame {
 
         // Player state
         this.player = {
-            position: new THREE.Vector3(CHUNK_SIZE * WORLD_SIZE / 2, 40, CHUNK_SIZE * WORLD_SIZE / 2),
+            position: new THREE.Vector3(CHUNK_SIZE * WORLD_SIZE / 2, 50, CHUNK_SIZE * WORLD_SIZE / 2),
             velocity: new THREE.Vector3(0, 0, 0),
-            rotation: new THREE.Euler(0, 0, 0),
+            rotation: { x: 0, y: 0 },
             onGround: false,
             health: 20,
             maxHealth: 20,
             hunger: 20,
-            maxHunger: 20
+            maxHunger: 20,
+            lastY: 50,
+            fallDistance: 0
         };
 
         // Controls
         this.keys = {};
-        this.mouse = { x: 0, y: 0 };
         this.isPointerLocked = false;
         this.selectedSlot = 0;
         this.hotbarBlocks = [
@@ -107,6 +116,11 @@ class MinecraftGame {
         this.clock = new THREE.Clock();
         this.frameCount = 0;
         this.lastFpsUpdate = 0;
+        this.lastPositionUpdate = 0;
+
+        // Survival timers
+        this.lastHungerDecrease = 0;
+        this.lastStarvingDamage = 0;
 
         // Block highlight
         this.highlightMesh = null;
@@ -117,42 +131,34 @@ class MinecraftGame {
         this.menuScreen = document.getElementById('menu-screen');
         this.hud = document.getElementById('hud');
         this.pauseMenu = document.getElementById('pause-menu');
+        this.deathScreen = document.getElementById('death-screen');
 
         this.init();
     }
 
     async init() {
-        // Show loading screen
         this.updateLoadingText('Initializing engine...');
-        await this.delay(500);
+        await this.delay(300);
 
-        // Initialize Three.js
         this.initThreeJS();
         this.updateLoadingText('Creating world...');
-        await this.delay(300);
-
-        // Generate world
-        this.generateWorld();
-        this.updateLoadingText('Building terrain...');
-        await this.delay(300);
-
-        // Build initial meshes
-        this.buildAllChunks();
-        this.updateLoadingText('Setting up controls...');
         await this.delay(200);
 
-        // Setup controls
+        this.generateWorld();
+        this.updateLoadingText('Building terrain...');
+        await this.delay(200);
+
+        this.buildAllChunks();
+        this.updateLoadingText('Setting up controls...');
+        await this.delay(100);
+
         this.setupControls();
         this.setupNetworkCallbacks();
+        this.setupMenu();
 
-        // Hide loading, show menu
         this.loadingScreen.style.display = 'none';
         this.menuScreen.style.display = 'flex';
 
-        // Setup menu
-        this.setupMenu();
-
-        // Start render loop
         this.animate();
     }
 
@@ -168,51 +174,32 @@ class MinecraftGame {
         // Scene
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x87CEEB);
-        this.scene.fog = new THREE.Fog(0x87CEEB, 50, 200);
+        this.scene.fog = new THREE.Fog(0x87CEEB, 50, 150);
 
         // Camera
-        this.camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-        );
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
         this.camera.position.copy(this.player.position);
         this.camera.position.y += PLAYER_HEIGHT - 0.2;
 
         // Renderer
-        this.renderer = new THREE.WebGLRenderer({
-            canvas: this.canvas,
-            antialias: true
-        });
+        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         // Lighting
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
         this.scene.add(ambientLight);
 
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(100, 100, 50);
-        directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 2048;
-        directionalLight.shadow.mapSize.height = 2048;
-        directionalLight.shadow.camera.near = 0.5;
-        directionalLight.shadow.camera.far = 500;
-        directionalLight.shadow.camera.left = -100;
-        directionalLight.shadow.camera.right = 100;
-        directionalLight.shadow.camera.top = 100;
-        directionalLight.shadow.camera.bottom = -100;
+        directionalLight.position.set(50, 100, 50);
         this.scene.add(directionalLight);
 
         // Block highlight
-        const highlightGeo = new THREE.BoxGeometry(1.01, 1.01, 1.01);
+        const highlightGeo = new THREE.BoxGeometry(1.02, 1.02, 1.02);
         const highlightMat = new THREE.MeshBasicMaterial({
-            color: 0x000000,
+            color: 0xffffff,
             transparent: true,
-            opacity: 0.2,
+            opacity: 0.3,
             wireframe: true
         });
         this.highlightMesh = new THREE.Mesh(highlightGeo, highlightMat);
@@ -228,7 +215,6 @@ class MinecraftGame {
     }
 
     generateWorld() {
-        // Generate chunks
         for (let cx = 0; cx < WORLD_SIZE; cx++) {
             for (let cz = 0; cz < WORLD_SIZE; cz++) {
                 this.generateChunk(cx, cz);
@@ -244,8 +230,6 @@ class MinecraftGame {
             for (let z = 0; z < CHUNK_SIZE; z++) {
                 const worldX = cx * CHUNK_SIZE + x;
                 const worldZ = cz * CHUNK_SIZE + z;
-
-                // Generate height using noise
                 const height = this.getTerrainHeight(worldX, worldZ);
 
                 for (let y = 0; y < WORLD_HEIGHT; y++) {
@@ -258,11 +242,7 @@ class MinecraftGame {
                     } else if (y < height - 1) {
                         chunk[index] = BLOCK_TYPES.DIRT;
                     } else if (y < height) {
-                        if (y < SEA_LEVEL) {
-                            chunk[index] = BLOCK_TYPES.SAND;
-                        } else {
-                            chunk[index] = BLOCK_TYPES.GRASS;
-                        }
+                        chunk[index] = y < SEA_LEVEL ? BLOCK_TYPES.SAND : BLOCK_TYPES.GRASS;
                     } else if (y < SEA_LEVEL) {
                         chunk[index] = BLOCK_TYPES.WATER;
                     } else {
@@ -270,8 +250,8 @@ class MinecraftGame {
                     }
                 }
 
-                // Add trees
-                if (height > SEA_LEVEL + 1 && Math.random() < 0.01) {
+                // Trees
+                if (height > SEA_LEVEL + 1 && Math.random() < 0.008) {
                     this.generateTree(chunk, x, height, z);
                 }
             }
@@ -283,26 +263,20 @@ class MinecraftGame {
     getTerrainHeight(x, z) {
         const scale1 = 0.02;
         const scale2 = 0.05;
-        const scale3 = 0.1;
-
-        const noise1 = this.noise.noise2D(x * scale1, z * scale1) * 20;
-        const noise2 = this.noise.noise2D(x * scale2, z * scale2) * 10;
-        const noise3 = this.noise.noise2D(x * scale3, z * scale3) * 5;
-
-        return Math.floor(SEA_LEVEL + noise1 + noise2 + noise3);
+        const noise1 = this.noise.noise2D(x * scale1, z * scale1) * 15;
+        const noise2 = this.noise.noise2D(x * scale2, z * scale2) * 8;
+        return Math.floor(SEA_LEVEL + 5 + noise1 + noise2);
     }
 
     generateTree(chunk, x, baseY, z) {
         if (x < 2 || x > CHUNK_SIZE - 3 || z < 2 || z > CHUNK_SIZE - 3) return;
 
-        const treeHeight = 4 + Math.floor(Math.random() * 3);
+        const treeHeight = 4 + Math.floor(Math.random() * 2);
 
         // Trunk
         for (let y = 0; y < treeHeight; y++) {
             const index = x + (baseY + y) * CHUNK_SIZE + z * CHUNK_SIZE * WORLD_HEIGHT;
-            if (baseY + y < WORLD_HEIGHT) {
-                chunk[index] = BLOCK_TYPES.WOOD;
-            }
+            if (baseY + y < WORLD_HEIGHT) chunk[index] = BLOCK_TYPES.WOOD;
         }
 
         // Leaves
@@ -312,14 +286,10 @@ class MinecraftGame {
             for (let lx = -radius; lx <= radius; lx++) {
                 for (let lz = -radius; lz <= radius; lz++) {
                     if (Math.abs(lx) === radius && Math.abs(lz) === radius && Math.random() > 0.5) continue;
-                    const nx = x + lx;
-                    const ny = leafStart + ly;
-                    const nz = z + lz;
+                    const nx = x + lx, ny = leafStart + ly, nz = z + lz;
                     if (nx >= 0 && nx < CHUNK_SIZE && ny < WORLD_HEIGHT && nz >= 0 && nz < CHUNK_SIZE) {
                         const index = nx + ny * CHUNK_SIZE + nz * CHUNK_SIZE * WORLD_HEIGHT;
-                        if (chunk[index] === BLOCK_TYPES.AIR) {
-                            chunk[index] = BLOCK_TYPES.LEAVES;
-                        }
+                        if (chunk[index] === BLOCK_TYPES.AIR) chunk[index] = BLOCK_TYPES.LEAVES;
                     }
                 }
             }
@@ -343,11 +313,14 @@ class MinecraftGame {
         const oldMesh = this.blockMeshes.get(chunkKey);
         if (oldMesh) {
             this.scene.remove(oldMesh);
-            oldMesh.geometry.dispose();
+            if (oldMesh.children) {
+                oldMesh.children.forEach(child => {
+                    if (child.geometry) child.geometry.dispose();
+                    if (child.material) child.material.dispose();
+                });
+            }
         }
 
-        // Build new mesh using instancing for performance
-        const geometries = {};
         const matrices = {};
 
         for (let x = 0; x < CHUNK_SIZE; x++) {
@@ -357,13 +330,9 @@ class MinecraftGame {
                     const blockType = chunk[index];
 
                     if (blockType === BLOCK_TYPES.AIR || blockType === BLOCK_TYPES.WATER) continue;
-
-                    // Check if any face is visible
                     if (!this.isBlockExposed(cx, cz, x, y, z)) continue;
 
-                    if (!matrices[blockType]) {
-                        matrices[blockType] = [];
-                    }
+                    if (!matrices[blockType]) matrices[blockType] = [];
 
                     const worldX = cx * CHUNK_SIZE + x;
                     const worldZ = cz * CHUNK_SIZE + z;
@@ -375,26 +344,22 @@ class MinecraftGame {
             }
         }
 
-        // Create instanced meshes
         const chunkGroup = new THREE.Group();
 
         for (const [blockType, matrixList] of Object.entries(matrices)) {
             if (matrixList.length === 0) continue;
 
             const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const isLeaves = parseInt(blockType) === BLOCK_TYPES.LEAVES;
             const material = new THREE.MeshLambertMaterial({
                 color: BLOCK_COLORS[blockType] || 0xff00ff,
-                transparent: parseInt(blockType) === BLOCK_TYPES.LEAVES,
-                opacity: parseInt(blockType) === BLOCK_TYPES.LEAVES ? 0.9 : 1
+                transparent: isLeaves,
+                opacity: isLeaves ? 0.85 : 1
             });
 
             const instancedMesh = new THREE.InstancedMesh(geometry, material, matrixList.length);
-            matrixList.forEach((matrix, i) => {
-                instancedMesh.setMatrixAt(i, matrix);
-            });
+            matrixList.forEach((matrix, i) => instancedMesh.setMatrixAt(i, matrix));
             instancedMesh.instanceMatrix.needsUpdate = true;
-            instancedMesh.castShadow = true;
-            instancedMesh.receiveShadow = true;
 
             chunkGroup.add(instancedMesh);
         }
@@ -404,85 +369,69 @@ class MinecraftGame {
     }
 
     isBlockExposed(cx, cz, x, y, z) {
-        const neighbors = [
-            [1, 0, 0], [-1, 0, 0],
-            [0, 1, 0], [0, -1, 0],
-            [0, 0, 1], [0, 0, -1]
-        ];
+        const neighbors = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
 
         for (const [dx, dy, dz] of neighbors) {
-            const nx = x + dx;
-            const ny = y + dy;
-            const nz = z + dz;
-
+            const nx = x + dx, ny = y + dy, nz = z + dz;
             if (ny < 0 || ny >= WORLD_HEIGHT) return true;
 
             let neighborBlock;
             if (nx < 0 || nx >= CHUNK_SIZE || nz < 0 || nz >= CHUNK_SIZE) {
-                // Check neighbor chunk
-                const ncx = cx + Math.floor(nx / CHUNK_SIZE);
-                const ncz = cz + Math.floor(nz / CHUNK_SIZE);
+                const ncx = cx + (nx < 0 ? -1 : nx >= CHUNK_SIZE ? 1 : 0);
+                const ncz = cz + (nz < 0 ? -1 : nz >= CHUNK_SIZE ? 1 : 0);
                 const nnx = ((nx % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
                 const nnz = ((nz % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
                 const neighborChunk = this.chunks.get(`${ncx},${ncz}`);
                 if (!neighborChunk) return true;
-                const index = nnx + ny * CHUNK_SIZE + nnz * CHUNK_SIZE * WORLD_HEIGHT;
-                neighborBlock = neighborChunk[index];
+                neighborBlock = neighborChunk[nnx + ny * CHUNK_SIZE + nnz * CHUNK_SIZE * WORLD_HEIGHT];
             } else {
-                const chunk = this.chunks.get(`${cx},${cz}`);
-                const index = nx + ny * CHUNK_SIZE + nz * CHUNK_SIZE * WORLD_HEIGHT;
-                neighborBlock = chunk[index];
+                neighborBlock = this.chunks.get(`${cx},${cz}`)[nx + ny * CHUNK_SIZE + nz * CHUNK_SIZE * WORLD_HEIGHT];
             }
 
             if (neighborBlock === BLOCK_TYPES.AIR || neighborBlock === BLOCK_TYPES.WATER || neighborBlock === BLOCK_TYPES.LEAVES) {
                 return true;
             }
         }
-
         return false;
     }
 
     getBlock(x, y, z) {
         if (y < 0 || y >= WORLD_HEIGHT) return BLOCK_TYPES.AIR;
-
         const cx = Math.floor(x / CHUNK_SIZE);
         const cz = Math.floor(z / CHUNK_SIZE);
-        const lx = ((x % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-        const lz = ((z % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-
+        const lx = ((Math.floor(x) % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
+        const lz = ((Math.floor(z) % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
         const chunk = this.chunks.get(`${cx},${cz}`);
         if (!chunk) return BLOCK_TYPES.AIR;
-
-        const index = Math.floor(lx) + Math.floor(y) * CHUNK_SIZE + Math.floor(lz) * CHUNK_SIZE * WORLD_HEIGHT;
-        return chunk[index];
+        return chunk[lx + Math.floor(y) * CHUNK_SIZE + lz * CHUNK_SIZE * WORLD_HEIGHT];
     }
 
-    setBlock(x, y, z, blockType) {
+    setBlock(x, y, z, blockType, fromNetwork = false) {
         if (y < 0 || y >= WORLD_HEIGHT) return;
 
         const cx = Math.floor(x / CHUNK_SIZE);
         const cz = Math.floor(z / CHUNK_SIZE);
-        const lx = ((x % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-        const lz = ((z % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
+        const lx = ((Math.floor(x) % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
+        const lz = ((Math.floor(z) % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
 
         const chunkKey = `${cx},${cz}`;
         const chunk = this.chunks.get(chunkKey);
         if (!chunk) return;
 
-        const index = Math.floor(lx) + Math.floor(y) * CHUNK_SIZE + Math.floor(lz) * CHUNK_SIZE * WORLD_HEIGHT;
+        const index = lx + Math.floor(y) * CHUNK_SIZE + lz * CHUNK_SIZE * WORLD_HEIGHT;
         chunk[index] = blockType;
 
-        // Rebuild affected chunks
+        // Rebuild this chunk and neighbors
         this.buildChunkMesh(cx, cz);
-
-        // Check if we need to rebuild neighbor chunks
         if (lx === 0) this.buildChunkMesh(cx - 1, cz);
         if (lx === CHUNK_SIZE - 1) this.buildChunkMesh(cx + 1, cz);
         if (lz === 0) this.buildChunkMesh(cx, cz - 1);
         if (lz === CHUNK_SIZE - 1) this.buildChunkMesh(cx, cz + 1);
 
-        // Send to network
-        this.network.sendBlockChange(x, y, z, blockType);
+        // Send to network (only if not from network)
+        if (!fromNetwork) {
+            this.network.sendBlockChange(Math.floor(x), Math.floor(y), Math.floor(z), blockType);
+        }
     }
 
     setupControls() {
@@ -490,19 +439,16 @@ class MinecraftGame {
         document.addEventListener('keydown', (e) => {
             this.keys[e.code] = true;
 
-            if (this.isPlaying && !this.isPaused) {
-                // Hotbar selection
+            if (this.isPlaying && !this.isPaused && !this.isDead) {
                 if (e.code >= 'Digit1' && e.code <= 'Digit9') {
                     this.selectSlot(parseInt(e.code.charAt(5)) - 1);
                 }
-
-                // Chat
-                if (e.code === 'Enter' || e.code === 'KeyT') {
+                if (e.code === 'KeyT') {
+                    e.preventDefault();
                     this.toggleChat();
                 }
             }
 
-            // Pause
             if (e.code === 'Escape' && this.isPlaying) {
                 this.togglePause();
             }
@@ -512,43 +458,39 @@ class MinecraftGame {
             this.keys[e.code] = false;
         });
 
-        // Mouse
+        // Mouse movement - FIXED direction
         document.addEventListener('mousemove', (e) => {
-            if (this.isPointerLocked) {
+            if (this.isPointerLocked && !this.isDead) {
                 this.player.rotation.y -= e.movementX * MOUSE_SENSITIVITY;
                 this.player.rotation.x -= e.movementY * MOUSE_SENSITIVITY;
                 this.player.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.player.rotation.x));
             }
         });
 
-        // Mouse click for block interaction
+        // Mouse click
         this.canvas.addEventListener('mousedown', (e) => {
             if (!this.isPointerLocked) {
                 this.canvas.requestPointerLock();
                 return;
             }
+            if (this.isDead) return;
 
-            if (e.button === 0) {
-                this.breakBlock();
-            } else if (e.button === 2) {
-                this.placeBlock();
-            }
+            if (e.button === 0) this.breakBlock();
+            else if (e.button === 2) this.placeBlock();
         });
 
-        // Prevent context menu
         this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
-        // Pointer lock
         document.addEventListener('pointerlockchange', () => {
             this.isPointerLocked = document.pointerLockElement === this.canvas;
-            if (!this.isPointerLocked && this.isPlaying && !this.isPaused) {
+            if (!this.isPointerLocked && this.isPlaying && !this.isPaused && !this.isDead) {
                 this.togglePause();
             }
         });
 
         // Scroll for hotbar
         this.canvas.addEventListener('wheel', (e) => {
-            if (this.isPlaying && !this.isPaused) {
+            if (this.isPlaying && !this.isPaused && !this.isDead) {
                 let newSlot = this.selectedSlot + (e.deltaY > 0 ? 1 : -1);
                 if (newSlot < 0) newSlot = 8;
                 if (newSlot > 8) newSlot = 0;
@@ -561,32 +503,63 @@ class MinecraftGame {
         const playBtn = document.getElementById('play-btn');
         const resumeBtn = document.getElementById('resume-btn');
         const quitBtn = document.getElementById('quit-btn');
+        const respawnBtn = document.getElementById('respawn-btn');
         const playerNameInput = document.getElementById('player-name');
+        const roomCodeInput = document.getElementById('room-code-input');
+        const joinSection = document.getElementById('join-section');
+        const modeTabs = document.querySelectorAll('.mode-tab');
+        const copyBtn = document.getElementById('copy-room-code');
 
+        // Mode tabs
+        modeTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                modeTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                this.gameMode = tab.dataset.mode;
+                joinSection.style.display = this.gameMode === 'join' ? 'block' : 'none';
+            });
+        });
+
+        // Play button
         playBtn.addEventListener('click', () => {
             this.playerName = playerNameInput.value || 'Player';
-            this.startGame();
+            const roomCode = roomCodeInput.value.trim().toUpperCase();
+            this.startGame(this.gameMode, roomCode);
         });
 
         playerNameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                this.playerName = playerNameInput.value || 'Player';
-                this.startGame();
+                playBtn.click();
             }
         });
 
+        // Copy room code
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                const code = document.getElementById('room-code-text').textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    copyBtn.textContent = '✅';
+                    setTimeout(() => copyBtn.textContent = '📋', 1500);
+                });
+            });
+        }
+
         resumeBtn.addEventListener('click', () => this.togglePause());
         quitBtn.addEventListener('click', () => this.quitGame());
+        respawnBtn.addEventListener('click', () => this.respawn());
     }
 
     setupNetworkCallbacks() {
         this.network.on('playerJoin', (player) => {
             this.addOtherPlayer(player);
-            this.addChatMessage(`${player.name} がゲームに参加しました`, 'system');
+            this.addChatMessage(`${player.name} が参加しました`, 'system');
         });
 
-        this.network.on('playerLeave', (id) => {
+        this.network.on('playerLeave', (id, player) => {
             this.removeOtherPlayer(id);
+            if (player) {
+                this.addChatMessage(`${player.name} が退出しました`, 'system');
+            }
         });
 
         this.network.on('playerMove', (data) => {
@@ -594,7 +567,7 @@ class MinecraftGame {
         });
 
         this.network.on('blockChange', (data) => {
-            this.setBlock(data.x, data.y, data.z, data.blockType);
+            this.setBlock(data.x, data.y, data.z, data.blockType, true);
         });
 
         this.network.on('chat', (data) => {
@@ -602,26 +575,62 @@ class MinecraftGame {
         });
 
         this.network.on('playerCount', (count) => {
-            document.getElementById('online-count').textContent = count;
+            document.getElementById('online-count').textContent = count + 1;
             this.updatePlayerList();
+        });
+
+        this.network.on('roomCreated', (code) => {
+            this.showRoomCode(code);
+        });
+
+        this.network.on('worldData', (data) => {
+            if (data.changes) {
+                data.changes.forEach(change => {
+                    this.setBlock(change.x, change.y, change.z, change.blockType, true);
+                });
+            }
         });
     }
 
-    async startGame() {
-        // Connect to server
-        await this.network.connect(this.playerName);
+    showRoomCode(code) {
+        const display = document.getElementById('room-code-display');
+        const text = document.getElementById('room-code-text');
+        const pauseCode = document.getElementById('pause-room-code');
+        const pauseCodeText = document.getElementById('pause-room-code-text');
+
+        if (display && text) {
+            display.style.display = 'flex';
+            text.textContent = code;
+        }
+        if (pauseCode && pauseCodeText) {
+            pauseCode.style.display = 'block';
+            pauseCodeText.textContent = code;
+        }
+    }
+
+    async startGame(mode, roomCode) {
+        this.gameMode = mode;
+
+        // Connect to network
+        await this.network.connect(this.playerName, mode, roomCode || null);
 
         // Start game
         this.isPlaying = true;
         this.isPaused = false;
+        this.isDead = false;
         this.menuScreen.style.display = 'none';
         this.hud.style.display = 'block';
 
+        // Reset player
+        this.player.health = 20;
+        this.player.hunger = 20;
+        this.lastHungerDecrease = Date.now();
+
+        // Find spawn
+        this.findSpawnPosition();
+
         // Lock pointer
         this.canvas.requestPointerLock();
-
-        // Find spawn position
-        this.findSpawnPosition();
     }
 
     findSpawnPosition() {
@@ -629,15 +638,18 @@ class MinecraftGame {
         const centerZ = CHUNK_SIZE * WORLD_SIZE / 2;
 
         for (let y = WORLD_HEIGHT - 1; y > 0; y--) {
-            if (this.getBlock(centerX, y, centerZ) !== BLOCK_TYPES.AIR) {
+            if (this.getBlock(centerX, y, centerZ) !== BLOCK_TYPES.AIR &&
+                this.getBlock(centerX, y, centerZ) !== BLOCK_TYPES.WATER) {
                 this.player.position.set(centerX + 0.5, y + 2, centerZ + 0.5);
+                this.player.lastY = y + 2;
+                this.player.velocity.set(0, 0, 0);
                 break;
             }
         }
     }
 
     togglePause() {
-        if (!this.isPlaying) return;
+        if (!this.isPlaying || this.isDead) return;
 
         this.isPaused = !this.isPaused;
         this.pauseMenu.style.display = this.isPaused ? 'flex' : 'none';
@@ -652,11 +664,37 @@ class MinecraftGame {
     quitGame() {
         this.isPlaying = false;
         this.isPaused = false;
+        this.isDead = false;
         this.network.disconnect();
         this.pauseMenu.style.display = 'none';
+        this.deathScreen.style.display = 'none';
         this.hud.style.display = 'none';
         this.menuScreen.style.display = 'flex';
+        document.getElementById('room-code-display').style.display = 'none';
         document.exitPointerLock();
+    }
+
+    respawn() {
+        this.isDead = false;
+        this.deathScreen.style.display = 'none';
+        this.player.health = 20;
+        this.player.hunger = 20;
+        this.findSpawnPosition();
+        this.canvas.requestPointerLock();
+    }
+
+    die(message) {
+        this.isDead = true;
+        this.deathScreen.style.display = 'flex';
+        document.getElementById('death-message').textContent = message;
+        document.exitPointerLock();
+    }
+
+    takeDamage(amount, message = 'ダメージ') {
+        this.player.health = Math.max(0, this.player.health - amount);
+        if (this.player.health <= 0) {
+            this.die(message);
+        }
     }
 
     selectSlot(slot) {
@@ -688,13 +726,10 @@ class MinecraftGame {
         const msgEl = document.createElement('div');
         msgEl.className = 'message';
         msgEl.textContent = message;
-        if (type === 'system') {
-            msgEl.style.color = '#fbbf24';
-        }
+        if (type === 'system') msgEl.style.color = '#fbbf24';
         messagesDiv.appendChild(msgEl);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-        // Auto-remove after 10 seconds
         setTimeout(() => {
             msgEl.style.opacity = '0';
             setTimeout(() => msgEl.remove(), 300);
@@ -712,32 +747,43 @@ class MinecraftGame {
     }
 
     addOtherPlayer(player) {
+        // Create player mesh - visible purple box
         const geometry = new THREE.BoxGeometry(0.6, 1.8, 0.6);
         const material = new THREE.MeshLambertMaterial({ color: 0x8b5cf6 });
         const mesh = new THREE.Mesh(geometry, material);
-        mesh.castShadow = true;
+
+        // Add head
+        const headGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+        const headMat = new THREE.MeshLambertMaterial({ color: 0xffcc99 });
+        const head = new THREE.Mesh(headGeo, headMat);
+        head.position.y = 1.15;
+        mesh.add(head);
 
         // Name label
         const canvas = document.createElement('canvas');
         canvas.width = 256;
         canvas.height = 64;
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         ctx.fillRect(0, 0, 256, 64);
         ctx.fillStyle = 'white';
-        ctx.font = '24px Outfit';
+        ctx.font = 'bold 28px Outfit, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(player.name, 128, 40);
+        ctx.fillText(player.name, 128, 42);
 
         const texture = new THREE.CanvasTexture(canvas);
         const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
         const sprite = new THREE.Sprite(spriteMaterial);
         sprite.scale.set(2, 0.5, 1);
-        sprite.position.y = 1.5;
+        sprite.position.y = 1.8;
         mesh.add(sprite);
 
+        if (player.position) {
+            mesh.position.set(player.position.x, player.position.y + 0.9, player.position.z);
+        }
+
         this.scene.add(mesh);
-        this.otherPlayers.set(player.id, { mesh, player });
+        this.otherPlayers.set(player.peerId || player.id, { mesh, player });
     }
 
     removeOtherPlayer(id) {
@@ -745,22 +791,23 @@ class MinecraftGame {
         if (data) {
             this.scene.remove(data.mesh);
             this.otherPlayers.delete(id);
-            this.addChatMessage(`${data.player.name} がゲームを離れました`, 'system');
         }
     }
 
     updateOtherPlayer(id, position, rotation) {
         const data = this.otherPlayers.get(id);
-        if (data) {
+        if (data && position) {
             data.mesh.position.set(position.x, position.y + 0.9, position.z);
-            data.mesh.rotation.y = rotation.y;
+            if (rotation) data.mesh.rotation.y = rotation.y;
         }
     }
 
     getTargetBlock() {
-        this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera);
+        // Update raycaster from camera
+        const direction = new THREE.Vector3(0, 0, -1);
+        direction.applyQuaternion(this.camera.quaternion);
+        this.raycaster.set(this.camera.position, direction);
 
-        // Check all blocks within range
         let closestHit = null;
         let closestDistance = Infinity;
 
@@ -773,7 +820,6 @@ class MinecraftGame {
                     const blockType = this.getBlock(x, y, z);
                     if (blockType === BLOCK_TYPES.AIR || blockType === BLOCK_TYPES.WATER) continue;
 
-                    // Create temporary box for intersection test
                     const box = new THREE.Box3(
                         new THREE.Vector3(x, y, z),
                         new THREE.Vector3(x + 1, y + 1, z + 1)
@@ -785,7 +831,6 @@ class MinecraftGame {
                         if (distance < closestDistance && distance < 5) {
                             closestDistance = distance;
 
-                            // Calculate face normal
                             const center = new THREE.Vector3(x + 0.5, y + 0.5, z + 0.5);
                             const diff = intersection.clone().sub(center);
                             let faceNormal = new THREE.Vector3();
@@ -802,11 +847,7 @@ class MinecraftGame {
                                 faceNormal.z = Math.sign(diff.z);
                             }
 
-                            closestHit = {
-                                position: { x, y, z },
-                                normal: faceNormal,
-                                blockType
-                            };
+                            closestHit = { position: { x, y, z }, normal: faceNormal, blockType };
                         }
                     }
                 }
@@ -830,18 +871,10 @@ class MinecraftGame {
             const placeY = target.position.y + target.normal.y;
             const placeZ = target.position.z + target.normal.z;
 
-            // Check if placement position is not inside player
+            // Check collision with player
             const playerBox = new THREE.Box3(
-                new THREE.Vector3(
-                    this.player.position.x - PLAYER_WIDTH / 2,
-                    this.player.position.y,
-                    this.player.position.z - PLAYER_WIDTH / 2
-                ),
-                new THREE.Vector3(
-                    this.player.position.x + PLAYER_WIDTH / 2,
-                    this.player.position.y + PLAYER_HEIGHT,
-                    this.player.position.z + PLAYER_WIDTH / 2
-                )
+                new THREE.Vector3(this.player.position.x - PLAYER_WIDTH / 2, this.player.position.y, this.player.position.z - PLAYER_WIDTH / 2),
+                new THREE.Vector3(this.player.position.x + PLAYER_WIDTH / 2, this.player.position.y + PLAYER_HEIGHT, this.player.position.z + PLAYER_WIDTH / 2)
             );
 
             const blockBox = new THREE.Box3(
@@ -856,29 +889,43 @@ class MinecraftGame {
     }
 
     updatePlayer(deltaTime) {
-        if (!this.isPlaying || this.isPaused) return;
+        if (!this.isPlaying || this.isPaused || this.isDead) return;
 
+        const now = Date.now();
+
+        // Survival mechanics
+        // Hunger decreases over time
+        if (now - this.lastHungerDecrease > HUNGER_DECREASE_INTERVAL) {
+            this.player.hunger = Math.max(0, this.player.hunger - 1);
+            this.lastHungerDecrease = now;
+        }
+
+        // Starving damage
+        if (this.player.hunger <= 0 && now - this.lastStarvingDamage > HUNGER_DAMAGE_INTERVAL) {
+            this.takeDamage(1, '餓死');
+            this.lastStarvingDamage = now;
+        }
+
+        // Movement - FIXED direction
         const moveDirection = new THREE.Vector3();
 
-        // Get movement input
-        if (this.keys['KeyW']) moveDirection.z -= 1;
-        if (this.keys['KeyS']) moveDirection.z += 1;
-        if (this.keys['KeyA']) moveDirection.x -= 1;
-        if (this.keys['KeyD']) moveDirection.x += 1;
+        if (this.keys['KeyW']) moveDirection.z = -1;
+        if (this.keys['KeyS']) moveDirection.z = 1;
+        if (this.keys['KeyA']) moveDirection.x = -1;
+        if (this.keys['KeyD']) moveDirection.x = 1;
 
-        // Rotate movement direction based on camera
         if (moveDirection.length() > 0) {
             moveDirection.normalize();
-            const angle = this.player.rotation.y;
-            const sin = Math.sin(angle);
-            const cos = Math.cos(angle);
-            const newX = moveDirection.x * cos - moveDirection.z * sin;
-            const newZ = moveDirection.x * sin + moveDirection.z * cos;
+
+            // Rotate by player Y rotation
+            const cos = Math.cos(this.player.rotation.y);
+            const sin = Math.sin(this.player.rotation.y);
+            const newX = moveDirection.x * cos + moveDirection.z * sin;
+            const newZ = -moveDirection.x * sin + moveDirection.z * cos;
             moveDirection.x = newX;
             moveDirection.z = newZ;
         }
 
-        // Apply movement
         const speed = this.keys['ShiftLeft'] ? MOVE_SPEED * 0.5 : MOVE_SPEED;
         this.player.velocity.x = moveDirection.x * speed;
         this.player.velocity.z = moveDirection.z * speed;
@@ -892,60 +939,68 @@ class MinecraftGame {
         // Gravity
         this.player.velocity.y -= GRAVITY * deltaTime;
 
-        // Apply velocity with collision
+        // Move with collision
         this.moveWithCollision(deltaTime);
 
-        // Update camera position
+        // Fall damage
+        if (this.player.onGround) {
+            const fallDistance = this.player.lastY - this.player.position.y;
+            if (fallDistance > FALL_DAMAGE_THRESHOLD) {
+                const damage = Math.floor((fallDistance - FALL_DAMAGE_THRESHOLD) * FALL_DAMAGE_MULTIPLIER);
+                this.takeDamage(damage, '落下ダメージ');
+            }
+            this.player.lastY = this.player.position.y;
+        } else if (this.player.velocity.y > 0) {
+            this.player.lastY = this.player.position.y;
+        }
+
+        // Update camera
         this.camera.position.copy(this.player.position);
         this.camera.position.y += PLAYER_HEIGHT - 0.2;
         this.camera.rotation.order = 'YXZ';
         this.camera.rotation.x = this.player.rotation.x;
         this.camera.rotation.y = this.player.rotation.y;
 
-        // Update block highlight
+        // Block highlight
         const target = this.getTargetBlock();
         if (target) {
-            this.highlightMesh.position.set(
-                target.position.x + 0.5,
-                target.position.y + 0.5,
-                target.position.z + 0.5
-            );
+            this.highlightMesh.position.set(target.position.x + 0.5, target.position.y + 0.5, target.position.z + 0.5);
             this.highlightMesh.visible = true;
         } else {
             this.highlightMesh.visible = false;
         }
 
-        // Send position to server
-        this.network.sendPosition(this.player.position, this.player.rotation);
+        // Send position to network (throttled)
+        if (now - this.lastPositionUpdate > 50) {
+            this.network.sendPosition(this.player.position, this.player.rotation);
+            this.lastPositionUpdate = now;
+        }
 
-        // Update HUD
         this.updateHUD();
     }
 
     moveWithCollision(deltaTime) {
-        const velocity = this.player.velocity.clone();
+        const velocity = this.player.velocity;
         const position = this.player.position.clone();
 
-        // X axis
+        // X
         position.x += velocity.x * deltaTime;
         if (this.checkCollision(position)) {
             position.x = this.player.position.x;
             this.player.velocity.x = 0;
         }
 
-        // Y axis
+        // Y
         position.y += velocity.y * deltaTime;
         if (this.checkCollision(position)) {
-            if (velocity.y < 0) {
-                this.player.onGround = true;
-            }
+            if (velocity.y < 0) this.player.onGround = true;
             position.y = this.player.position.y;
             this.player.velocity.y = 0;
         } else {
             this.player.onGround = false;
         }
 
-        // Z axis
+        // Z
         position.z += velocity.z * deltaTime;
         if (this.checkCollision(position)) {
             position.z = this.player.position.z;
@@ -954,47 +1009,43 @@ class MinecraftGame {
 
         this.player.position.copy(position);
 
-        // Fall off world
+        // Fall out of world
         if (this.player.position.y < -10) {
-            this.findSpawnPosition();
-            this.player.velocity.set(0, 0, 0);
+            this.die('奈落に落ちた');
         }
     }
 
     checkCollision(position) {
-        const halfWidth = PLAYER_WIDTH / 2;
+        const hw = PLAYER_WIDTH / 2;
         const corners = [
-            [position.x - halfWidth, position.y, position.z - halfWidth],
-            [position.x + halfWidth, position.y, position.z - halfWidth],
-            [position.x - halfWidth, position.y, position.z + halfWidth],
-            [position.x + halfWidth, position.y, position.z + halfWidth],
-            [position.x - halfWidth, position.y + PLAYER_HEIGHT, position.z - halfWidth],
-            [position.x + halfWidth, position.y + PLAYER_HEIGHT, position.z - halfWidth],
-            [position.x - halfWidth, position.y + PLAYER_HEIGHT, position.z + halfWidth],
-            [position.x + halfWidth, position.y + PLAYER_HEIGHT, position.z + halfWidth],
+            [position.x - hw, position.y + 0.1, position.z - hw],
+            [position.x + hw, position.y + 0.1, position.z - hw],
+            [position.x - hw, position.y + 0.1, position.z + hw],
+            [position.x + hw, position.y + 0.1, position.z + hw],
+            [position.x - hw, position.y + PLAYER_HEIGHT - 0.1, position.z - hw],
+            [position.x + hw, position.y + PLAYER_HEIGHT - 0.1, position.z - hw],
+            [position.x - hw, position.y + PLAYER_HEIGHT - 0.1, position.z + hw],
+            [position.x + hw, position.y + PLAYER_HEIGHT - 0.1, position.z + hw],
         ];
 
         for (const [x, y, z] of corners) {
-            const blockType = this.getBlock(Math.floor(x), Math.floor(y), Math.floor(z));
+            const blockType = this.getBlock(x, y, z);
             if (blockType !== BLOCK_TYPES.AIR && blockType !== BLOCK_TYPES.WATER) {
                 return true;
             }
         }
-
         return false;
     }
 
     updateHUD() {
-        // Update coordinates
         document.getElementById('coord-x').textContent = Math.floor(this.player.position.x);
         document.getElementById('coord-y').textContent = Math.floor(this.player.position.y);
         document.getElementById('coord-z').textContent = Math.floor(this.player.position.z);
 
-        // Update health & hunger bars
         document.getElementById('health-bar').style.width = `${(this.player.health / this.player.maxHealth) * 100}%`;
         document.getElementById('hunger-bar').style.width = `${(this.player.hunger / this.player.maxHunger) * 100}%`;
-        document.getElementById('health-text').textContent = `${this.player.health}/${this.player.maxHealth}`;
-        document.getElementById('hunger-text').textContent = `${this.player.hunger}/${this.player.maxHunger}`;
+        document.getElementById('health-text').textContent = `${Math.ceil(this.player.health)}/${this.player.maxHealth}`;
+        document.getElementById('hunger-text').textContent = `${Math.ceil(this.player.hunger)}/${this.player.maxHunger}`;
     }
 
     animate() {
@@ -1002,10 +1053,9 @@ class MinecraftGame {
 
         const deltaTime = Math.min(this.clock.getDelta(), 0.1);
 
-        // Update player
         this.updatePlayer(deltaTime);
 
-        // FPS counter
+        // FPS
         this.frameCount++;
         if (performance.now() - this.lastFpsUpdate > 1000) {
             document.getElementById('fps').textContent = this.frameCount;
@@ -1013,12 +1063,11 @@ class MinecraftGame {
             this.lastFpsUpdate = performance.now();
         }
 
-        // Render
         this.renderer.render(this.scene, this.camera);
     }
 }
 
-// Start the game when page loads
+// Start game
 window.addEventListener('DOMContentLoaded', () => {
     window.game = new MinecraftGame();
 });

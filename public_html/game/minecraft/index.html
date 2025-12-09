@@ -28,7 +28,19 @@
             <h1>⛏️ WebCraft</h1>
             <div class="menu-box">
                 <input type="text" id="player-name" placeholder="プレイヤー名を入力" maxlength="16">
-                <button id="play-btn" class="menu-btn primary">🎮 サバイバルモード</button>
+
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="solo">🎮 ソロプレイ</button>
+                    <button class="mode-tab" data-mode="host">🏠 ホスト</button>
+                    <button class="mode-tab" data-mode="join">🔗 参加</button>
+                </div>
+
+                <div id="join-section" style="display: none;">
+                    <input type="text" id="room-code-input" placeholder="ルームコードを入力 (例: WC-ABC123)" maxlength="12">
+                </div>
+
+                <button id="play-btn" class="menu-btn primary">🎮 サバイバルモード開始</button>
+
                 <div class="server-status">
                     <span id="online-count">0</span> players online
                 </div>
@@ -42,7 +54,7 @@
                     <li><kbd>左クリック</kbd> - ブロック破壊</li>
                     <li><kbd>右クリック</kbd> - ブロック設置</li>
                     <li><kbd>1-9</kbd> - アイテム選択</li>
-                    <li><kbd>E</kbd> - インベントリ</li>
+                    <li><kbd>T</kbd> - チャット</li>
                     <li><kbd>Esc</kbd> - メニュー</li>
                 </ul>
             </div>
@@ -56,6 +68,12 @@
     <div id="hud" style="display: none;">
         <!-- Crosshair -->
         <div id="crosshair">+</div>
+
+        <!-- Room Code Display -->
+        <div id="room-code-display" style="display: none;">
+            <span>🔗 ルームコード: <strong id="room-code-text"></strong></span>
+            <button id="copy-room-code" title="コピー">📋</button>
+        </div>
 
         <!-- Health & Hunger -->
         <div id="status-bars">
@@ -125,12 +143,24 @@
             <div id="chat-messages"></div>
             <input type="text" id="chat-input" placeholder="メッセージを入力... (Enter)" style="display: none;">
         </div>
+
+        <!-- Death Screen -->
+        <div id="death-screen" style="display: none;">
+            <div class="death-content">
+                <h2>💀 You Died!</h2>
+                <p id="death-message">落下ダメージ</p>
+                <button id="respawn-btn" class="menu-btn primary">🔄 リスポーン</button>
+            </div>
+        </div>
     </div>
 
     <!-- Pause Menu -->
     <div id="pause-menu" style="display: none;">
         <div class="pause-content">
             <h2>⏸️ 一時停止</h2>
+            <div id="pause-room-code" style="display: none;">
+                <p>ルームコード: <strong id="pause-room-code-text"></strong></p>
+            </div>
             <button id="resume-btn" class="menu-btn">▶️ ゲームに戻る</button>
             <button id="quit-btn" class="menu-btn danger">🚪 ゲーム終了</button>
         </div>
@@ -139,6 +169,7 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simplex-noise@2.4.0/simplex-noise.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="network.js"></script>
     <script src="game.js"></script>
 </body>

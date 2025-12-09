@@ -1,7 +1,6 @@
 /**
  * WebCraft Network Client
  * P2P Multiplayer using PeerJS (WebRTC) + localStorage for world persistence
- * Works without a dedicated server!
  */
 
 class NetworkClient {
@@ -14,6 +13,7 @@ class NetworkClient {
         this.players = new Map();
         this.isHost = false;
         this.roomCode = null;
+        this.gameMode = 'solo'; // 'solo', 'host', 'join'
 
         this.callbacks = {
             onConnect: () => { },
@@ -24,7 +24,8 @@ class NetworkClient {
             onBlockChange: () => { },
             onChat: () => { },
             onWorldData: () => { },
-            onPlayerCount: () => { }
+            onPlayerCount: () => { },
+            onRoomCreated: () => { }
         };
 
         // World changes storage
@@ -33,7 +34,7 @@ class NetworkClient {
 
     // Generate random room code
     generateRoomCode() {
-        return 'WC-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+        return 'WC' + Math.random().toString(36).substring(2, 8).toUpperCase();
     }
 
     // Load world changes from localStorage
@@ -49,7 +50,6 @@ class NetworkClient {
     // Save world changes to localStorage
     saveWorldChanges() {
         try {
-            // Limit to 50000 changes
             if (this.worldChanges.length > 50000) {
                 this.worldChanges = this.worldChanges.slice(-50000);
             }
@@ -59,65 +59,72 @@ class NetworkClient {
         }
     }
 
-    connect(playerName, roomCodeToJoin = null) {
+    connect(playerName, mode = 'solo', roomCodeToJoin = null) {
         return new Promise((resolve, reject) => {
             this.playerName = playerName;
-            this.playerId = 'player_' + Math.random().toString(36).substring(2, 9);
+            this.playerId = 'p_' + Math.random().toString(36).substring(2, 9);
+            this.gameMode = mode;
 
-            // If no room code, we're playing solo or hosting
-            if (!roomCodeToJoin) {
+            // Solo mode - no networking
+            if (mode === 'solo') {
                 console.log('Starting in single-player mode');
                 this.connected = true;
                 this.callbacks.onConnect();
 
                 // Apply saved world changes
                 if (this.worldChanges.length > 0) {
-                    this.callbacks.onWorldData({ changes: this.worldChanges });
+                    setTimeout(() => {
+                        this.callbacks.onWorldData({ changes: this.worldChanges });
+                    }, 100);
                 }
 
                 resolve();
                 return;
             }
 
-            // Try to connect via PeerJS for multiplayer
-            try {
-                // Load PeerJS dynamically
-                if (!window.Peer) {
-                    const script = document.createElement('script');
-                    script.src = 'https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js';
-                    script.onload = () => this.initPeer(playerName, roomCodeToJoin, resolve);
-                    document.head.appendChild(script);
-                } else {
-                    this.initPeer(playerName, roomCodeToJoin, resolve);
-                }
-            } catch (error) {
-                console.error('PeerJS failed, continuing offline:', error);
-                this.connected = true;
-                resolve();
-            }
+            // Host or Join mode
+            this.initPeer(playerName, mode, roomCodeToJoin, resolve);
         });
     }
 
-    initPeer(playerName, roomCode, resolve) {
-        const peerId = roomCode || this.generateRoomCode();
-        this.roomCode = peerId;
-        this.isHost = !roomCode;
+    initPeer(playerName, mode, roomCodeToJoin, resolve) {
+        if (mode === 'host') {
+            // Generate a new room code
+            this.roomCode = this.generateRoomCode();
+            this.isHost = true;
+        } else if (mode === 'join') {
+            // Use the provided room code
+            this.roomCode = roomCodeToJoin;
+            this.isHost = false;
+        }
 
-        this.peer = new Peer(peerId, {
-            debug: 1
+        // Create peer with unique ID
+        const myPeerId = mode === 'host' ? this.roomCode : (this.playerId + '_' + Date.now());
+
+        console.log('Creating peer with ID:', myPeerId);
+
+        this.peer = new Peer(myPeerId, {
+            debug: 2,
+            config: {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' }
+                ]
+            }
         });
 
         this.peer.on('open', (id) => {
-            console.log('PeerJS connected with ID:', id);
+            console.log('Peer connected with ID:', id);
             this.connected = true;
-            this.roomCode = id;
 
             if (this.isHost) {
-                console.log('Hosting room:', id);
+                console.log('Hosting room:', this.roomCode);
+                this.callbacks.onRoomCreated(this.roomCode);
             } else {
                 // Connect to host
-                const conn = this.peer.connect(roomCode);
-                this.setupConnection(conn);
+                console.log('Connecting to host:', this.roomCode);
+                const conn = this.peer.connect(this.roomCode, { reliable: true });
+                this.setupConnection(conn, true);
             }
 
             this.callbacks.onConnect();
@@ -125,14 +132,24 @@ class NetworkClient {
         });
 
         this.peer.on('connection', (conn) => {
-            console.log('Player connected:', conn.peer);
-            this.setupConnection(conn);
+            console.log('Incoming connection from:', conn.peer);
+            this.setupConnection(conn, false);
         });
 
         this.peer.on('error', (error) => {
             console.error('PeerJS error:', error);
+            if (error.type === 'unavailable-id') {
+                alert('このルームコードは既に使用されています。別のコードを試してください。');
+            } else if (error.type === 'peer-unavailable') {
+                alert('ルームが見つかりません。コードを確認してください。');
+            }
             this.connected = true; // Continue offline
             resolve();
+        });
+
+        this.peer.on('disconnected', () => {
+            console.log('Peer disconnected, attempting to reconnect...');
+            this.peer.reconnect();
         });
 
         // Timeout
@@ -142,11 +159,12 @@ class NetworkClient {
                 this.connected = true;
                 resolve();
             }
-        }, 5000);
+        }, 10000);
     }
 
-    setupConnection(conn) {
+    setupConnection(conn, isOutgoing) {
         conn.on('open', () => {
+            console.log('Connection opened with:', conn.peer);
             this.connections.set(conn.peer, conn);
 
             // Send our player info
@@ -160,13 +178,15 @@ class NetworkClient {
                 }
             });
 
-            // If host, send world data
+            // If host, send world data to new player
             if (this.isHost && this.worldChanges.length > 0) {
                 conn.send({
                     type: 'worldData',
                     changes: this.worldChanges
                 });
             }
+
+            this.callbacks.onPlayerCount(this.connections.size);
         });
 
         conn.on('data', (data) => {
@@ -174,10 +194,18 @@ class NetworkClient {
         });
 
         conn.on('close', () => {
+            console.log('Connection closed:', conn.peer);
+            const player = this.players.get(conn.peer);
             this.connections.delete(conn.peer);
             this.players.delete(conn.peer);
-            this.callbacks.onPlayerLeave(conn.peer);
-            this.callbacks.onPlayerCount(this.players.size);
+            if (player) {
+                this.callbacks.onPlayerLeave(conn.peer, player);
+            }
+            this.callbacks.onPlayerCount(this.connections.size);
+        });
+
+        conn.on('error', (err) => {
+            console.error('Connection error:', err);
         });
     }
 
@@ -188,11 +216,14 @@ class NetworkClient {
         this.saveWorldChanges();
     }
 
-    broadcast(data, excludeId = null) {
-        const message = JSON.stringify(data);
+    broadcast(data) {
         this.connections.forEach((conn, id) => {
-            if (id !== excludeId && conn.open) {
-                conn.send(data);
+            if (conn.open) {
+                try {
+                    conn.send(data);
+                } catch (e) {
+                    console.error('Send error:', e);
+                }
             }
         });
     }
@@ -200,6 +231,7 @@ class NetworkClient {
     handleMessage(data, fromId) {
         switch (data.type) {
             case 'playerJoin':
+                data.player.peerId = fromId;
                 this.players.set(fromId, data.player);
                 this.callbacks.onPlayerJoin(data.player);
                 this.callbacks.onPlayerCount(this.players.size);
@@ -211,7 +243,7 @@ class NetworkClient {
                     player.position = data.position;
                     player.rotation = data.rotation;
                 }
-                this.callbacks.onPlayerMove({ id: fromId, ...data });
+                this.callbacks.onPlayerMove({ id: fromId, position: data.position, rotation: data.rotation });
                 break;
 
             case 'blockChange':
@@ -222,13 +254,26 @@ class NetworkClient {
                     blockType: data.blockType
                 });
                 this.callbacks.onBlockChange(data);
-                // Relay to other peers
-                this.broadcast(data, fromId);
+                // Relay to other peers (if we're the host)
+                if (this.isHost) {
+                    this.connections.forEach((conn, id) => {
+                        if (id !== fromId && conn.open) {
+                            conn.send(data);
+                        }
+                    });
+                }
                 break;
 
             case 'chat':
                 this.callbacks.onChat({ id: fromId, name: data.name, message: data.message });
-                this.broadcast(data, fromId);
+                // Relay chat if host
+                if (this.isHost) {
+                    this.connections.forEach((conn, id) => {
+                        if (id !== fromId && conn.open) {
+                            conn.send(data);
+                        }
+                    });
+                }
                 break;
 
             case 'worldData':
