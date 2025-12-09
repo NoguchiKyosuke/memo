@@ -1,77 +1,58 @@
 /**
- * WebCraft - Minecraft Clone Game Engine
- * Built with Three.js
- * Survival Mode with P2P Multiplayer
+ * WebCraft - Minecraft Clone
+ * Survival Mode with Real P2P Multiplayer
  */
 
 // ===== Block Types =====
 const BLOCK_TYPES = {
-    AIR: 0,
-    GRASS: 1,
-    DIRT: 2,
-    STONE: 3,
-    WOOD: 4,
-    LEAVES: 5,
-    SAND: 6,
-    COBBLESTONE: 7,
-    PLANKS: 8,
-    BRICK: 9,
-    WATER: 10,
-    BEDROCK: 11
+    AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, WOOD: 4, LEAVES: 5,
+    SAND: 6, COBBLESTONE: 7, PLANKS: 8, BRICK: 9, WATER: 10, BEDROCK: 11,
+    COAL_ORE: 12, IRON_ORE: 13, GOLD_ORE: 14, DIAMOND_ORE: 15
 };
 
 const BLOCK_COLORS = {
-    [BLOCK_TYPES.GRASS]: 0x4ade80,
-    [BLOCK_TYPES.DIRT]: 0x854d0e,
-    [BLOCK_TYPES.STONE]: 0x71717a,
-    [BLOCK_TYPES.WOOD]: 0x78350f,
-    [BLOCK_TYPES.LEAVES]: 0x22c55e,
-    [BLOCK_TYPES.SAND]: 0xfcd34d,
-    [BLOCK_TYPES.COBBLESTONE]: 0x52525b,
-    [BLOCK_TYPES.PLANKS]: 0xa16207,
-    [BLOCK_TYPES.BRICK]: 0xb91c1c,
-    [BLOCK_TYPES.WATER]: 0x3b82f6,
-    [BLOCK_TYPES.BEDROCK]: 0x1f1f1f
+    [BLOCK_TYPES.GRASS]: 0x4ade80, [BLOCK_TYPES.DIRT]: 0x854d0e,
+    [BLOCK_TYPES.STONE]: 0x71717a, [BLOCK_TYPES.WOOD]: 0x78350f,
+    [BLOCK_TYPES.LEAVES]: 0x22c55e, [BLOCK_TYPES.SAND]: 0xfcd34d,
+    [BLOCK_TYPES.COBBLESTONE]: 0x52525b, [BLOCK_TYPES.PLANKS]: 0xa16207,
+    [BLOCK_TYPES.BRICK]: 0xb91c1c, [BLOCK_TYPES.WATER]: 0x3b82f6,
+    [BLOCK_TYPES.BEDROCK]: 0x1f1f1f, [BLOCK_TYPES.COAL_ORE]: 0x3f3f3f,
+    [BLOCK_TYPES.IRON_ORE]: 0xd4a574, [BLOCK_TYPES.GOLD_ORE]: 0xffd700,
+    [BLOCK_TYPES.DIAMOND_ORE]: 0x00ffff
 };
+
+// Random skin colors for players
+const SKIN_COLORS = [0x8b5cf6, 0xef4444, 0x22c55e, 0xf59e0b, 0x3b82f6, 0xec4899, 0x14b8a6, 0xf97316];
 
 // ===== Game Constants =====
 const CHUNK_SIZE = 16;
-const WORLD_SIZE = 8;
+const WORLD_SIZE = 6;
 const WORLD_HEIGHT = 64;
 const SEA_LEVEL = 20;
-const GRAVITY = 25;
+const GRAVITY = 28;
 const JUMP_FORCE = 10;
-const MOVE_SPEED = 6;
+const MOVE_SPEED = 5;
 const MOUSE_SENSITIVITY = 0.002;
 const PLAYER_HEIGHT = 1.8;
 const PLAYER_WIDTH = 0.6;
 
-// Survival constants
-const HUNGER_DECREASE_INTERVAL = 30000; // 30 seconds
-const HUNGER_DAMAGE_INTERVAL = 5000; // 5 seconds when starving
-const FALL_DAMAGE_THRESHOLD = 4; // blocks
-const FALL_DAMAGE_MULTIPLIER = 2; // damage per block
-
 // ===== Main Game Class =====
 class MinecraftGame {
     constructor() {
-        // Three.js components
         this.scene = null;
         this.camera = null;
         this.renderer = null;
 
-        // Game state
         this.isPlaying = false;
         this.isPaused = false;
         this.isDead = false;
         this.playerName = 'Player';
         this.gameMode = 'solo';
 
-        // World data
         this.chunks = new Map();
         this.blockMeshes = new Map();
+        this.dirtyChunks = new Set();
 
-        // Player state
         this.player = {
             position: new THREE.Vector3(CHUNK_SIZE * WORLD_SIZE / 2, 50, CHUNK_SIZE * WORLD_SIZE / 2),
             velocity: new THREE.Vector3(0, 0, 0),
@@ -82,50 +63,32 @@ class MinecraftGame {
             hunger: 20,
             maxHunger: 20,
             lastY: 50,
-            fallDistance: 0
+            skinColor: SKIN_COLORS[Math.floor(Math.random() * SKIN_COLORS.length)]
         };
 
-        // Controls
         this.keys = {};
         this.isPointerLocked = false;
         this.selectedSlot = 0;
         this.hotbarBlocks = [
-            BLOCK_TYPES.GRASS,
-            BLOCK_TYPES.DIRT,
-            BLOCK_TYPES.STONE,
-            BLOCK_TYPES.WOOD,
-            BLOCK_TYPES.LEAVES,
-            BLOCK_TYPES.SAND,
-            BLOCK_TYPES.COBBLESTONE,
-            BLOCK_TYPES.PLANKS,
-            BLOCK_TYPES.BRICK
+            BLOCK_TYPES.GRASS, BLOCK_TYPES.DIRT, BLOCK_TYPES.STONE,
+            BLOCK_TYPES.WOOD, BLOCK_TYPES.PLANKS, BLOCK_TYPES.COBBLESTONE,
+            BLOCK_TYPES.BRICK, BLOCK_TYPES.SAND, BLOCK_TYPES.LEAVES
         ];
 
-        // Raycaster for block interaction
         this.raycaster = new THREE.Raycaster();
-        this.raycaster.far = 5;
-
-        // Network
         this.network = new NetworkClient();
         this.otherPlayers = new Map();
+        this.hostPlayer = null; // For guests to see the host
 
-        // Noise generator for terrain
         this.noise = new SimplexNoise();
-
-        // Performance
         this.clock = new THREE.Clock();
         this.frameCount = 0;
         this.lastFpsUpdate = 0;
         this.lastPositionUpdate = 0;
-
-        // Survival timers
         this.lastHungerDecrease = 0;
-        this.lastStarvingDamage = 0;
 
-        // Block highlight
         this.highlightMesh = null;
 
-        // DOM elements
         this.canvas = document.getElementById('game-canvas');
         this.loadingScreen = document.getElementById('loading-screen');
         this.menuScreen = document.getElementById('menu-screen');
@@ -137,19 +100,11 @@ class MinecraftGame {
     }
 
     async init() {
-        this.updateLoadingText('Initializing engine...');
-        await this.delay(300);
+        this.updateLoadingText('Initializing...');
+        await this.delay(200);
 
         this.initThreeJS();
-        this.updateLoadingText('Creating world...');
-        await this.delay(200);
-
-        this.generateWorld();
-        this.updateLoadingText('Building terrain...');
-        await this.delay(200);
-
-        this.buildAllChunks();
-        this.updateLoadingText('Setting up controls...');
+        this.updateLoadingText('Preparing...');
         await this.delay(100);
 
         this.setupControls();
@@ -162,51 +117,34 @@ class MinecraftGame {
         this.animate();
     }
 
-    delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    updateLoadingText(text) {
-        document.getElementById('loading-text').textContent = text;
-    }
+    delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+    updateLoadingText(t) { document.getElementById('loading-text').textContent = t; }
 
     initThreeJS() {
-        // Scene
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x87CEEB);
-        this.scene.fog = new THREE.Fog(0x87CEEB, 50, 150);
+        this.scene.fog = new THREE.Fog(0x87CEEB, 40, 120);
 
-        // Camera
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
-        this.camera.position.copy(this.player.position);
-        this.camera.position.y += PLAYER_HEIGHT - 0.2;
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 300);
 
-        // Renderer
         this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        this.scene.add(ambientLight);
+        const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+        this.scene.add(ambient);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(50, 100, 50);
-        this.scene.add(directionalLight);
+        const sun = new THREE.DirectionalLight(0xffffff, 0.6);
+        sun.position.set(50, 100, 50);
+        this.scene.add(sun);
 
         // Block highlight
-        const highlightGeo = new THREE.BoxGeometry(1.02, 1.02, 1.02);
-        const highlightMat = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            transparent: true,
-            opacity: 0.3,
-            wireframe: true
-        });
-        this.highlightMesh = new THREE.Mesh(highlightGeo, highlightMat);
+        const hlGeo = new THREE.BoxGeometry(1.02, 1.02, 1.02);
+        const hlMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3, wireframe: true });
+        this.highlightMesh = new THREE.Mesh(hlGeo, hlMat);
         this.highlightMesh.visible = false;
         this.scene.add(this.highlightMesh);
 
-        // Window resize
         window.addEventListener('resize', () => {
             this.camera.aspect = window.innerWidth / window.innerHeight;
             this.camera.updateProjectionMatrix();
@@ -215,6 +153,11 @@ class MinecraftGame {
     }
 
     generateWorld() {
+        console.log('[Game] Generating fresh world...');
+        this.chunks.clear();
+        this.blockMeshes.forEach(m => this.scene.remove(m));
+        this.blockMeshes.clear();
+
         for (let cx = 0; cx < WORLD_SIZE; cx++) {
             for (let cz = 0; cz < WORLD_SIZE; cz++) {
                 this.generateChunk(cx, cz);
@@ -223,30 +166,35 @@ class MinecraftGame {
     }
 
     generateChunk(cx, cz) {
-        const chunkKey = `${cx},${cz}`;
+        const key = `${cx},${cz}`;
         const chunk = new Uint8Array(CHUNK_SIZE * WORLD_HEIGHT * CHUNK_SIZE);
 
         for (let x = 0; x < CHUNK_SIZE; x++) {
             for (let z = 0; z < CHUNK_SIZE; z++) {
-                const worldX = cx * CHUNK_SIZE + x;
-                const worldZ = cz * CHUNK_SIZE + z;
-                const height = this.getTerrainHeight(worldX, worldZ);
+                const wx = cx * CHUNK_SIZE + x;
+                const wz = cz * CHUNK_SIZE + z;
+                const height = this.getTerrainHeight(wx, wz);
 
                 for (let y = 0; y < WORLD_HEIGHT; y++) {
-                    const index = x + y * CHUNK_SIZE + z * CHUNK_SIZE * WORLD_HEIGHT;
+                    const idx = x + y * CHUNK_SIZE + z * CHUNK_SIZE * WORLD_HEIGHT;
 
                     if (y === 0) {
-                        chunk[index] = BLOCK_TYPES.BEDROCK;
+                        chunk[idx] = BLOCK_TYPES.BEDROCK;
                     } else if (y < height - 4) {
-                        chunk[index] = BLOCK_TYPES.STONE;
+                        // Stone with ores
+                        chunk[idx] = BLOCK_TYPES.STONE;
+                        if (y < 20 && Math.random() < 0.02) chunk[idx] = BLOCK_TYPES.COAL_ORE;
+                        if (y < 15 && Math.random() < 0.015) chunk[idx] = BLOCK_TYPES.IRON_ORE;
+                        if (y < 10 && Math.random() < 0.005) chunk[idx] = BLOCK_TYPES.GOLD_ORE;
+                        if (y < 8 && Math.random() < 0.002) chunk[idx] = BLOCK_TYPES.DIAMOND_ORE;
                     } else if (y < height - 1) {
-                        chunk[index] = BLOCK_TYPES.DIRT;
+                        chunk[idx] = BLOCK_TYPES.DIRT;
                     } else if (y < height) {
-                        chunk[index] = y < SEA_LEVEL ? BLOCK_TYPES.SAND : BLOCK_TYPES.GRASS;
+                        chunk[idx] = y < SEA_LEVEL ? BLOCK_TYPES.SAND : BLOCK_TYPES.GRASS;
                     } else if (y < SEA_LEVEL) {
-                        chunk[index] = BLOCK_TYPES.WATER;
+                        chunk[idx] = BLOCK_TYPES.WATER;
                     } else {
-                        chunk[index] = BLOCK_TYPES.AIR;
+                        chunk[idx] = BLOCK_TYPES.AIR;
                     }
                 }
 
@@ -257,43 +205,52 @@ class MinecraftGame {
             }
         }
 
-        this.chunks.set(chunkKey, chunk);
+        this.chunks.set(key, chunk);
     }
 
     getTerrainHeight(x, z) {
-        const scale1 = 0.02;
-        const scale2 = 0.05;
-        const noise1 = this.noise.noise2D(x * scale1, z * scale1) * 15;
-        const noise2 = this.noise.noise2D(x * scale2, z * scale2) * 8;
-        return Math.floor(SEA_LEVEL + 5 + noise1 + noise2);
+        const n1 = this.noise.noise2D(x * 0.02, z * 0.02) * 12;
+        const n2 = this.noise.noise2D(x * 0.05, z * 0.05) * 6;
+        return Math.floor(SEA_LEVEL + 5 + n1 + n2);
     }
 
     generateTree(chunk, x, baseY, z) {
         if (x < 2 || x > CHUNK_SIZE - 3 || z < 2 || z > CHUNK_SIZE - 3) return;
+        const h = 4 + Math.floor(Math.random() * 2);
 
-        const treeHeight = 4 + Math.floor(Math.random() * 2);
-
-        // Trunk
-        for (let y = 0; y < treeHeight; y++) {
-            const index = x + (baseY + y) * CHUNK_SIZE + z * CHUNK_SIZE * WORLD_HEIGHT;
-            if (baseY + y < WORLD_HEIGHT) chunk[index] = BLOCK_TYPES.WOOD;
+        for (let y = 0; y < h; y++) {
+            const idx = x + (baseY + y) * CHUNK_SIZE + z * CHUNK_SIZE * WORLD_HEIGHT;
+            if (baseY + y < WORLD_HEIGHT) chunk[idx] = BLOCK_TYPES.WOOD;
         }
 
-        // Leaves
-        const leafStart = baseY + treeHeight - 2;
+        const leafY = baseY + h - 2;
         for (let ly = 0; ly < 3; ly++) {
-            const radius = ly === 2 ? 1 : 2;
-            for (let lx = -radius; lx <= radius; lx++) {
-                for (let lz = -radius; lz <= radius; lz++) {
-                    if (Math.abs(lx) === radius && Math.abs(lz) === radius && Math.random() > 0.5) continue;
-                    const nx = x + lx, ny = leafStart + ly, nz = z + lz;
+            const r = ly === 2 ? 1 : 2;
+            for (let lx = -r; lx <= r; lx++) {
+                for (let lz = -r; lz <= r; lz++) {
+                    if (Math.abs(lx) === r && Math.abs(lz) === r && Math.random() > 0.5) continue;
+                    const nx = x + lx, ny = leafY + ly, nz = z + lz;
                     if (nx >= 0 && nx < CHUNK_SIZE && ny < WORLD_HEIGHT && nz >= 0 && nz < CHUNK_SIZE) {
-                        const index = nx + ny * CHUNK_SIZE + nz * CHUNK_SIZE * WORLD_HEIGHT;
-                        if (chunk[index] === BLOCK_TYPES.AIR) chunk[index] = BLOCK_TYPES.LEAVES;
+                        const idx = nx + ny * CHUNK_SIZE + nz * CHUNK_SIZE * WORLD_HEIGHT;
+                        if (chunk[idx] === BLOCK_TYPES.AIR) chunk[idx] = BLOCK_TYPES.LEAVES;
                     }
                 }
             }
         }
+    }
+
+    loadWorldFromData(worldData) {
+        console.log('[Game] Loading world from host...');
+        this.chunks.clear();
+        this.blockMeshes.forEach(m => this.scene.remove(m));
+        this.blockMeshes.clear();
+
+        for (const [key, arr] of Object.entries(worldData)) {
+            this.chunks.set(key, new Uint8Array(arr));
+        }
+
+        this.buildAllChunks();
+        console.log('[Game] World loaded!');
     }
 
     buildAllChunks() {
@@ -305,20 +262,14 @@ class MinecraftGame {
     }
 
     buildChunkMesh(cx, cz) {
-        const chunkKey = `${cx},${cz}`;
-        const chunk = this.chunks.get(chunkKey);
+        const key = `${cx},${cz}`;
+        const chunk = this.chunks.get(key);
         if (!chunk) return;
 
-        // Remove old mesh
-        const oldMesh = this.blockMeshes.get(chunkKey);
-        if (oldMesh) {
-            this.scene.remove(oldMesh);
-            if (oldMesh.children) {
-                oldMesh.children.forEach(child => {
-                    if (child.geometry) child.geometry.dispose();
-                    if (child.material) child.material.dispose();
-                });
-            }
+        const old = this.blockMeshes.get(key);
+        if (old) {
+            this.scene.remove(old);
+            old.children.forEach(c => { c.geometry?.dispose(); c.material?.dispose(); });
         }
 
         const matrices = {};
@@ -326,140 +277,111 @@ class MinecraftGame {
         for (let x = 0; x < CHUNK_SIZE; x++) {
             for (let y = 0; y < WORLD_HEIGHT; y++) {
                 for (let z = 0; z < CHUNK_SIZE; z++) {
-                    const index = x + y * CHUNK_SIZE + z * CHUNK_SIZE * WORLD_HEIGHT;
-                    const blockType = chunk[index];
-
-                    if (blockType === BLOCK_TYPES.AIR || blockType === BLOCK_TYPES.WATER) continue;
+                    const idx = x + y * CHUNK_SIZE + z * CHUNK_SIZE * WORLD_HEIGHT;
+                    const bt = chunk[idx];
+                    if (bt === BLOCK_TYPES.AIR || bt === BLOCK_TYPES.WATER) continue;
                     if (!this.isBlockExposed(cx, cz, x, y, z)) continue;
 
-                    if (!matrices[blockType]) matrices[blockType] = [];
-
-                    const worldX = cx * CHUNK_SIZE + x;
-                    const worldZ = cz * CHUNK_SIZE + z;
-
-                    const matrix = new THREE.Matrix4();
-                    matrix.setPosition(worldX + 0.5, y + 0.5, worldZ + 0.5);
-                    matrices[blockType].push(matrix);
+                    if (!matrices[bt]) matrices[bt] = [];
+                    const m = new THREE.Matrix4();
+                    m.setPosition(cx * CHUNK_SIZE + x + 0.5, y + 0.5, cz * CHUNK_SIZE + z + 0.5);
+                    matrices[bt].push(m);
                 }
             }
         }
 
-        const chunkGroup = new THREE.Group();
+        const group = new THREE.Group();
 
-        for (const [blockType, matrixList] of Object.entries(matrices)) {
-            if (matrixList.length === 0) continue;
-
-            const geometry = new THREE.BoxGeometry(1, 1, 1);
-            const isLeaves = parseInt(blockType) === BLOCK_TYPES.LEAVES;
-            const material = new THREE.MeshLambertMaterial({
-                color: BLOCK_COLORS[blockType] || 0xff00ff,
+        for (const [bt, mlist] of Object.entries(matrices)) {
+            if (!mlist.length) continue;
+            const geo = new THREE.BoxGeometry(1, 1, 1);
+            const isLeaves = parseInt(bt) === BLOCK_TYPES.LEAVES;
+            const mat = new THREE.MeshLambertMaterial({
+                color: BLOCK_COLORS[bt] || 0xff00ff,
                 transparent: isLeaves,
                 opacity: isLeaves ? 0.85 : 1
             });
-
-            const instancedMesh = new THREE.InstancedMesh(geometry, material, matrixList.length);
-            matrixList.forEach((matrix, i) => instancedMesh.setMatrixAt(i, matrix));
-            instancedMesh.instanceMatrix.needsUpdate = true;
-
-            chunkGroup.add(instancedMesh);
+            const inst = new THREE.InstancedMesh(geo, mat, mlist.length);
+            mlist.forEach((m, i) => inst.setMatrixAt(i, m));
+            inst.instanceMatrix.needsUpdate = true;
+            group.add(inst);
         }
 
-        this.scene.add(chunkGroup);
-        this.blockMeshes.set(chunkKey, chunkGroup);
+        this.scene.add(group);
+        this.blockMeshes.set(key, group);
     }
 
     isBlockExposed(cx, cz, x, y, z) {
-        const neighbors = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
-
-        for (const [dx, dy, dz] of neighbors) {
+        const dirs = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
+        for (const [dx, dy, dz] of dirs) {
             const nx = x + dx, ny = y + dy, nz = z + dz;
             if (ny < 0 || ny >= WORLD_HEIGHT) return true;
 
-            let neighborBlock;
+            let nb;
             if (nx < 0 || nx >= CHUNK_SIZE || nz < 0 || nz >= CHUNK_SIZE) {
                 const ncx = cx + (nx < 0 ? -1 : nx >= CHUNK_SIZE ? 1 : 0);
                 const ncz = cz + (nz < 0 ? -1 : nz >= CHUNK_SIZE ? 1 : 0);
                 const nnx = ((nx % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
                 const nnz = ((nz % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-                const neighborChunk = this.chunks.get(`${ncx},${ncz}`);
-                if (!neighborChunk) return true;
-                neighborBlock = neighborChunk[nnx + ny * CHUNK_SIZE + nnz * CHUNK_SIZE * WORLD_HEIGHT];
+                const nc = this.chunks.get(`${ncx},${ncz}`);
+                if (!nc) return true;
+                nb = nc[nnx + ny * CHUNK_SIZE + nnz * CHUNK_SIZE * WORLD_HEIGHT];
             } else {
-                neighborBlock = this.chunks.get(`${cx},${cz}`)[nx + ny * CHUNK_SIZE + nz * CHUNK_SIZE * WORLD_HEIGHT];
+                nb = this.chunks.get(`${cx},${cz}`)[nx + ny * CHUNK_SIZE + nz * CHUNK_SIZE * WORLD_HEIGHT];
             }
-
-            if (neighborBlock === BLOCK_TYPES.AIR || neighborBlock === BLOCK_TYPES.WATER || neighborBlock === BLOCK_TYPES.LEAVES) {
-                return true;
-            }
+            if (nb === BLOCK_TYPES.AIR || nb === BLOCK_TYPES.WATER || nb === BLOCK_TYPES.LEAVES) return true;
         }
         return false;
     }
 
     getBlock(x, y, z) {
         if (y < 0 || y >= WORLD_HEIGHT) return BLOCK_TYPES.AIR;
-        const cx = Math.floor(x / CHUNK_SIZE);
-        const cz = Math.floor(z / CHUNK_SIZE);
+        const cx = Math.floor(x / CHUNK_SIZE), cz = Math.floor(z / CHUNK_SIZE);
         const lx = ((Math.floor(x) % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
         const lz = ((Math.floor(z) % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-        const chunk = this.chunks.get(`${cx},${cz}`);
-        if (!chunk) return BLOCK_TYPES.AIR;
-        return chunk[lx + Math.floor(y) * CHUNK_SIZE + lz * CHUNK_SIZE * WORLD_HEIGHT];
+        const c = this.chunks.get(`${cx},${cz}`);
+        return c ? c[lx + Math.floor(y) * CHUNK_SIZE + lz * CHUNK_SIZE * WORLD_HEIGHT] : BLOCK_TYPES.AIR;
     }
 
-    setBlock(x, y, z, blockType, fromNetwork = false) {
+    setBlock(x, y, z, bt, fromNetwork = false) {
         if (y < 0 || y >= WORLD_HEIGHT) return;
+        x = Math.floor(x); y = Math.floor(y); z = Math.floor(z);
 
-        const cx = Math.floor(x / CHUNK_SIZE);
-        const cz = Math.floor(z / CHUNK_SIZE);
-        const lx = ((Math.floor(x) % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-        const lz = ((Math.floor(z) % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
+        const cx = Math.floor(x / CHUNK_SIZE), cz = Math.floor(z / CHUNK_SIZE);
+        const lx = ((x % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
+        const lz = ((z % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
 
-        const chunkKey = `${cx},${cz}`;
-        const chunk = this.chunks.get(chunkKey);
-        if (!chunk) return;
+        const key = `${cx},${cz}`;
+        const c = this.chunks.get(key);
+        if (!c) return;
 
-        const index = lx + Math.floor(y) * CHUNK_SIZE + lz * CHUNK_SIZE * WORLD_HEIGHT;
-        chunk[index] = blockType;
+        c[lx + y * CHUNK_SIZE + lz * CHUNK_SIZE * WORLD_HEIGHT] = bt;
 
-        // Rebuild this chunk and neighbors
+        // Rebuild affected chunks
         this.buildChunkMesh(cx, cz);
         if (lx === 0) this.buildChunkMesh(cx - 1, cz);
         if (lx === CHUNK_SIZE - 1) this.buildChunkMesh(cx + 1, cz);
         if (lz === 0) this.buildChunkMesh(cx, cz - 1);
         if (lz === CHUNK_SIZE - 1) this.buildChunkMesh(cx, cz + 1);
 
-        // Send to network (only if not from network)
         if (!fromNetwork) {
-            this.network.sendBlockChange(Math.floor(x), Math.floor(y), Math.floor(z), blockType);
+            this.network.sendBlockChange(x, y, z, bt);
         }
     }
 
     setupControls() {
-        // Keyboard
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', e => {
             this.keys[e.code] = true;
-
             if (this.isPlaying && !this.isPaused && !this.isDead) {
-                if (e.code >= 'Digit1' && e.code <= 'Digit9') {
-                    this.selectSlot(parseInt(e.code.charAt(5)) - 1);
-                }
-                if (e.code === 'KeyT') {
-                    e.preventDefault();
-                    this.toggleChat();
-                }
+                if (e.code >= 'Digit1' && e.code <= 'Digit9') this.selectSlot(parseInt(e.code[5]) - 1);
+                if (e.code === 'KeyT') { e.preventDefault(); this.toggleChat(); }
             }
-
-            if (e.code === 'Escape' && this.isPlaying) {
-                this.togglePause();
-            }
+            if (e.code === 'Escape' && this.isPlaying) this.togglePause();
         });
 
-        document.addEventListener('keyup', (e) => {
-            this.keys[e.code] = false;
-        });
+        document.addEventListener('keyup', e => { this.keys[e.code] = false; });
 
-        // Mouse movement - FIXED direction
-        document.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', e => {
             if (this.isPointerLocked && !this.isDead) {
                 this.player.rotation.y -= e.movementX * MOUSE_SENSITIVITY;
                 this.player.rotation.x -= e.movementY * MOUSE_SENSITIVITY;
@@ -467,34 +389,25 @@ class MinecraftGame {
             }
         });
 
-        // Mouse click
-        this.canvas.addEventListener('mousedown', (e) => {
-            if (!this.isPointerLocked) {
-                this.canvas.requestPointerLock();
-                return;
-            }
+        this.canvas.addEventListener('mousedown', e => {
+            if (!this.isPointerLocked) { this.canvas.requestPointerLock(); return; }
             if (this.isDead) return;
-
             if (e.button === 0) this.breakBlock();
             else if (e.button === 2) this.placeBlock();
         });
 
-        this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+        this.canvas.addEventListener('contextmenu', e => e.preventDefault());
 
         document.addEventListener('pointerlockchange', () => {
             this.isPointerLocked = document.pointerLockElement === this.canvas;
-            if (!this.isPointerLocked && this.isPlaying && !this.isPaused && !this.isDead) {
-                this.togglePause();
-            }
+            if (!this.isPointerLocked && this.isPlaying && !this.isPaused && !this.isDead) this.togglePause();
         });
 
-        // Scroll for hotbar
-        this.canvas.addEventListener('wheel', (e) => {
+        this.canvas.addEventListener('wheel', e => {
             if (this.isPlaying && !this.isPaused && !this.isDead) {
-                let newSlot = this.selectedSlot + (e.deltaY > 0 ? 1 : -1);
-                if (newSlot < 0) newSlot = 8;
-                if (newSlot > 8) newSlot = 0;
-                this.selectSlot(newSlot);
+                let s = this.selectedSlot + (e.deltaY > 0 ? 1 : -1);
+                if (s < 0) s = 8; if (s > 8) s = 0;
+                this.selectSlot(s);
             }
         });
     }
@@ -504,13 +417,12 @@ class MinecraftGame {
         const resumeBtn = document.getElementById('resume-btn');
         const quitBtn = document.getElementById('quit-btn');
         const respawnBtn = document.getElementById('respawn-btn');
-        const playerNameInput = document.getElementById('player-name');
-        const roomCodeInput = document.getElementById('room-code-input');
+        const nameInput = document.getElementById('player-name');
+        const roomInput = document.getElementById('room-code-input');
         const joinSection = document.getElementById('join-section');
         const modeTabs = document.querySelectorAll('.mode-tab');
         const copyBtn = document.getElementById('copy-room-code');
 
-        // Mode tabs
         modeTabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 modeTabs.forEach(t => t.classList.remove('active'));
@@ -520,20 +432,14 @@ class MinecraftGame {
             });
         });
 
-        // Play button
         playBtn.addEventListener('click', () => {
-            this.playerName = playerNameInput.value || 'Player';
-            const roomCode = roomCodeInput.value.trim().toUpperCase();
-            this.startGame(this.gameMode, roomCode);
+            this.playerName = nameInput.value || 'Player';
+            const code = roomInput.value.trim().toUpperCase();
+            this.startGame(this.gameMode, code);
         });
 
-        playerNameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                playBtn.click();
-            }
-        });
+        nameInput.addEventListener('keypress', e => { if (e.key === 'Enter') playBtn.click(); });
 
-        // Copy room code
         if (copyBtn) {
             copyBtn.addEventListener('click', () => {
                 const code = document.getElementById('room-code-text').textContent;
@@ -551,19 +457,35 @@ class MinecraftGame {
 
     setupNetworkCallbacks() {
         this.network.on('playerJoin', (player) => {
+            console.log('[Game] Player joined:', player.name);
             this.addOtherPlayer(player);
             this.addChatMessage(`${player.name} が参加しました`, 'system');
+
+            // If we're host, send world to new player
+            if (this.network.isHost) {
+                const worldData = {};
+                this.chunks.forEach((chunk, key) => {
+                    worldData[key] = Array.from(chunk);
+                });
+                this.network.sendWorldToPlayer(worldData, {
+                    x: this.player.position.x,
+                    y: this.player.position.y,
+                    z: this.player.position.z
+                });
+            }
         });
 
         this.network.on('playerLeave', (id, player) => {
             this.removeOtherPlayer(id);
-            if (player) {
-                this.addChatMessage(`${player.name} が退出しました`, 'system');
-            }
+            if (player) this.addChatMessage(`${player.name} が退出しました`, 'system');
         });
 
         this.network.on('playerMove', (data) => {
-            this.updateOtherPlayer(data.id, data.position, data.rotation);
+            if (data.id === 'host') {
+                this.updateHostPlayer(data.position, data.rotation);
+            } else {
+                this.updateOtherPlayer(data.id, data.position, data.rotation);
+            }
         });
 
         this.network.on('blockChange', (data) => {
@@ -583,64 +505,85 @@ class MinecraftGame {
             this.showRoomCode(code);
         });
 
-        this.network.on('worldData', (data) => {
-            if (data.changes) {
-                data.changes.forEach(change => {
-                    this.setBlock(change.x, change.y, change.z, change.blockType, true);
-                });
+        this.network.on('fullWorldSync', (data) => {
+            console.log('[Game] Received full world from host');
+            this.loadWorldFromData(data.chunks);
+            if (data.spawnPos) {
+                this.player.position.set(data.spawnPos.x, data.spawnPos.y + 2, data.spawnPos.z);
             }
+            this.findSpawnPosition();
+
+            // Add host as a player we can see
+            this.addHostPlayer();
         });
     }
 
     showRoomCode(code) {
         const display = document.getElementById('room-code-display');
         const text = document.getElementById('room-code-text');
+        if (display) display.style.display = 'flex';
+        if (text) text.textContent = code;
         const pauseCode = document.getElementById('pause-room-code');
-        const pauseCodeText = document.getElementById('pause-room-code-text');
-
-        if (display && text) {
-            display.style.display = 'flex';
-            text.textContent = code;
-        }
-        if (pauseCode && pauseCodeText) {
-            pauseCode.style.display = 'block';
-            pauseCodeText.textContent = code;
-        }
+        const pauseText = document.getElementById('pause-room-code-text');
+        if (pauseCode) pauseCode.style.display = 'block';
+        if (pauseText) pauseText.textContent = code;
     }
 
     async startGame(mode, roomCode) {
         this.gameMode = mode;
-
-        // Connect to network
-        await this.network.connect(this.playerName, mode, roomCode || null);
-
-        // Start game
-        this.isPlaying = true;
-        this.isPaused = false;
-        this.isDead = false;
+        this.updateLoadingText('接続中...');
+        this.loadingScreen.style.display = 'flex';
         this.menuScreen.style.display = 'none';
-        this.hud.style.display = 'block';
 
-        // Reset player
-        this.player.health = 20;
-        this.player.hunger = 20;
-        this.lastHungerDecrease = Date.now();
+        try {
+            const result = await this.network.connect(this.playerName, mode, roomCode || null);
+            console.log('[Game] Connected:', result);
 
-        // Find spawn
-        this.findSpawnPosition();
+            // Only generate world if solo or host
+            if (mode === 'solo' || mode === 'host') {
+                this.updateLoadingText('ワールド生成中...');
+                this.generateWorld();
+                this.buildAllChunks();
+            } else {
+                // Guest waits for world from host
+                this.updateLoadingText('ワールドを受信中...');
+                // World will be received via fullWorldSync callback
+            }
 
-        // Lock pointer
-        this.canvas.requestPointerLock();
+            await this.delay(500);
+
+            this.isPlaying = true;
+            this.isPaused = false;
+            this.isDead = false;
+            this.player.health = 20;
+            this.player.hunger = 20;
+            this.lastHungerDecrease = Date.now();
+
+            this.loadingScreen.style.display = 'none';
+            this.hud.style.display = 'block';
+
+            if (mode !== 'join') {
+                this.findSpawnPosition();
+            }
+
+            this.canvas.requestPointerLock();
+
+        } catch (err) {
+            console.error('[Game] Connection failed:', err);
+            this.loadingScreen.style.display = 'none';
+            this.menuScreen.style.display = 'flex';
+            alert('接続に失敗しました: ' + err.message);
+        }
     }
 
     findSpawnPosition() {
-        const centerX = CHUNK_SIZE * WORLD_SIZE / 2;
-        const centerZ = CHUNK_SIZE * WORLD_SIZE / 2;
+        const cx = CHUNK_SIZE * WORLD_SIZE / 2;
+        const cz = CHUNK_SIZE * WORLD_SIZE / 2;
 
         for (let y = WORLD_HEIGHT - 1; y > 0; y--) {
-            if (this.getBlock(centerX, y, centerZ) !== BLOCK_TYPES.AIR &&
-                this.getBlock(centerX, y, centerZ) !== BLOCK_TYPES.WATER) {
-                this.player.position.set(centerX + 0.5, y + 2, centerZ + 0.5);
+            const b = this.getBlock(cx, y, cz);
+            if (b !== BLOCK_TYPES.AIR && b !== BLOCK_TYPES.WATER) {
+                this.player.position.set(cx + 0.5, y + 2, cz + 0.5);
                 this.player.lastY = y + 2;
                 this.player.velocity.set(0, 0, 0);
                 break;
@@ -650,27 +593,31 @@ class MinecraftGame {
 
     togglePause() {
         if (!this.isPlaying || this.isDead) return;
-
         this.isPaused = !this.isPaused;
         this.pauseMenu.style.display = this.isPaused ? 'flex' : 'none';
-
-        if (this.isPaused) {
-            document.exitPointerLock();
-        } else {
-            this.canvas.requestPointerLock();
-        }
+        if (this.isPaused) document.exitPointerLock();
+        else this.canvas.requestPointerLock();
     }
 
     quitGame() {
         this.isPlaying = false;
-        this.isPaused = false;
-        this.isDead = false;
         this.network.disconnect();
         this.pauseMenu.style.display = 'none';
         this.deathScreen.style.display = 'none';
         this.hud.style.display = 'none';
         this.menuScreen.style.display = 'flex';
         document.getElementById('room-code-display').style.display = 'none';
+
+        // Clear other players
+        this.otherPlayers.forEach((data, id) => {
+            this.scene.remove(data.mesh);
+        });
+        this.otherPlayers.clear();
+        if (this.hostPlayer) {
+            this.scene.remove(this.hostPlayer.mesh);
+            this.hostPlayer = null;
+        }
+
         document.exitPointerLock();
     }
 
@@ -683,81 +630,106 @@ class MinecraftGame {
         this.canvas.requestPointerLock();
     }
 
-    die(message) {
+    die(msg) {
         this.isDead = true;
         this.deathScreen.style.display = 'flex';
-        document.getElementById('death-message').textContent = message;
+        document.getElementById('death-message').textContent = msg;
         document.exitPointerLock();
     }
 
-    takeDamage(amount, message = 'ダメージ') {
-        this.player.health = Math.max(0, this.player.health - amount);
-        if (this.player.health <= 0) {
-            this.die(message);
-        }
+    takeDamage(amt, msg = 'ダメージ') {
+        this.player.health = Math.max(0, this.player.health - amt);
+        if (this.player.health <= 0) this.die(msg);
     }
 
-    selectSlot(slot) {
-        this.selectedSlot = slot;
-        document.querySelectorAll('.hotbar-slot').forEach((el, i) => {
-            el.classList.toggle('selected', i === slot);
-        });
+    selectSlot(s) {
+        this.selectedSlot = s;
+        document.querySelectorAll('.hotbar-slot').forEach((el, i) => el.classList.toggle('selected', i === s));
     }
 
     toggleChat() {
-        const chatInput = document.getElementById('chat-input');
-        if (chatInput.style.display === 'none') {
-            chatInput.style.display = 'block';
-            chatInput.focus();
+        const input = document.getElementById('chat-input');
+        if (input.style.display === 'none') {
+            input.style.display = 'block';
+            input.focus();
             document.exitPointerLock();
         } else {
-            if (chatInput.value.trim()) {
-                this.network.sendChat(chatInput.value);
-                this.addChatMessage(`${this.playerName}: ${chatInput.value}`);
+            if (input.value.trim()) {
+                this.network.sendChat(input.value);
+                this.addChatMessage(`${this.playerName}: ${input.value}`);
             }
-            chatInput.value = '';
-            chatInput.style.display = 'none';
+            input.value = '';
+            input.style.display = 'none';
             this.canvas.requestPointerLock();
         }
     }
 
-    addChatMessage(message, type = 'normal') {
-        const messagesDiv = document.getElementById('chat-messages');
-        const msgEl = document.createElement('div');
-        msgEl.className = 'message';
-        msgEl.textContent = message;
-        if (type === 'system') msgEl.style.color = '#fbbf24';
-        messagesDiv.appendChild(msgEl);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-        setTimeout(() => {
-            msgEl.style.opacity = '0';
-            setTimeout(() => msgEl.remove(), 300);
-        }, 10000);
+    addChatMessage(msg, type = 'normal') {
+        const div = document.getElementById('chat-messages');
+        const el = document.createElement('div');
+        el.className = 'message';
+        el.textContent = msg;
+        if (type === 'system') el.style.color = '#fbbf24';
+        div.appendChild(el);
+        div.scrollTop = div.scrollHeight;
+        setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 10000);
     }
 
     updatePlayerList() {
-        const playersList = document.getElementById('players');
-        playersList.innerHTML = `<li>${this.playerName} (あなた)</li>`;
-        this.network.players.forEach(player => {
+        const list = document.getElementById('players');
+        list.innerHTML = `<li style="color:#4ade80">${this.playerName} (あなた)</li>`;
+
+        if (this.hostPlayer && this.gameMode === 'join') {
             const li = document.createElement('li');
-            li.textContent = player.name;
-            playersList.appendChild(li);
+            li.textContent = 'Host';
+            li.style.color = '#f59e0b';
+            list.appendChild(li);
+        }
+
+        this.network.players.forEach(p => {
+            const li = document.createElement('li');
+            li.textContent = p.name;
+            list.appendChild(li);
         });
     }
 
-    addOtherPlayer(player) {
-        // Create player mesh - visible purple box
-        const geometry = new THREE.BoxGeometry(0.6, 1.8, 0.6);
-        const material = new THREE.MeshLambertMaterial({ color: 0x8b5cf6 });
-        const mesh = new THREE.Mesh(geometry, material);
+    // Create player mesh with visible body, head, arms, legs
+    createPlayerMesh(name, color) {
+        const group = new THREE.Group();
 
-        // Add head
-        const headGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+        // Body
+        const bodyGeo = new THREE.BoxGeometry(0.5, 0.7, 0.25);
+        const bodyMat = new THREE.MeshLambertMaterial({ color });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.position.y = 0.35;
+        group.add(body);
+
+        // Head
+        const headGeo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
         const headMat = new THREE.MeshLambertMaterial({ color: 0xffcc99 });
         const head = new THREE.Mesh(headGeo, headMat);
-        head.position.y = 1.15;
-        mesh.add(head);
+        head.position.y = 0.9;
+        group.add(head);
+
+        // Arms
+        const armGeo = new THREE.BoxGeometry(0.15, 0.6, 0.15);
+        const armMat = new THREE.MeshLambertMaterial({ color });
+        const leftArm = new THREE.Mesh(armGeo, armMat);
+        leftArm.position.set(-0.35, 0.35, 0);
+        group.add(leftArm);
+        const rightArm = new THREE.Mesh(armGeo, armMat);
+        rightArm.position.set(0.35, 0.35, 0);
+        group.add(rightArm);
+
+        // Legs
+        const legGeo = new THREE.BoxGeometry(0.2, 0.6, 0.2);
+        const legMat = new THREE.MeshLambertMaterial({ color: 0x3b82f6 });
+        const leftLeg = new THREE.Mesh(legGeo, legMat);
+        leftLeg.position.set(-0.12, -0.3, 0);
+        group.add(leftLeg);
+        const rightLeg = new THREE.Mesh(legGeo, legMat);
+        rightLeg.position.set(0.12, -0.3, 0);
+        group.add(rightLeg);
 
         // Name label
         const canvas = document.createElement('canvas');
@@ -767,16 +739,23 @@ class MinecraftGame {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         ctx.fillRect(0, 0, 256, 64);
         ctx.fillStyle = 'white';
-        ctx.font = 'bold 28px Outfit, sans-serif';
+        ctx.font = 'bold 24px Outfit, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(player.name, 128, 42);
-
-        const texture = new THREE.CanvasTexture(canvas);
-        const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-        const sprite = new THREE.Sprite(spriteMaterial);
+        ctx.fillText(name, 128, 42);
+        const tex = new THREE.CanvasTexture(canvas);
+        const spriteMat = new THREE.SpriteMaterial({ map: tex });
+        const sprite = new THREE.Sprite(spriteMat);
         sprite.scale.set(2, 0.5, 1);
-        sprite.position.y = 1.8;
-        mesh.add(sprite);
+        sprite.position.y = 1.4;
+        group.add(sprite);
+
+        return group;
+    }
+
+    addOtherPlayer(player) {
+        console.log('[Game] Adding player mesh:', player.name);
+        const color = SKIN_COLORS[Math.abs(player.name.charCodeAt(0)) % SKIN_COLORS.length];
+        const mesh = this.createPlayerMesh(player.name, color);
 
         if (player.position) {
             mesh.position.set(player.position.x, player.position.y + 0.9, player.position.z);
@@ -784,6 +763,16 @@ class MinecraftGame {
 
         this.scene.add(mesh);
         this.otherPlayers.set(player.peerId || player.id, { mesh, player });
+    }
+
+    addHostPlayer() {
+        if (this.hostPlayer) return;
+        console.log('[Game] Adding host player mesh');
+
+        const mesh = this.createPlayerMesh('Host', 0xf59e0b);
+        mesh.position.set(64, 30, 64);
+        this.scene.add(mesh);
+        this.hostPlayer = { mesh };
     }
 
     removeOtherPlayer(id) {
@@ -794,183 +783,150 @@ class MinecraftGame {
         }
     }
 
-    updateOtherPlayer(id, position, rotation) {
+    updateOtherPlayer(id, pos, rot) {
         const data = this.otherPlayers.get(id);
-        if (data && position) {
-            data.mesh.position.set(position.x, position.y + 0.9, position.z);
-            if (rotation) data.mesh.rotation.y = rotation.y;
+        if (data && pos) {
+            data.mesh.position.set(pos.x, pos.y + 0.9, pos.z);
+            if (rot) data.mesh.rotation.y = rot.y;
+        }
+    }
+
+    updateHostPlayer(pos, rot) {
+        if (this.hostPlayer && pos) {
+            this.hostPlayer.mesh.position.set(pos.x, pos.y + 0.9, pos.z);
+            if (rot) this.hostPlayer.mesh.rotation.y = rot.y;
         }
     }
 
     getTargetBlock() {
-        // Update raycaster from camera
-        const direction = new THREE.Vector3(0, 0, -1);
-        direction.applyQuaternion(this.camera.quaternion);
-        this.raycaster.set(this.camera.position, direction);
+        const dir = new THREE.Vector3(0, 0, -1);
+        dir.applyQuaternion(this.camera.quaternion);
+        this.raycaster.set(this.camera.position, dir);
+        this.raycaster.far = 5;
 
-        let closestHit = null;
-        let closestDistance = Infinity;
+        let closest = null, minDist = Infinity;
+        const pp = this.player.position;
 
-        const playerPos = this.player.position;
-        const range = 5;
+        for (let x = Math.floor(pp.x - 5); x <= Math.floor(pp.x + 5); x++) {
+            for (let y = Math.floor(pp.y - 5); y <= Math.floor(pp.y + 5); y++) {
+                for (let z = Math.floor(pp.z - 5); z <= Math.floor(pp.z + 5); z++) {
+                    const bt = this.getBlock(x, y, z);
+                    if (bt === BLOCK_TYPES.AIR || bt === BLOCK_TYPES.WATER) continue;
 
-        for (let x = Math.floor(playerPos.x - range); x <= Math.floor(playerPos.x + range); x++) {
-            for (let y = Math.floor(playerPos.y - range); y <= Math.floor(playerPos.y + range); y++) {
-                for (let z = Math.floor(playerPos.z - range); z <= Math.floor(playerPos.z + range); z++) {
-                    const blockType = this.getBlock(x, y, z);
-                    if (blockType === BLOCK_TYPES.AIR || blockType === BLOCK_TYPES.WATER) continue;
-
-                    const box = new THREE.Box3(
-                        new THREE.Vector3(x, y, z),
-                        new THREE.Vector3(x + 1, y + 1, z + 1)
-                    );
-
-                    const intersection = this.raycaster.ray.intersectBox(box, new THREE.Vector3());
-                    if (intersection) {
-                        const distance = intersection.distanceTo(this.camera.position);
-                        if (distance < closestDistance && distance < 5) {
-                            closestDistance = distance;
-
-                            const center = new THREE.Vector3(x + 0.5, y + 0.5, z + 0.5);
-                            const diff = intersection.clone().sub(center);
-                            let faceNormal = new THREE.Vector3();
-
-                            const absX = Math.abs(diff.x);
-                            const absY = Math.abs(diff.y);
-                            const absZ = Math.abs(diff.z);
-
-                            if (absX > absY && absX > absZ) {
-                                faceNormal.x = Math.sign(diff.x);
-                            } else if (absY > absZ) {
-                                faceNormal.y = Math.sign(diff.y);
-                            } else {
-                                faceNormal.z = Math.sign(diff.z);
-                            }
-
-                            closestHit = { position: { x, y, z }, normal: faceNormal, blockType };
+                    const box = new THREE.Box3(new THREE.Vector3(x, y, z), new THREE.Vector3(x + 1, y + 1, z + 1));
+                    const hit = this.raycaster.ray.intersectBox(box, new THREE.Vector3());
+                    if (hit) {
+                        const d = hit.distanceTo(this.camera.position);
+                        if (d < minDist && d < 5) {
+                            minDist = d;
+                            const c = new THREE.Vector3(x + 0.5, y + 0.5, z + 0.5);
+                            const diff = hit.clone().sub(c);
+                            const fn = new THREE.Vector3();
+                            const ax = Math.abs(diff.x), ay = Math.abs(diff.y), az = Math.abs(diff.z);
+                            if (ax > ay && ax > az) fn.x = Math.sign(diff.x);
+                            else if (ay > az) fn.y = Math.sign(diff.y);
+                            else fn.z = Math.sign(diff.z);
+                            closest = { position: { x, y, z }, normal: fn, blockType: bt };
                         }
                     }
                 }
             }
         }
-
-        return closestHit;
+        return closest;
     }
 
     breakBlock() {
-        const target = this.getTargetBlock();
-        if (target && target.blockType !== BLOCK_TYPES.BEDROCK) {
-            this.setBlock(target.position.x, target.position.y, target.position.z, BLOCK_TYPES.AIR);
+        const t = this.getTargetBlock();
+        if (t && t.blockType !== BLOCK_TYPES.BEDROCK) {
+            this.setBlock(t.position.x, t.position.y, t.position.z, BLOCK_TYPES.AIR);
         }
     }
 
     placeBlock() {
-        const target = this.getTargetBlock();
-        if (target) {
-            const placeX = target.position.x + target.normal.x;
-            const placeY = target.position.y + target.normal.y;
-            const placeZ = target.position.z + target.normal.z;
+        const t = this.getTargetBlock();
+        if (t) {
+            const px = t.position.x + t.normal.x;
+            const py = t.position.y + t.normal.y;
+            const pz = t.position.z + t.normal.z;
 
-            // Check collision with player
-            const playerBox = new THREE.Box3(
+            const pBox = new THREE.Box3(
                 new THREE.Vector3(this.player.position.x - PLAYER_WIDTH / 2, this.player.position.y, this.player.position.z - PLAYER_WIDTH / 2),
                 new THREE.Vector3(this.player.position.x + PLAYER_WIDTH / 2, this.player.position.y + PLAYER_HEIGHT, this.player.position.z + PLAYER_WIDTH / 2)
             );
-
-            const blockBox = new THREE.Box3(
-                new THREE.Vector3(placeX, placeY, placeZ),
-                new THREE.Vector3(placeX + 1, placeY + 1, placeZ + 1)
-            );
-
-            if (!playerBox.intersectsBox(blockBox)) {
-                this.setBlock(placeX, placeY, placeZ, this.hotbarBlocks[this.selectedSlot]);
+            const bBox = new THREE.Box3(new THREE.Vector3(px, py, pz), new THREE.Vector3(px + 1, py + 1, pz + 1));
+            if (!pBox.intersectsBox(bBox)) {
+                this.setBlock(px, py, pz, this.hotbarBlocks[this.selectedSlot]);
             }
         }
     }
 
-    updatePlayer(deltaTime) {
+    updatePlayer(dt) {
         if (!this.isPlaying || this.isPaused || this.isDead) return;
 
         const now = Date.now();
 
-        // Survival mechanics
-        // Hunger decreases over time
-        if (now - this.lastHungerDecrease > HUNGER_DECREASE_INTERVAL) {
+        // Hunger
+        if (now - this.lastHungerDecrease > 45000) {
             this.player.hunger = Math.max(0, this.player.hunger - 1);
             this.lastHungerDecrease = now;
         }
-
-        // Starving damage
-        if (this.player.hunger <= 0 && now - this.lastStarvingDamage > HUNGER_DAMAGE_INTERVAL) {
+        if (this.player.hunger <= 0 && now % 5000 < 100) {
             this.takeDamage(1, '餓死');
-            this.lastStarvingDamage = now;
         }
 
-        // Movement - FIXED direction
-        const moveDirection = new THREE.Vector3();
+        // Movement
+        const mv = new THREE.Vector3();
+        if (this.keys['KeyW']) mv.z = -1;
+        if (this.keys['KeyS']) mv.z = 1;
+        if (this.keys['KeyA']) mv.x = -1;
+        if (this.keys['KeyD']) mv.x = 1;
 
-        if (this.keys['KeyW']) moveDirection.z = -1;
-        if (this.keys['KeyS']) moveDirection.z = 1;
-        if (this.keys['KeyA']) moveDirection.x = -1;
-        if (this.keys['KeyD']) moveDirection.x = 1;
-
-        if (moveDirection.length() > 0) {
-            moveDirection.normalize();
-
-            // Rotate by player Y rotation
-            const cos = Math.cos(this.player.rotation.y);
-            const sin = Math.sin(this.player.rotation.y);
-            const newX = moveDirection.x * cos + moveDirection.z * sin;
-            const newZ = -moveDirection.x * sin + moveDirection.z * cos;
-            moveDirection.x = newX;
-            moveDirection.z = newZ;
+        if (mv.length() > 0) {
+            mv.normalize();
+            const cos = Math.cos(this.player.rotation.y), sin = Math.sin(this.player.rotation.y);
+            const nx = mv.x * cos + mv.z * sin;
+            const nz = -mv.x * sin + mv.z * cos;
+            mv.x = nx; mv.z = nz;
         }
 
-        const speed = this.keys['ShiftLeft'] ? MOVE_SPEED * 0.5 : MOVE_SPEED;
-        this.player.velocity.x = moveDirection.x * speed;
-        this.player.velocity.z = moveDirection.z * speed;
+        const spd = this.keys['ShiftLeft'] ? MOVE_SPEED * 0.4 : MOVE_SPEED;
+        this.player.velocity.x = mv.x * spd;
+        this.player.velocity.z = mv.z * spd;
 
-        // Jump
         if (this.keys['Space'] && this.player.onGround) {
             this.player.velocity.y = JUMP_FORCE;
             this.player.onGround = false;
         }
 
-        // Gravity
-        this.player.velocity.y -= GRAVITY * deltaTime;
-
-        // Move with collision
-        this.moveWithCollision(deltaTime);
+        this.player.velocity.y -= GRAVITY * dt;
+        this.moveWithCollision(dt);
 
         // Fall damage
         if (this.player.onGround) {
-            const fallDistance = this.player.lastY - this.player.position.y;
-            if (fallDistance > FALL_DAMAGE_THRESHOLD) {
-                const damage = Math.floor((fallDistance - FALL_DAMAGE_THRESHOLD) * FALL_DAMAGE_MULTIPLIER);
-                this.takeDamage(damage, '落下ダメージ');
-            }
+            const fall = this.player.lastY - this.player.position.y;
+            if (fall > 3) this.takeDamage(Math.floor((fall - 3) * 2), '落下ダメージ');
             this.player.lastY = this.player.position.y;
         } else if (this.player.velocity.y > 0) {
             this.player.lastY = this.player.position.y;
         }
 
-        // Update camera
+        // Camera
         this.camera.position.copy(this.player.position);
         this.camera.position.y += PLAYER_HEIGHT - 0.2;
         this.camera.rotation.order = 'YXZ';
         this.camera.rotation.x = this.player.rotation.x;
         this.camera.rotation.y = this.player.rotation.y;
 
-        // Block highlight
-        const target = this.getTargetBlock();
-        if (target) {
-            this.highlightMesh.position.set(target.position.x + 0.5, target.position.y + 0.5, target.position.z + 0.5);
+        // Highlight
+        const tgt = this.getTargetBlock();
+        if (tgt) {
+            this.highlightMesh.position.set(tgt.position.x + 0.5, tgt.position.y + 0.5, tgt.position.z + 0.5);
             this.highlightMesh.visible = true;
         } else {
             this.highlightMesh.visible = false;
         }
 
-        // Send position to network (throttled)
+        // Network position
         if (now - this.lastPositionUpdate > 50) {
             this.network.sendPosition(this.player.position, this.player.rotation);
             this.lastPositionUpdate = now;
@@ -979,60 +935,40 @@ class MinecraftGame {
         this.updateHUD();
     }
 
-    moveWithCollision(deltaTime) {
-        const velocity = this.player.velocity;
-        const position = this.player.position.clone();
+    moveWithCollision(dt) {
+        const v = this.player.velocity, p = this.player.position.clone();
 
-        // X
-        position.x += velocity.x * deltaTime;
-        if (this.checkCollision(position)) {
-            position.x = this.player.position.x;
-            this.player.velocity.x = 0;
-        }
+        p.x += v.x * dt;
+        if (this.checkCollision(p)) { p.x = this.player.position.x; v.x = 0; }
 
-        // Y
-        position.y += velocity.y * deltaTime;
-        if (this.checkCollision(position)) {
-            if (velocity.y < 0) this.player.onGround = true;
-            position.y = this.player.position.y;
-            this.player.velocity.y = 0;
-        } else {
-            this.player.onGround = false;
-        }
+        p.y += v.y * dt;
+        if (this.checkCollision(p)) {
+            if (v.y < 0) this.player.onGround = true;
+            p.y = this.player.position.y; v.y = 0;
+        } else { this.player.onGround = false; }
 
-        // Z
-        position.z += velocity.z * deltaTime;
-        if (this.checkCollision(position)) {
-            position.z = this.player.position.z;
-            this.player.velocity.z = 0;
-        }
+        p.z += v.z * dt;
+        if (this.checkCollision(p)) { p.z = this.player.position.z; v.z = 0; }
 
-        this.player.position.copy(position);
-
-        // Fall out of world
-        if (this.player.position.y < -10) {
-            this.die('奈落に落ちた');
-        }
+        this.player.position.copy(p);
+        if (p.y < -20) this.die('奈落に落ちた');
     }
 
-    checkCollision(position) {
+    checkCollision(pos) {
         const hw = PLAYER_WIDTH / 2;
-        const corners = [
-            [position.x - hw, position.y + 0.1, position.z - hw],
-            [position.x + hw, position.y + 0.1, position.z - hw],
-            [position.x - hw, position.y + 0.1, position.z + hw],
-            [position.x + hw, position.y + 0.1, position.z + hw],
-            [position.x - hw, position.y + PLAYER_HEIGHT - 0.1, position.z - hw],
-            [position.x + hw, position.y + PLAYER_HEIGHT - 0.1, position.z - hw],
-            [position.x - hw, position.y + PLAYER_HEIGHT - 0.1, position.z + hw],
-            [position.x + hw, position.y + PLAYER_HEIGHT - 0.1, position.z + hw],
+        const pts = [
+            [pos.x - hw, pos.y + 0.1, pos.z - hw],
+            [pos.x + hw, pos.y + 0.1, pos.z - hw],
+            [pos.x - hw, pos.y + 0.1, pos.z + hw],
+            [pos.x + hw, pos.y + 0.1, pos.z + hw],
+            [pos.x - hw, pos.y + PLAYER_HEIGHT - 0.1, pos.z - hw],
+            [pos.x + hw, pos.y + PLAYER_HEIGHT - 0.1, pos.z - hw],
+            [pos.x - hw, pos.y + PLAYER_HEIGHT - 0.1, pos.z + hw],
+            [pos.x + hw, pos.y + PLAYER_HEIGHT - 0.1, pos.z + hw],
         ];
-
-        for (const [x, y, z] of corners) {
-            const blockType = this.getBlock(x, y, z);
-            if (blockType !== BLOCK_TYPES.AIR && blockType !== BLOCK_TYPES.WATER) {
-                return true;
-            }
+        for (const [x, y, z] of pts) {
+            const b = this.getBlock(x, y, z);
+            if (b !== BLOCK_TYPES.AIR && b !== BLOCK_TYPES.WATER) return true;
         }
         return false;
     }
@@ -1041,33 +977,24 @@ class MinecraftGame {
         document.getElementById('coord-x').textContent = Math.floor(this.player.position.x);
         document.getElementById('coord-y').textContent = Math.floor(this.player.position.y);
         document.getElementById('coord-z').textContent = Math.floor(this.player.position.z);
-
-        document.getElementById('health-bar').style.width = `${(this.player.health / this.player.maxHealth) * 100}%`;
-        document.getElementById('hunger-bar').style.width = `${(this.player.hunger / this.player.maxHunger) * 100}%`;
-        document.getElementById('health-text').textContent = `${Math.ceil(this.player.health)}/${this.player.maxHealth}`;
-        document.getElementById('hunger-text').textContent = `${Math.ceil(this.player.hunger)}/${this.player.maxHunger}`;
+        document.getElementById('health-bar').style.width = `${(this.player.health / 20) * 100}%`;
+        document.getElementById('hunger-bar').style.width = `${(this.player.hunger / 20) * 100}%`;
+        document.getElementById('health-text').textContent = `${Math.ceil(this.player.health)}/20`;
+        document.getElementById('hunger-text').textContent = `${Math.ceil(this.player.hunger)}/20`;
     }
 
     animate() {
         requestAnimationFrame(() => this.animate());
-
-        const deltaTime = Math.min(this.clock.getDelta(), 0.1);
-
-        this.updatePlayer(deltaTime);
-
-        // FPS
+        const dt = Math.min(this.clock.getDelta(), 0.1);
+        this.updatePlayer(dt);
         this.frameCount++;
         if (performance.now() - this.lastFpsUpdate > 1000) {
             document.getElementById('fps').textContent = this.frameCount;
             this.frameCount = 0;
             this.lastFpsUpdate = performance.now();
         }
-
         this.renderer.render(this.scene, this.camera);
     }
 }
 
-// Start game
-window.addEventListener('DOMContentLoaded', () => {
-    window.game = new MinecraftGame();
-});
+window.addEventListener('DOMContentLoaded', () => { window.game = new MinecraftGame(); });
