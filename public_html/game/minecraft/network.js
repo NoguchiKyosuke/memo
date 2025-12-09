@@ -1,15 +1,20 @@
 /**
  * WebCraft Network Client
- * Handles WebSocket communication for multiplayer
+ * P2P Multiplayer using PeerJS (WebRTC) + localStorage for world persistence
+ * Works without a dedicated server!
  */
 
 class NetworkClient {
     constructor() {
-        this.socket = null;
+        this.peer = null;
+        this.connections = new Map();
         this.connected = false;
         this.playerId = null;
         this.playerName = '';
         this.players = new Map();
+        this.isHost = false;
+        this.roomCode = null;
+
         this.callbacks = {
             onConnect: () => { },
             onDisconnect: () => { },
@@ -22,163 +27,266 @@ class NetworkClient {
             onPlayerCount: () => { }
         };
 
-        // Server URL - change this to your WebSocket server address
-        this.serverUrl = this.getServerUrl();
+        // World changes storage
+        this.worldChanges = this.loadWorldChanges();
     }
 
-    getServerUrl() {
-        // Auto-detect server URL based on current location
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const host = window.location.hostname;
-        // Default WebSocket port
-        const port = 8080;
-        return `${protocol}//${host}:${port}`;
+    // Generate random room code
+    generateRoomCode() {
+        return 'WC-' + Math.random().toString(36).substring(2, 8).toUpperCase();
     }
 
-    connect(playerName) {
+    // Load world changes from localStorage
+    loadWorldChanges() {
+        try {
+            const saved = localStorage.getItem('webcraft_world');
+            return saved ? JSON.parse(saved) : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    // Save world changes to localStorage
+    saveWorldChanges() {
+        try {
+            // Limit to 50000 changes
+            if (this.worldChanges.length > 50000) {
+                this.worldChanges = this.worldChanges.slice(-50000);
+            }
+            localStorage.setItem('webcraft_world', JSON.stringify(this.worldChanges));
+        } catch (e) {
+            console.warn('Failed to save world:', e);
+        }
+    }
+
+    connect(playerName, roomCodeToJoin = null) {
         return new Promise((resolve, reject) => {
             this.playerName = playerName;
+            this.playerId = 'player_' + Math.random().toString(36).substring(2, 9);
 
+            // If no room code, we're playing solo or hosting
+            if (!roomCodeToJoin) {
+                console.log('Starting in single-player mode');
+                this.connected = true;
+                this.callbacks.onConnect();
+
+                // Apply saved world changes
+                if (this.worldChanges.length > 0) {
+                    this.callbacks.onWorldData({ changes: this.worldChanges });
+                }
+
+                resolve();
+                return;
+            }
+
+            // Try to connect via PeerJS for multiplayer
             try {
-                console.log(`Connecting to ${this.serverUrl}...`);
-                this.socket = new WebSocket(this.serverUrl);
-
-                this.socket.onopen = () => {
-                    console.log('WebSocket connected');
-                    this.connected = true;
-
-                    // Send join message
-                    this.send({
-                        type: 'join',
-                        name: this.playerName
-                    });
-
-                    this.callbacks.onConnect();
-                    resolve();
-                };
-
-                this.socket.onclose = () => {
-                    console.log('WebSocket disconnected');
-                    this.connected = false;
-                    this.callbacks.onDisconnect();
-                };
-
-                this.socket.onerror = (error) => {
-                    console.error('WebSocket error:', error);
-                    // Continue in offline mode
-                    resolve();
-                };
-
-                this.socket.onmessage = (event) => {
-                    this.handleMessage(JSON.parse(event.data));
-                };
-
-                // Timeout after 3 seconds, continue offline
-                setTimeout(() => {
-                    if (!this.connected) {
-                        console.log('Connection timeout, continuing offline');
-                        resolve();
-                    }
-                }, 3000);
-
+                // Load PeerJS dynamically
+                if (!window.Peer) {
+                    const script = document.createElement('script');
+                    script.src = 'https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js';
+                    script.onload = () => this.initPeer(playerName, roomCodeToJoin, resolve);
+                    document.head.appendChild(script);
+                } else {
+                    this.initPeer(playerName, roomCodeToJoin, resolve);
+                }
             } catch (error) {
-                console.error('Failed to connect:', error);
-                resolve(); // Continue offline
+                console.error('PeerJS failed, continuing offline:', error);
+                this.connected = true;
+                resolve();
             }
         });
     }
 
+    initPeer(playerName, roomCode, resolve) {
+        const peerId = roomCode || this.generateRoomCode();
+        this.roomCode = peerId;
+        this.isHost = !roomCode;
+
+        this.peer = new Peer(peerId, {
+            debug: 1
+        });
+
+        this.peer.on('open', (id) => {
+            console.log('PeerJS connected with ID:', id);
+            this.connected = true;
+            this.roomCode = id;
+
+            if (this.isHost) {
+                console.log('Hosting room:', id);
+            } else {
+                // Connect to host
+                const conn = this.peer.connect(roomCode);
+                this.setupConnection(conn);
+            }
+
+            this.callbacks.onConnect();
+            resolve();
+        });
+
+        this.peer.on('connection', (conn) => {
+            console.log('Player connected:', conn.peer);
+            this.setupConnection(conn);
+        });
+
+        this.peer.on('error', (error) => {
+            console.error('PeerJS error:', error);
+            this.connected = true; // Continue offline
+            resolve();
+        });
+
+        // Timeout
+        setTimeout(() => {
+            if (!this.connected) {
+                console.log('P2P timeout, continuing offline');
+                this.connected = true;
+                resolve();
+            }
+        }, 5000);
+    }
+
+    setupConnection(conn) {
+        conn.on('open', () => {
+            this.connections.set(conn.peer, conn);
+
+            // Send our player info
+            conn.send({
+                type: 'playerJoin',
+                player: {
+                    id: this.playerId,
+                    name: this.playerName,
+                    position: { x: 64, y: 40, z: 64 },
+                    rotation: { x: 0, y: 0 }
+                }
+            });
+
+            // If host, send world data
+            if (this.isHost && this.worldChanges.length > 0) {
+                conn.send({
+                    type: 'worldData',
+                    changes: this.worldChanges
+                });
+            }
+        });
+
+        conn.on('data', (data) => {
+            this.handleMessage(data, conn.peer);
+        });
+
+        conn.on('close', () => {
+            this.connections.delete(conn.peer);
+            this.players.delete(conn.peer);
+            this.callbacks.onPlayerLeave(conn.peer);
+            this.callbacks.onPlayerCount(this.players.size);
+        });
+    }
+
     disconnect() {
-        if (this.socket) {
-            this.socket.close();
+        if (this.peer) {
+            this.peer.destroy();
         }
+        this.saveWorldChanges();
     }
 
-    send(data) {
-        if (this.connected && this.socket.readyState === WebSocket.OPEN) {
-            this.socket.send(JSON.stringify(data));
-        }
+    broadcast(data, excludeId = null) {
+        const message = JSON.stringify(data);
+        this.connections.forEach((conn, id) => {
+            if (id !== excludeId && conn.open) {
+                conn.send(data);
+            }
+        });
     }
 
-    handleMessage(data) {
+    handleMessage(data, fromId) {
         switch (data.type) {
-            case 'welcome':
-                this.playerId = data.id;
-                console.log('Assigned player ID:', this.playerId);
-                break;
-
             case 'playerJoin':
-                this.players.set(data.player.id, data.player);
+                this.players.set(fromId, data.player);
                 this.callbacks.onPlayerJoin(data.player);
                 this.callbacks.onPlayerCount(this.players.size);
                 break;
 
-            case 'playerLeave':
-                this.players.delete(data.id);
-                this.callbacks.onPlayerLeave(data.id);
-                this.callbacks.onPlayerCount(this.players.size);
-                break;
-
             case 'playerMove':
-                const player = this.players.get(data.id);
+                const player = this.players.get(fromId);
                 if (player) {
                     player.position = data.position;
                     player.rotation = data.rotation;
                 }
-                this.callbacks.onPlayerMove(data);
+                this.callbacks.onPlayerMove({ id: fromId, ...data });
                 break;
 
             case 'blockChange':
+                this.worldChanges.push({
+                    x: data.x,
+                    y: data.y,
+                    z: data.z,
+                    blockType: data.blockType
+                });
                 this.callbacks.onBlockChange(data);
+                // Relay to other peers
+                this.broadcast(data, fromId);
                 break;
 
             case 'chat':
-                this.callbacks.onChat(data);
+                this.callbacks.onChat({ id: fromId, name: data.name, message: data.message });
+                this.broadcast(data, fromId);
                 break;
 
             case 'worldData':
-                this.callbacks.onWorldData(data);
-                break;
-
-            case 'playerList':
-                this.players.clear();
-                data.players.forEach(p => this.players.set(p.id, p));
-                this.callbacks.onPlayerCount(this.players.size);
+                if (data.changes) {
+                    this.worldChanges = data.changes;
+                    this.callbacks.onWorldData(data);
+                }
                 break;
         }
     }
 
     // Send player position update
     sendPosition(position, rotation) {
-        this.send({
-            type: 'move',
+        this.broadcast({
+            type: 'playerMove',
             position: { x: position.x, y: position.y, z: position.z },
             rotation: { x: rotation.x, y: rotation.y }
         });
     }
 
-    // Send block change
+    // Send block change - also save locally
     sendBlockChange(x, y, z, blockType) {
-        this.send({
+        const change = { x, y, z, blockType };
+        this.worldChanges.push(change);
+        this.saveWorldChanges();
+
+        this.broadcast({
             type: 'blockChange',
-            x, y, z,
-            blockType
+            ...change
         });
     }
 
     // Send chat message
     sendChat(message) {
-        this.send({
+        this.broadcast({
             type: 'chat',
+            name: this.playerName,
             message
         });
     }
 
     // Set callback handlers
     on(event, callback) {
-        if (this.callbacks.hasOwnProperty('on' + event.charAt(0).toUpperCase() + event.slice(1))) {
-            this.callbacks['on' + event.charAt(0).toUpperCase() + event.slice(1)] = callback;
+        const key = 'on' + event.charAt(0).toUpperCase() + event.slice(1);
+        if (this.callbacks.hasOwnProperty(key)) {
+            this.callbacks[key] = callback;
         }
+    }
+
+    // Get room code for sharing
+    getRoomCode() {
+        return this.roomCode;
+    }
+
+    // Clear saved world
+    clearWorld() {
+        this.worldChanges = [];
+        localStorage.removeItem('webcraft_world');
     }
 }
 
