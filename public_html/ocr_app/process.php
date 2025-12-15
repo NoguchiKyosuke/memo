@@ -48,12 +48,26 @@ if (!move_uploaded_file($file['tmp_name'], $tempFile)) {
 $startTime = microtime(true);
 
 // Execute Tesseract
-// Command: /usr/bin/tesseract <image> <output_base> [-l <lang>]
-$command = "/usr/bin/tesseract " . escapeshellarg($tempFile) . " " . escapeshellarg($outputFileBase) . " -l eng+jpn 2>&1";
+// Command: <loader> --library-path <lib_path> <tesseract_bin> <image> <output_base> [-l <lang>]
+$binPath = __DIR__ . '/bin/tesseract';
+$libPath = __DIR__ . '/lib';
+$loaderPath = $libPath . '/ld-linux-x86-64.so.2';
+$tessDataPath = __DIR__ . '/tessdata';
+
+// Construct command using bundled loader
+$command = "export TESSDATA_PREFIX=" . escapeshellarg($tessDataPath) . " && " . 
+           escapeshellarg($loaderPath) . " --library-path " . escapeshellarg($libPath) . " " . 
+           escapeshellarg($binPath) . " " . escapeshellarg($tempFile) . " " . escapeshellarg($outputFileBase) . " -l eng+jpn 2>&1";
+
+// Debug logging
+$debugLog = __DIR__ . '/ocr_debug.log';
+file_put_contents($debugLog, "[" . date('Y-m-d H:i:s') . "] Command: $command\n", FILE_APPEND);
 
 $output = [];
 $returnVar = 0;
 exec($command, $output, $returnVar);
+
+file_put_contents($debugLog, "[" . date('Y-m-d H:i:s') . "] Return: $returnVar\nOutput: " . implode("\n", $output) . "\n", FILE_APPEND);
 
 $endTime = microtime(true);
 $duration = round($endTime - $startTime, 2);
@@ -63,6 +77,9 @@ $outputTxtFile = $outputFileBase . '.txt';
 
 if ($returnVar === 0 && file_exists($outputTxtFile)) {
     $text = file_get_contents($outputTxtFile);
+    
+    // Debug: Save extracted text to file
+    file_put_contents(__DIR__ . '/debug_extracted_text.txt', $text);
     
     // Cleanup
     @unlink($tempFile);

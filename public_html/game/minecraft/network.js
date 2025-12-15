@@ -1,13 +1,14 @@
 /**
  * WebCraft Network Client
- * TRUE P2P Multiplayer using PeerJS (WebRTC)
- * - Host creates world and shares it
- * - Guests receive host's world
- * - Real-time sync of players and blocks
+ * TRUE P2P Multiplayer using PeerJS
  */
 
 class NetworkClient {
-    constructor() {
+    constructor(gameMode, roomCode, playerName) {
+        console.log('[Network] Initializing NetworkClient v1.1 (Fixed sendPosition)');
+        this.gameMode = gameMode;
+        this.roomCode = roomCode;
+        this.playerName = playerName;
         this.peer = null;
         this.connections = new Map();
         this.connected = false;
@@ -30,7 +31,12 @@ class NetworkClient {
             onWorldData: () => { },
             onPlayerCount: () => { },
             onRoomCreated: () => { },
-            onFullWorldSync: () => { }
+            onFullWorldSync: () => { },
+            onWorldStart: () => { },
+            onChunkData: () => { },
+            onChunkData: () => { },
+            onWorldEnd: () => { },
+            onAnimalUpdate: () => { }
         };
     }
 
@@ -38,122 +44,168 @@ class NetworkClient {
         return 'WC' + Math.random().toString(36).substring(2, 8).toUpperCase();
     }
 
-    connect(playerName, mode = 'solo', roomCodeToJoin = null) {
+    connect(playerName, mode, roomCodeToJoin) {
         return new Promise((resolve, reject) => {
             this.playerName = playerName;
-            this.playerId = 'p_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+            this.playerId = 'p_' + Math.random().toString(36).substring(2, 8);
             this.gameMode = mode;
 
-            console.log(`[Network] Starting in ${mode} mode, player: ${playerName}`);
+            console.log('[Network] ===== CONNECT =====');
+            console.log('[Network] Mode:', mode);
+            console.log('[Network] Room code to join:', roomCodeToJoin);
+            console.log('[Network] Player:', playerName);
 
             if (mode === 'solo') {
-                this.connected = true;
+                console.log('[Network] Solo mode - no networking');
+                this.connected = false; // Solo mode is NOT "connected" to valid peer, but logic treats !connected as host
+                this.isHost = true;
                 this.callbacks.onConnect();
                 resolve({ mode: 'solo' });
                 return;
             }
 
-            this.initPeer(playerName, mode, roomCodeToJoin, resolve, reject);
+            if (mode === 'join') {
+                if (!roomCodeToJoin || roomCodeToJoin.length < 4) {
+                    alert('ルームコードを入力してください');
+                    reject(new Error('No room code'));
+                    return;
+                }
+                this.isHost = false;
+                this.roomCode = roomCodeToJoin.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                console.log('[Network] JOIN mode - connecting to room:', this.roomCode);
+            } else {
+                // Host mode
+                this.isHost = true;
+                if (roomCodeToJoin && roomCodeToJoin.length >= 4) {
+                    // Use provided code (e.g. loading saved world)
+                    this.roomCode = roomCodeToJoin.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                    console.log('[Network] HOST mode - reusing room:', this.roomCode);
+                } else {
+                    // Generate new
+                    this.roomCode = this.generateRoomCode();
+                    console.log('[Network] HOST mode - creating room:', this.roomCode);
+                }
+            }
+
+            this.initPeer(resolve, reject);
         });
     }
 
-    initPeer(playerName, mode, roomCodeToJoin, resolve, reject) {
-        this.isHost = (mode === 'host');
+    initPeer(resolve, reject) {
+        // For host, use the room code as peer ID
+        // For guest, use a random ID
+        const myPeerId = this.isHost ? this.roomCode : ('G_' + this.playerId);
 
-        if (this.isHost) {
-            this.roomCode = this.generateRoomCode();
-        } else {
-            this.roomCode = roomCodeToJoin;
-        }
-
-        const myPeerId = this.isHost ? this.roomCode : `guest_${this.playerId}`;
-
-        console.log(`[Network] Creating peer: ${myPeerId}, isHost: ${this.isHost}`);
+        console.log('[Network] Creating peer ID:', myPeerId);
+        console.log('[Network] Is Host:', this.isHost);
 
         this.peer = new Peer(myPeerId, {
             debug: 1,
             config: {
                 iceServers: [
                     { urls: 'stun:stun.l.google.com:19302' },
-                    { urls: 'stun:stun1.l.google.com:19302' },
-                    { urls: 'stun:stun2.l.google.com:19302' }
+                    { urls: 'stun:stun1.l.google.com:19302' }
                 ]
             }
         });
 
         this.peer.on('open', (id) => {
-            console.log(`[Network] Peer opened: ${id}`);
+            console.log('[Network] Peer opened with ID:', id);
             this.connected = true;
 
             if (this.isHost) {
-                console.log(`[Network] Hosting room: ${this.roomCode}`);
+                console.log('[Network] ★★★ HOSTING room:', this.roomCode);
                 this.callbacks.onRoomCreated(this.roomCode);
                 this.callbacks.onConnect();
                 resolve({ mode: 'host', roomCode: this.roomCode });
             } else {
-                console.log(`[Network] Connecting to host: ${this.roomCode}`);
-                const conn = this.peer.connect(this.roomCode, {
-                    reliable: true,
-                    serialization: 'json'
-                });
-
-                conn.on('open', () => {
-                    console.log('[Network] Connected to host!');
-                    this.hostConnection = conn;
-                    this.setupGuestConnection(conn);
-                    this.callbacks.onConnect();
-                    resolve({ mode: 'guest', roomCode: this.roomCode });
-                });
-
-                conn.on('error', (err) => {
-                    console.error('[Network] Connection error:', err);
-                    reject(err);
-                });
+                // Guest - connect to host
+                console.log('[Network] ★★★ JOINING room:', this.roomCode);
+                this.connectToHost(resolve, reject);
             }
         });
 
-        // Host receives connections
-        this.peer.on('connection', (conn) => {
-            console.log('[Network] Incoming connection:', conn.peer);
-            this.setupHostConnection(conn);
-        });
+        // Host receives incoming connections
+        if (this.isHost) {
+            this.peer.on('connection', (conn) => {
+                console.log('[Network] Incoming guest connection:', conn.peer);
+                this.handleGuestConnection(conn);
+            });
+        }
 
         this.peer.on('error', (error) => {
-            console.error('[Network] Peer error:', error);
+            console.error('[Network] Peer error:', error.type, error);
             if (error.type === 'unavailable-id') {
-                alert('このルームコードは既に使用中です');
-                reject(error);
+                alert('このルームは既に存在します');
             } else if (error.type === 'peer-unavailable') {
                 alert('ルームが見つかりません: ' + this.roomCode);
-                reject(error);
-            } else {
-                reject(error);
             }
+            reject(error);
+        });
+
+        this.peer.on('disconnected', () => {
+            console.log('[Network] Peer disconnected');
         });
 
         // Timeout
         setTimeout(() => {
             if (!this.connected) {
                 console.log('[Network] Connection timeout');
-                reject(new Error('Connection timeout'));
+                reject(new Error('Timeout'));
             }
         }, 15000);
     }
 
-    // When HOST receives a connection from a guest
-    setupHostConnection(conn) {
-        conn.on('open', () => {
-            console.log('[Network] Guest connected:', conn.peer);
-            this.connections.set(conn.peer, conn);
+    // Guest connects to host
+    connectToHost(resolve, reject) {
+        console.log('[Network] Connecting to host:', this.roomCode);
 
-            // Wait a bit then request player info
-            setTimeout(() => {
-                conn.send({ type: 'requestInfo' });
-            }, 500);
+        const conn = this.peer.connect(this.roomCode, {
+            reliable: true,
+            serialization: 'json'
+        });
+
+        conn.on('open', () => {
+            console.log('[Network] ✓ Connected to host!');
+            this.hostConnection = conn;
+
+            // Send our info to host
+            conn.send({
+                type: 'join',
+                player: {
+                    id: this.playerId,
+                    name: this.playerName
+                }
+            });
+
+            this.callbacks.onConnect();
+            resolve({ mode: 'join', roomCode: this.roomCode });
         });
 
         conn.on('data', (data) => {
-            this.handleHostMessage(data, conn);
+            this.handleMessageFromHost(data);
+        });
+
+        conn.on('close', () => {
+            console.log('[Network] Disconnected from host');
+            this.callbacks.onDisconnect();
+        });
+
+        conn.on('error', (err) => {
+            console.error('[Network] Connection to host failed:', err);
+            reject(err);
+        });
+    }
+
+    // Host handles a guest connection
+    handleGuestConnection(conn) {
+        conn.on('open', () => {
+            console.log('[Network] Guest connection opened:', conn.peer);
+            this.connections.set(conn.peer, conn);
+        });
+
+        conn.on('data', (data) => {
+            this.handleMessageFromGuest(data, conn);
         });
 
         conn.on('close', () => {
@@ -163,56 +215,43 @@ class NetworkClient {
             this.players.delete(conn.peer);
             if (player) {
                 this.callbacks.onPlayerLeave(conn.peer, player);
-                // Notify other guests
-                this.broadcastToGuests({ type: 'playerLeave', peerId: conn.peer }, conn.peer);
+                this.broadcastToGuests({ type: 'playerLeft', peerId: conn.peer });
             }
             this.callbacks.onPlayerCount(this.players.size);
         });
     }
 
-    // When GUEST connects to host
-    setupGuestConnection(conn) {
-        conn.on('data', (data) => {
-            this.handleGuestMessage(data);
-        });
+    // Host receives message from guest
+    handleMessageFromGuest(data, conn) {
+        console.log('[Network] From guest:', data.type);
 
-        conn.on('close', () => {
-            console.log('[Network] Disconnected from host');
-            this.callbacks.onDisconnect();
-        });
-    }
-
-    // Messages received by HOST from guests
-    handleHostMessage(data, conn) {
         switch (data.type) {
-            case 'playerInfo':
+            case 'join':
                 const player = {
                     id: data.player.id,
                     name: data.player.name,
                     peerId: conn.peer,
-                    position: data.player.position || { x: 64, y: 40, z: 64 },
-                    rotation: data.player.rotation || { x: 0, y: 0 }
+                    position: { x: 64, y: 40, z: 64 },
+                    rotation: { x: 0, y: 0 }
                 };
                 this.players.set(conn.peer, player);
 
-                // Send existing players to new player
-                const existingPlayers = [];
-                this.players.forEach((p, peerId) => {
-                    if (peerId !== conn.peer) {
-                        existingPlayers.push(p);
-                    }
+                // Send existing players to new guest
+                const playerList = [];
+                this.players.forEach((p, pid) => {
+                    if (pid !== conn.peer) playerList.push(p);
                 });
-                conn.send({ type: 'playerList', players: existingPlayers });
+                conn.send({ type: 'playerList', players: playerList });
 
-                // Notify others about new player
-                this.broadcastToGuests({ type: 'playerJoin', player }, conn.peer);
+                // Mark that we need to send world to this player - BEFORE callback
+                this.pendingWorldPeer = conn.peer;
 
-                // Request world data from game
+                // Notify game to send world
                 this.callbacks.onPlayerJoin(player);
                 this.callbacks.onPlayerCount(this.players.size);
 
-                // Send world to new player (game.js will call sendWorldToPlayer)
-                this.pendingWorldRequest = conn.peer;
+                // Notify other guests
+                this.broadcastToGuests({ type: 'playerJoined', player }, conn.peer);
                 break;
 
             case 'move':
@@ -220,44 +259,51 @@ class NetworkClient {
                 if (p) {
                     p.position = data.position;
                     p.rotation = data.rotation;
-                    this.callbacks.onPlayerMove({ id: conn.peer, position: data.position, rotation: data.rotation });
-                    // Relay to other guests
-                    this.broadcastToGuests({ type: 'playerMove', peerId: conn.peer, position: data.position, rotation: data.rotation }, conn.peer);
                 }
+                this.callbacks.onPlayerMove({ id: conn.peer, position: data.position, rotation: data.rotation });
+                this.broadcastToGuests({ type: 'playerMove', peerId: conn.peer, position: data.position, rotation: data.rotation }, conn.peer);
                 break;
 
             case 'blockChange':
+                console.log('[Network] Block change from guest:', data.x, data.y, data.z, data.blockType);
                 this.callbacks.onBlockChange(data);
-                // Relay to other guests
                 this.broadcastToGuests(data, conn.peer);
                 break;
 
             case 'chat':
-                const chatData = { id: conn.peer, name: data.name, message: data.message };
-                this.callbacks.onChat(chatData);
-                this.broadcastToGuests({ type: 'chat', ...chatData }, conn.peer);
+                this.callbacks.onChat({ name: data.name, message: data.message });
+                this.broadcastToGuests({ type: 'chat', name: data.name, message: data.message }, conn.peer);
                 break;
         }
     }
 
-    // Messages received by GUEST from host
-    handleGuestMessage(data) {
+    // Guest receives message from host
+    handleMessageFromHost(data) {
+        // console.log('[Network] From host:', data.type); // Comment out to reduce spam
+
         switch (data.type) {
-            case 'requestInfo':
-                this.hostConnection.send({
-                    type: 'playerInfo',
-                    player: {
-                        id: this.playerId,
-                        name: this.playerName,
-                        position: { x: 64, y: 40, z: 64 },
-                        rotation: { x: 0, y: 0 }
-                    }
-                });
+            case 'worldData':
+                console.log('[Network] Received legacy world data from host');
+                this.callbacks.onFullWorldSync(data);
                 break;
 
-            case 'worldData':
-                console.log('[Network] Received world data from host');
-                this.callbacks.onFullWorldSync(data);
+            case 'worldStart':
+
+                console.log('[Network] World sync started');
+                this.callbacks.onWorldStart(data);
+                break;
+
+            case 'chunkData':
+                this.callbacks.onChunkData(data);
+                break;
+
+            case 'worldEnd':
+                console.log('[Network] World sync finished');
+                this.callbacks.onWorldEnd();
+                break;
+
+            case 'animalUpdate':
+                this.callbacks.onAnimalUpdate(data);
                 break;
 
             case 'playerList':
@@ -268,16 +314,16 @@ class NetworkClient {
                 this.callbacks.onPlayerCount(this.players.size);
                 break;
 
-            case 'playerJoin':
+            case 'playerJoined':
                 this.players.set(data.player.peerId, data.player);
                 this.callbacks.onPlayerJoin(data.player);
                 this.callbacks.onPlayerCount(this.players.size);
                 break;
 
-            case 'playerLeave':
-                const player = this.players.get(data.peerId);
+            case 'playerLeft':
+                const pl = this.players.get(data.peerId);
                 this.players.delete(data.peerId);
-                if (player) this.callbacks.onPlayerLeave(data.peerId, player);
+                if (pl) this.callbacks.onPlayerLeave(data.peerId, pl);
                 this.callbacks.onPlayerCount(this.players.size);
                 break;
 
@@ -290,75 +336,117 @@ class NetworkClient {
                 this.callbacks.onPlayerMove({ id: data.peerId, position: data.position, rotation: data.rotation });
                 break;
 
+            case 'hostMove':
+                this.callbacks.onPlayerMove({ id: 'host', position: data.position, rotation: data.rotation });
+                break;
+
             case 'blockChange':
+                console.log('[Network] Block change from host:', data.x, data.y, data.z);
                 this.callbacks.onBlockChange(data);
                 break;
 
             case 'chat':
-                this.callbacks.onChat(data);
+                this.callbacks.onChat({ name: data.name, message: data.message });
                 break;
 
-            case 'hostPosition':
-                // Host's position
-                this.callbacks.onPlayerMove({ id: 'host', position: data.position, rotation: data.rotation });
+            case 'animalUpdate':
+                this.callbacks.onAnimalUpdate(data);
                 break;
         }
     }
 
-    broadcastToGuests(data, excludePeerId = null) {
+    broadcastToGuests(data, excludePeer = null) {
         this.connections.forEach((conn, peerId) => {
-            if (peerId !== excludePeerId && conn.open) {
-                try {
-                    conn.send(data);
-                } catch (e) {
-                    console.error('[Network] Send error:', e);
-                }
+            if (peerId !== excludePeer && conn.open) {
+                try { conn.send(data); } catch (e) { }
             }
         });
     }
 
-    // Called by game when a new player needs world data
-    sendWorldToPlayer(chunks, spawnPos) {
-        if (this.pendingWorldRequest) {
-            const conn = this.connections.get(this.pendingWorldRequest);
+    // Called by game when a new guest needs world data
+    async sendWorldToGuest(chunks, spawnPos) {
+        try {
+            if (!this.pendingWorldPeer) {
+                console.warn('[Network] No pending guest to send world to');
+                return;
+            }
+
+
+            const conn = this.connections.get(this.pendingWorldPeer);
             if (conn && conn.open) {
-                // Convert chunks to sendable format
-                const worldData = {};
-                chunks.forEach((chunk, key) => {
-                    worldData[key] = Array.from(chunk);
+                console.log('[Network] Starting chunked world sync to:', this.pendingWorldPeer);
+
+                // 1. Start
+                conn.send({
+                    type: 'worldStart',
+                    spawnPos: spawnPos,
+                    totalChunks: chunks.size
                 });
 
-                conn.send({
-                    type: 'worldData',
-                    chunks: worldData,
-                    spawnPos: spawnPos
-                });
-                console.log('[Network] Sent world to:', this.pendingWorldRequest);
+                // 2. Chunks
+                let chunkCount = 0;
+                const chunkEntries = Array.from(chunks.entries());
+                console.log(`[Network] Sending ${chunkEntries.length} chunks to ${this.pendingWorldPeer}`);
+
+                for (const [key, chunk] of chunkEntries) {
+                    // RLE Compression
+                    const rle = [];
+                    let rleCurrentCount = 0;
+                    let last = null;
+                    for (let i = 0; i < chunk.length; i++) {
+                        const val = chunk[i];
+                        if (last === null) { last = val; rleCurrentCount = 1; }
+                        else if (val === last) { rleCurrentCount++; }
+                        else { rle.push(rleCurrentCount, last); last = val; rleCurrentCount = 1; }
+                    }
+                    rle.push(rleCurrentCount, last);
+
+                    // Debug: check compression ratio
+                    if (chunkCount === 0) { // Only log for first chunk to avoid spam
+                        const originalSize = chunk.length;
+                        const compressedSize = rle.length * 2; // approx bytes in JSON
+                        console.log(`[Network] Chunk ${key} compressed: ${originalSize} -> ~${compressedSize} items (Ratio: ${(originalSize / compressedSize).toFixed(1)}x)`);
+                    }
+
+                    conn.send({
+                        type: 'chunkData',
+                        key: key,
+                        data: rle,
+                        isCompressed: true
+                    });
+                    chunkCount++;
+                    // Small delay to prevent flooding the connection
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+
+                console.log(`[Network] Sent ${chunkCount} chunks`);
+
+                // 3. World End
+                conn.send({ type: 'worldEnd' });
+                this.pendingWorldPeer = null;
+
             }
-            this.pendingWorldRequest = null;
+        } catch (err) {
+            console.error('[Network] Error sending world:', err);
         }
     }
 
     disconnect() {
-        if (this.peer) {
-            this.peer.destroy();
-        }
+        if (this.peer) this.peer.destroy();
     }
 
-    // Send position (for both host and guest)
     sendPosition(position, rotation) {
         if (this.gameMode === 'solo') return;
 
         const data = {
-            type: this.isHost ? 'hostPosition' : 'move',
             position: { x: position.x, y: position.y, z: position.z },
             rotation: { x: rotation.x, y: rotation.y }
         };
 
         if (this.isHost) {
-            this.broadcastToGuests(data);
-        } else if (this.hostConnection && this.hostConnection.open) {
-            this.hostConnection.send(data);
+            this.broadcastToGuests({ type: 'hostMove', ...data });
+        } else if (this.hostConnection?.open) {
+            this.hostConnection.send({ type: 'move', ...data });
         }
     }
 
@@ -369,7 +457,7 @@ class NetworkClient {
 
         if (this.isHost) {
             this.broadcastToGuests(data);
-        } else if (this.hostConnection && this.hostConnection.open) {
+        } else if (this.hostConnection?.open) {
             this.hostConnection.send(data);
         }
     }
@@ -381,9 +469,17 @@ class NetworkClient {
 
         if (this.isHost) {
             this.broadcastToGuests(data);
-        } else if (this.hostConnection && this.hostConnection.open) {
+        } else if (this.hostConnection?.open) {
             this.hostConnection.send(data);
         }
+    }
+
+    sendAnimalUpdate(data) {
+        if (!this.isHost) return;
+        this.broadcastToGuests({
+            type: 'animalUpdate',
+            ...data
+        });
     }
 
     on(event, callback) {
@@ -393,8 +489,57 @@ class NetworkClient {
         }
     }
 
-    getRoomCode() {
-        return this.roomCode;
+    getRoomCode() { return this.roomCode; }
+
+    // ===== Database Persistence =====
+
+    async saveWorldToDB(roomCode, hostToken, worldData) {
+        try {
+            const response = await fetch('/game/minecraft/api/save_world.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ room_code: roomCode, host_token: hostToken, world_data: worldData })
+            });
+            const res = await response.json();
+            return res;
+        } catch (e) {
+            console.error('Save failed:', e);
+            return { error: e.message };
+        }
+    }
+
+    async loadWorldFromDB(roomCode) {
+        try {
+            const response = await fetch(`/game/minecraft/api/load_world.php?room_code=${encodeURIComponent(roomCode)}`);
+            if (response.status === 404) return null;
+            const res = await response.json();
+            return res.world_data;
+        } catch (e) {
+            console.error('Load failed:', e);
+            return null;
+        }
+    }
+
+    async deleteWorldFromDB(roomCode, hostToken) {
+        console.log(`[Network] deleteWorldFromDB called for ${roomCode}`);
+        try {
+            const url = '/game/minecraft/api/delete_world.php';
+            console.log(`[Network] Fetching ${url}`);
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ room_code: roomCode, host_token: hostToken })
+            });
+            console.log(`[Network] Response status: ${response.status}`);
+
+            const res = await response.json();
+            console.log('[Network] Response JSON:', res);
+            return res;
+        } catch (e) {
+            console.error('[Network] Delete failed exception:', e);
+            return { error: e.message };
+        }
     }
 }
 

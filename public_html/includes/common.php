@@ -91,6 +91,7 @@ function renderFooter() {
             <label for="footer-website">ウェブサイト</label>
             <input type="text" name="website" id="footer-website" tabindex="-1" autocomplete="off" />
           </div>
+          <input type="hidden" name="client_id" id="footer-client-id" />
           <button type="submit">送信する</button>
         </div>
       </form>
@@ -105,9 +106,32 @@ function renderFooter() {
     <div class="footer-meta small">&copy; <?php echo date('Y'); ?> メモ帳</div>
   </div>
 
-  <?php if ($feedbackMessage !== ''): ?>
   <script>
     (function() {
+      // Client ID Generation and Tracking
+      try {
+        var storageKey = 'memosite_client_id';
+        var clientId = localStorage.getItem(storageKey);
+        
+        if (!clientId) {
+          // Generate UUID v4
+          clientId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+          localStorage.setItem(storageKey, clientId);
+        }
+        
+        var clientInput = document.getElementById('footer-client-id');
+        if (clientInput) {
+          clientInput.value = clientId;
+        }
+      } catch (e) {
+        console.error('Client ID generation failed:', e);
+      }
+
+      // History manipulation for contact param
+      <?php if ($feedbackMessage !== ''): ?>
       try {
         var url = new URL(window.location.href);
         if (url.searchParams.has('contact')) {
@@ -117,9 +141,9 @@ function renderFooter() {
       } catch (e) {
         /* noop */
       }
+      <?php endif; ?>
     })();
   </script>
-  <?php endif; ?>
 </footer>
 <?php
 }

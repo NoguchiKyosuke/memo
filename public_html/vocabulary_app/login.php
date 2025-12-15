@@ -19,12 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['email'] = $user['email'];
                 
-                // Set remember me cookie
-                $token = bin2hex(random_bytes(32));
-                $stmt = $pdo->prepare("UPDATE users SET remember_token = ? WHERE id = ?");
-                $stmt->execute([$token, $user['id']]);
-                
-                setcookie('remember_me', $token, time() + (86400 * 30), "/", "", true, true); // 30 days, Secure, HttpOnly
+                // Set remember me cookie if requested
+                if (isset($_POST['remember'])) {
+                    $token = bin2hex(random_bytes(32));
+                    $stmt = $pdo->prepare("UPDATE users SET remember_token = ? WHERE id = ?");
+                    $stmt->execute([$token, $user['id']]);
+                    
+                    setcookie('remember_me', $token, time() + (86400 * 30), "/", "", true, true); // 30 days, Secure, HttpOnly
+                }
 
                 header("Location: dashboard.php");
                 exit;
@@ -62,10 +64,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
             <form method="post">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required placeholder="you@example.com">
+                <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
+                
+                <div style="margin: 10px 0;">
+                    <label>
+                        <input type="checkbox" name="remember" value="1"> Remember Me
+                    </label>
+                </div>
                 
                 <button type="submit">Login</button>
             </form>
+
+            <div class="divider" style="margin: 20px 0; text-align: center; border-bottom: 1px solid #eee; line-height: 0.1em;">
+                <span style="background:#fff; padding:0 10px; color:#777;">OR</span>
+            </div>
+
+            <!-- Google Sign-In -->
+            <div id="g_id_onload"
+                 data-client_id="485681185238-18l5j0atohb9aubgveaucp7r5l0cfk6q.apps.googleusercontent.com"
+                 data-callback="handleCredentialResponse"
+                 data-auto_select="false"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-size="large"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-shape="pill"
+                 data-logo_alignment="left">
+            </div>
+
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
+            <script>
+                function handleCredentialResponse(response) {
+                    if (!response.credential) {
+                        alert('Login failed: No credential received.');
+                        return;
+                    }
+
+                    fetch('google_login.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ credential: response.credential })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = data.redirect;
+                        } else {
+                            alert('Login failed: ' + (data.error || 'Unknown error'));
+                        }
+                    })
+                    .catch(e => {
+                        console.error('Error:', e);
+                        alert('An error occurred during login.');
+                    });
+                }
+            </script>
         </div>
     </div>
 </body>

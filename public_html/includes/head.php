@@ -49,6 +49,7 @@ function renderHead($title = 'メモ帳', $description = 'Software Defined Vehic
   
   <!-- Styles -->
   <link rel="stylesheet" href="/assets/css/app.css" />
+  <link rel="stylesheet" href="/assets/css/custom.css" />
   <script defer src="/assets/js/code-enhancer.js"></script>
   
   <!-- Google AdSense -->

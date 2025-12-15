@@ -64,22 +64,6 @@ function getVoiceArticles(): array
             'tags' => ['SafeEar', 'J-SPAW', '音声セキュリティ', '評価レポート'],
             'date' => '2025-10',
         ],
-        [
-            'id' => 'seanet_overview',
-            'title' => 'SEANet: 音声符号化のためのニューラルネットワーク',
-            'slug' => 'seanet_overview.php',
-            'description' => 'SEANet（Simple and Efficient Audio Neural Network）の基本構造、エンコーダ・デコーダの設計原理、音声圧縮への応用を詳しく解説します。',
-            'tags' => ['SEANet', '音声符号化', '深層学習', '畳み込みニューラルネットワーク'],
-            'date' => '2025-11',
-        ],
-        [
-            'id' => 'safear_results',
-            'title' => 'SafeEar: ASVspoof2019学習 → J-SPAW評価 実験レポート',
-            'slug' => 'safear_results.php',
-            'description' => 'ASVspoof2019で学習したSafeEarをJ-SPAWでゼロショット評価。EERの伸び悩み要因（ドメインシフト等）を分析し、改善策を提案。',
-            'tags' => ['SafeEar', 'ASVspoof2019', 'J-SPAW', 'スプーフィング検出', '実験'],
-            'date' => '2025-11',
-        ],
     ];
 }
 

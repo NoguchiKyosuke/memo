@@ -17,6 +17,10 @@ RewriteRule ^speech\.html$ /voice/speech.php [R=301,L]
 RewriteRule ^speech\.php$ /voice/speech.php [R=301,L]
 RewriteRule ^jspaw\.php$ /voice/jspaw.php [R=301,L]
 
+# WebCraft URL Unification
+RewriteRule ^game/minecraft/index(\.php|\.html)?$ /game/minecraft/ [R=301,L]
+
+
 # Remove .php extension from URLs
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -24,6 +28,7 @@ RewriteRule ^([^\.]+)$ $1.php [NC,L]
 
 # Remove .php extension from URLs (if accessed directly)
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.+)\.php[\s?] [NC]
+RewriteCond %{REQUEST_METHOD} !POST
 RewriteRule ^ /%1 [R=301,L]
 
 # Security improvements
@@ -73,4 +78,5 @@ RewriteRule ^ /%1 [R=301,L]
     Header always set X-Frame-Options DENY
     Header always set X-XSS-Protection "1; mode=block"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
 </IfModule>

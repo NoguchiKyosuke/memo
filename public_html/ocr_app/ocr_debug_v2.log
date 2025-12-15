@@ -1,0 +1,214 @@
+Test log from diag.php
+[2025-12-02 00:27:40] Request received: GET
+[2025-12-02 00:27:40] Files: Array
+(
+)
+
+[2025-12-02 00:29:06] Request received: POST
+[2025-12-02 00:29:06] Files: Array
+(
+    [image] => Array
+        (
+            [name] => test_ocr_image.png
+            [full_path] => test_ocr_image.png
+            [type] => image/png
+            [tmp_name] => /tmp/phpgf85ca88itul6jLURH4
+            [error] => 0
+            [size] => 2814
+        )
+
+)
+
+[2025-12-02 00:29:06] Starting OCR processing...
+[2025-12-02 00:29:06] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:29:06] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db442f1464.png' '/tmp/ocr_out_692db442f1467' -l eng+jpn 2>&1
+[2025-12-02 00:29:07] Return Code: 1
+[2025-12-02 00:29:07] Output: Error in fopenReadStream: file not found
+Error in pixRead: image file not found: <!DOCTYPE html>
+Image file <!DOCTYPE html> cannot be read!
+Error during processing.
+[2025-12-02 00:29:07] Generated Text Content: ...
+[2025-12-02 00:29:51] Request received: POST
+[2025-12-02 00:29:51] Files: Array
+(
+    [image] => Array
+        (
+            [name] => test_curl.png
+            [full_path] => test_curl.png
+            [type] => image/png
+            [tmp_name] => /tmp/phpj5v6pk27tt936dvVjQS
+            [error] => 0
+            [size] => 112111
+        )
+
+)
+
+[2025-12-02 00:29:51] Starting OCR processing...
+[2025-12-02 00:29:51] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:29:51] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db46fd1fb5.png' '/tmp/ocr_out_692db46fd1fb6' -l eng+jpn 2>&1
+[2025-12-02 00:29:52] Return Code: 0
+[2025-12-02 00:29:52] Output: 
+[2025-12-02 00:29:52] Generated Text Content: Hello World
+...
+[2025-12-02 00:32:23] Request received: POST
+[2025-12-02 00:32:23] Files: Array
+(
+    [image] => Array
+        (
+            [name] => test_ocr_image.png
+            [full_path] => test_ocr_image.png
+            [type] => image/png
+            [tmp_name] => /tmp/phpht1fuhpivqh86hfITeu
+            [error] => 0
+            [size] => 2814
+        )
+
+)
+
+[2025-12-02 00:32:23] Starting OCR processing...
+[2025-12-02 00:32:23] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:32:23] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db5073904c.png' '/tmp/ocr_out_692db5073904d' -l eng+jpn 2>&1
+[2025-12-02 00:32:23] Return Code: 1
+[2025-12-02 00:32:23] Output: Error in fopenReadStream: file not found
+Error in pixRead: image file not found: <!DOCTYPE html>
+Image file <!DOCTYPE html> cannot be read!
+Error during processing.
+[2025-12-02 00:32:23] Generated Text Content: ...
+[2025-12-02 00:32:29] Request received: POST
+[2025-12-02 00:32:29] Files: Array
+(
+    [image] => Array
+        (
+            [name] => task2.png
+            [full_path] => task2.png
+            [type] => image/png
+            [tmp_name] => /tmp/php6ds5l18oi4nudgbVISO
+            [error] => 0
+            [size] => 8270
+        )
+
+)
+
+[2025-12-02 00:32:29] Starting OCR processing...
+[2025-12-02 00:32:29] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:32:29] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db50d8efe5.png' '/tmp/ocr_out_692db50d8efe6' -l eng+jpn 2>&1
+[2025-12-02 00:32:30] Return Code: 0
+[2025-12-02 00:32:30] Output: Error in boxClipToRectangle: box outside rectangle
+Error in pixScanForForeground: invalid box
+[2025-12-02 00:32:30] Generated Text Content: jostname="jlabi8syv. jlab18. jo. tomakomai-ct.ac. jp”
+eymap="jp. kbd"
+ifconfig_em@="inet 172.25.12...
+[2025-12-02 00:33:07] Request received: POST
+[2025-12-02 00:33:07] Files: Array
+(
+    [image] => Array
+        (
+            [name] => schedule_image_1114398.jpg
+            [full_path] => schedule_image_1114398.jpg
+            [type] => image/jpeg
+            [tmp_name] => /tmp/phppnmthpmlj79vcdEdBU1
+            [error] => 0
+            [size] => 4261720
+        )
+
+)
+
+[2025-12-02 00:33:07] Starting OCR processing...
+[2025-12-02 00:33:07] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:33:07] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db5338fbd6.png' '/tmp/ocr_out_692db5338fbd9' -l eng+jpn 2>&1
+[2025-12-02 00:33:20] Return Code: 0
+[2025-12-02 00:33:20] Output: Detected 348 diacritics
+[2025-12-02 00:33:20] Generated Text Content: 20254F11510(4+)~115300(M) ¥v bY) SHA ee Cis
+
+| わ ー す た | オリ ジ ナ ル ラ ベル 重
+...
+[2025-12-02 00:33:34] Request received: POST
+[2025-12-02 00:33:34] Files: Array
+(
+    [image] => Array
+        (
+            [name] => schedule_image_1114398.jpg
+            [full_path] => schedule_image_1114398.jpg
+            [type] => image/jpeg
+            [tmp_name] => /tmp/phpo5ov9gdilul3aeeJb9P
+            [error] => 0
+            [size] => 4261720
+        )
+
+)
+
+[2025-12-02 00:33:34] Starting OCR processing...
+[2025-12-02 00:33:34] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:33:34] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db54e1979e.png' '/tmp/ocr_out_692db54e197a0' -l eng+jpn 2>&1
+[2025-12-02 00:33:42] Return Code: 0
+[2025-12-02 00:33:42] Output: Detected 348 diacritics
+[2025-12-02 00:33:42] Generated Text Content: 20254F11510(4+)~115300(M) ¥v bY) SHA ee Cis
+
+| わ ー す た | オリ ジ ナ ル ラ ベル 重
+...
+[2025-12-02 00:33:47] Request received: POST
+[2025-12-02 00:33:47] Files: Array
+(
+    [image] => Array
+        (
+            [name] => Screenshot_20251004-124830.png
+            [full_path] => Screenshot_20251004-124830.png
+            [type] => image/png
+            [tmp_name] => /tmp/phpbu04s08d46viezRJsOY
+            [error] => 0
+            [size] => 144662
+        )
+
+)
+
+[2025-12-02 00:33:47] Starting OCR processing...
+[2025-12-02 00:33:47] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:33:47] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db55b56eb3.png' '/tmp/ocr_out_692db55b56eb4' -l eng+jpn 2>&1
+[2025-12-02 00:33:48] Return Code: 0
+[2025-12-02 00:33:48] Output: Estimating resolution as 208
+[2025-12-02 00:33:48] Generated Text Content: 12:48 MM & © Oh 44° 4 93%
+
+Q Ss account.unextjp/accoun + (2)
+
+Save password?
+
+To Google Password M...
+[2025-12-02 00:34:18] Request received: POST
+[2025-12-02 00:34:18] Files: Array
+(
+    [image] => Array
+        (
+            [name] => task16.png
+            [full_path] => task16.png
+            [type] => image/png
+            [tmp_name] => /tmp/phpmm8j1eluj0lr4Njd2AD
+            [error] => 0
+            [size] => 310678
+        )
+
+)
+
+[2025-12-02 00:34:18] Starting OCR processing...
+[2025-12-02 00:34:18] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:34:18] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db57aa9328.png' '/tmp/ocr_out_692db57aa932a' -l eng+jpn 2>&1
+[2025-12-02 00:34:21] Return Code: 0
+[2025-12-02 00:34:21] Output: 
+[2025-12-02 00:34:21] Generated Text Content: ga
+cH ゴブ ロッ プ ト 本 ロ x
+> ipconfig /allcompartments /all ... すべ て の コン パ...
+[2025-12-02 00:51:24] Starting request...
+[2025-12-02 00:51:24] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:51:24] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db97ca1c00.png' '/tmp/ocr_out_692db97ca1c01' -l eng+jpn 2>&1
+[2025-12-02 00:51:24] Return Code: 0
+[2025-12-02 00:51:24] Output: 
+[2025-12-02 00:51:24] Generated Text Content: Hello World
+...
+[2025-12-02 00:52:32] Starting request...
+[2025-12-02 00:52:32] Log file: /home/mahjong/memosite.jp/public_html/ocr_app/ocr_debug_v2.log
+[2025-12-02 00:52:32] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db9c0a5125.png' '/tmp/ocr_out_692db9c0a5126' -l eng+jpn 2>&1
+[2025-12-02 00:52:32] Return Code: 1
+[2025-12-02 00:52:32] Output: Error in fopenReadStream: file not found
+Error in pixRead: image file not found: <!DOCTYPE html>
+Image file <!DOCTYPE html> cannot be read!
+Error during processing.
+[2025-12-02 00:52:32] Generated Text Content: ...

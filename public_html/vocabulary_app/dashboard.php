@@ -1,4 +1,6 @@
 <?php
+// Initialize persistent session
+require_once __DIR__ . '/../game/includes/session.php';
 require_once 'db.php';
 require_once 'functions.php';
 
@@ -36,7 +38,9 @@ $words = $stmt->fetchAll();
         <div class="container">
             <h1>My Dictionary</h1>
             <nav>
-                <span>Welcome, <?php echo h(isset($_SESSION['username']) ? $_SESSION['username'] : $_SESSION['email']); ?></span>
+                <span>Welcome, <?php echo h($_SESSION['name'] ?? $_SESSION['email']); ?></span>
+                <a href="https://memosite.jp" style="background-color: #555; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; margin-right: 10px;">🏠 Home</a>
+                <a href="game.php" style="background-color: #f39c12; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; margin-right: 10px;">🎮 Vocab Game</a>
                 <a href="add_word.php">Add Word</a>
                 <a href="logout.php">Logout</a>
             </nav>
@@ -45,48 +49,35 @@ $words = $stmt->fetchAll();
     <div class="container">
         <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>Your Vocabulary</h2>
-                <div class="filters">
-                    <a href="dashboard.php?filter=all" class="filter-btn <?php echo $filter === 'all' ? 'active' : ''; ?>">All</a>
-                    <a href="dashboard.php?filter=en-ja" class="filter-btn <?php echo $filter === 'en-ja' ? 'active' : ''; ?>">En-Ja</a>
-                    <a href="dashboard.php?filter=en-en" class="filter-btn <?php echo $filter === 'en-en' ? 'active' : ''; ?>">En-En</a>
-                </div>
+                <h2>Your Sentences</h2>
             </div>
 
             <?php if (empty($words)): ?>
                 <p>No words found. <a href="add_word.php">Add a word!</a></p>
             <?php else: ?>
                 <?php foreach ($words as $word): ?>
-                    <div class="word-item">
-                        <div class="word-header">
-                            <span class="word-term">
-                                <?php echo h($word['word']); ?>
-                                <?php if ($word['dictionary_type'] === 'mixed'): ?>
-                                    <span class="badge badge-mixed">Both</span>
-                                <?php elseif ($word['dictionary_type'] === 'en-en'): ?>
-                                    <span class="badge badge-en-en">En-En</span>
-                                <?php else: ?>
-                                    <span class="badge badge-en-ja">En-Ja</span>
-                                <?php endif; ?>
-                            </span>
-                            <span class="word-source">
-                                Source: <a href="view_source.php?source=<?php echo urlencode($word['source']); ?>"><?php echo h($word['source']); ?></a>
-                                <form method="post" action="delete_word" style="display:inline; margin-left: 10px;" onsubmit="return confirm('Are you sure you want to remove this word?');">
-                                    <input type="hidden" name="id" value="<?php echo $word['id']; ?>">
-                                    <button type="submit" class="btn-remove">Remove</button>
-                                </form>
-                            </span>
+                    <div class="word-item" style="display: flex; flex-direction: column; gap: 8px; padding: 15px; border-bottom: 1px solid #eee;">
+                        <!-- 1. English (Word/Sentence) -->
+                        <div class="word-term" style="font-size: 1.2rem; font-weight: bold; color: #2c3e50;">
+                            <?php echo nl2br(h($word['word'])); ?>
                         </div>
-                        <div class="word-meaning view-mode-<?php echo h($filter); ?>">
-                            <?php 
-                            // Allow HTML for rich meanings, but strip dangerous tags if needed.
-                            // Since we generate the HTML in functions.php, we trust it reasonably well,
-                            // but good practice to be careful. For now, echo directly as we control the input.
-                            echo $word['meaning']; 
-                            ?>
+                        
+                        <!-- 2. Japanese (Meaning) -->
+                        <div class="word-meaning" style="font-size: 1rem; color: #555;">
+                            <?php echo nl2br(h($word['meaning'])); ?>
                         </div>
-                        <div class="word-sentence">
-                            "<?php echo h($word['sentence']); ?>"
+
+                        <!-- 3. Source -->
+                        <div class="word-source" style="font-size: 0.85rem; color: #7f8c8d;">
+                            Source: <a href="view_source.php?source=<?php echo urlencode($word['source']); ?>" style="color: #3498db;"><?php echo h($word['source']); ?></a>
+                        </div>
+
+                        <!-- 4. Delete Button -->
+                        <div class="word-actions">
+                            <form method="post" action="delete_word?t=<?php echo time(); ?>" onsubmit="return confirm('Are you sure you want to remove this item?');">
+                                <input type="hidden" name="id" value="<?php echo $word['id']; ?>">
+                                <button type="submit" class="btn-remove" style="background: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">Remove</button>
+                            </form>
                         </div>
                     </div>
                 <?php endforeach; ?>

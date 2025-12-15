@@ -20,8 +20,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-bottom: 320px;
-    /* Space for the console */
+    padding-bottom: 2rem;
 }
 
 .container {
@@ -187,114 +186,4 @@ p.subtitle {
 
 .toast.show {
     opacity: 1;
-}
-
-/* Console Styles */
-.console-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 300px;
-    /* Fixed height */
-    margin-top: 0;
-    background-color: #0c0c0c;
-    /* Deep black */
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 0.9rem;
-    color: #cccccc;
-    overflow: hidden;
-    display: flex;
-    /* Flex to manage header and body */
-    flex-direction: column;
-    border-top: 1px solid #333;
-    z-index: 1000;
-}
-
-.console-header {
-    background-color: #2d2d2d;
-    padding: 0.5rem 1rem;
-    border-bottom: 1px solid #111;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #ddd;
-    font-size: 0.8rem;
-    user-select: none;
-}
-
-.console-header::before {
-    content: "● ● ●";
-    /* Fake window controls */
-    color: #555;
-    letter-spacing: 2px;
-    font-size: 0.8rem;
-}
-
-.console-body {
-    padding: 1rem;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.console-log {
-    margin: 0.25rem 0;
-    line-height: 1.4;
-    word-break: break-all;
-}
-
-.console-log.info {
-    color: #cccccc;
-}
-
-.console-log.success {
-    color: #4ade80;
-}
-
-.console-log.error {
-    color: #ef4444;
-}
-
-.console-log.warning {
-    color: #fbbf24;
-}
-
-.console-timestamp {
-    color: #666;
-    margin-right: 0.5rem;
-    display: none;
-    /* Hide timestamp for cleaner look */
-}
-
-.console-input-container {
-    display: flex;
-    align-items: center;
-    margin-top: 0;
-    /* Remove margin for seamless look */
-    padding: 0;
-}
-
-.console-prompt-label {
-    color: #4ade80;
-    /* Green prompt */
-    margin-right: 0.5rem;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.console-input {
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 0.9rem;
-    width: 100%;
-    outline: none;
-    padding: 0;
-    margin: 0;
 }

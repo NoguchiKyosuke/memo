@@ -36,18 +36,95 @@ header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    /* Allow wrapping */
 }
 
 header h1 {
     margin: 0;
     font-size: 1.5rem;
+    flex-shrink: 0;
+    /* Prevent title shrinking */
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Space between items */
+}
+
+header nav span {
+    margin-right: 10px;
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
 
 header nav a {
     color: white;
     text-decoration: none;
-    margin-left: 15px;
     font-weight: bold;
+    display: inline-block;
+    padding: 10px 15px;
+    /* Larger touch target */
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Default button bg */
+    transition: all 0.2s;
+}
+
+header nav a:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Specific colors via classes (to be added to HTML) */
+.btn-nav-portal {
+    background-color: #3498db !important;
+}
+
+.btn-nav-game {
+    background-color: #f39c12 !important;
+}
+
+.btn-nav-add {
+    background-color: #27ae60 !important;
+}
+
+.btn-nav-logout {
+    background-color: #7f8c8d !important;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    header nav {
+        flex-direction: column;
+        /* Stack buttons on mobile */
+        width: 100%;
+        gap: 10px;
+    }
+
+    header nav span {
+        margin: 0 0 10px 0;
+        text-align: center;
+        display: block;
+    }
+
+    header nav a {
+        width: 100%;
+        /* Full width buttons */
+        text-align: center;
+        margin: 0;
+        /* Remove margin-left if any */
+        box-sizing: border-box;
+        /* Include padding in width */
+    }
 }
 
 .card {

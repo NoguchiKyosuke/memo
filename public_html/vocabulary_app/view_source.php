@@ -48,7 +48,7 @@ $words = $stmt->fetchAll();
                             <span class="word-term"><?php echo h($word['word']); ?></span>
                         </div>
                         <div class="word-meaning">
-                            <?php echo h($word['meaning']); ?>
+                            <?php echo $word['meaning']; ?>
                         </div>
                         <div class="word-sentence">
                             "<?php echo h($word['sentence']); ?>"
