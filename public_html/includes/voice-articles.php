@@ -64,6 +64,38 @@ function getVoiceArticles(): array
             'tags' => ['SafeEar', 'J-SPAW', '音声セキュリティ', '評価レポート'],
             'date' => '2025-10',
         ],
+        [
+            'id' => 'noisereducer_learning',
+            'title' => 'Noisereducer コード学習',
+            'slug' => 'noisereducer_learning.php',
+            'description' => 'Pythonライブラリ「noisereduce」のソースコードを読み解き、スペクトルゲート法によるノイズ除去の仕組みを学びます。',
+            'tags' => ['Python', 'Noisereduce', '音声処理', 'コード学習'],
+            'date' => '2025-12',
+        ],
+        [
+            'id' => 'denoise_evaluation',
+            'title' => 'ノイズ除去の評価レポート',
+            'slug' => 'denoise_evaluation.php',
+            'description' => 'ノイズ除去の評価レポート。セットアップ、指標、考察、再現手順を紹介。',
+            'tags' => ['ノイズ除去', '評価レポート', '音声セキュリティ'],
+            'date' => '2025-11',
+        ],
+        [
+            'id' => 'safear_results',
+            'title' => 'SafeEar: 実験レポート',
+            'slug' => 'safear_results.php',
+            'description' => 'SafeEarをASVspoof2019やJ-SpAWで学習、評価した実験の記録。仮説、実験方法、結果、考察を整理。',
+            'tags' => ['SafeEar', 'ASVspoof2019', 'J-SPAW', 'スプーフィング検出', 'EER'],
+            'date' => '2025-11',
+        ],
+        [
+            'id' => 'seanet_overview',
+            'title' => 'SEANet: 音声符号化のための畳み込みニューラルネットワーク',
+            'slug' => 'seanet_overview.php',
+            'description' => 'SEANet（Simple and Efficient Audio Neural Network）の基本構造、設計原理、音声圧縮への応用を解説。',
+            'tags' => ['SEANet', '音声符号化', '音声圧縮', 'CNN', '深層学習'],
+            'date' => '2025-11',
+        ],
     ];
 }
 
