@@ -1,0 +1,39 @@
+EER: 0.27585669482846903
+Threshold: 0.9997804760932922
+Bonafide samples: 18600
+Spoof samples: 50400
+Bonafide mean score: 0.996985637038866
+Spoof mean score: 0.8816956952471013
+Bonafide std: 0.037225208859885776
+Spoof std: 0.27767462013114436
+
+[Speaker ID correlations]
+  F007 | Bonafide=0.9944 | Spoof=0.7543 | Diff=0.2401
+  F004 | Bonafide=0.9941 | Spoof=0.7931 | Diff=0.2010
+  F003 | Bonafide=0.9960 | Spoof=0.8008 | Diff=0.1952
+  F001 | Bonafide=0.9979 | Spoof=0.8151 | Diff=0.1828
+  M001 | Bonafide=0.9946 | Spoof=0.8456 | Diff=0.1490
+
+[Room ID correlations]
+  R1 | Bonafide=0.9963 | Spoof=0.8689 | Diff=0.1274
+  R2 | Bonafide=0.9969 | Spoof=0.9201 | Diff=0.0769
+  R3 | Bonafide=0.9977 | Spoof=nan | Diff=nan
+  R4 | Bonafide=0.9990 | Spoof=nan | Diff=nan
+
+[Environment ID correlations]
+  E3 | Bonafide=0.9941 | Spoof=0.7936 | Diff=0.2005
+  E2 | Bonafide=0.9992 | Spoof=0.8970 | Diff=0.1022
+  E1 | Bonafide=0.9970 | Spoof=0.9161 | Diff=0.0810
+  E4 | Bonafide=0.9976 | Spoof=0.9201 | Diff=0.0775
+
+[Microphone ID correlations]
+  M3 | Bonafide=0.9969 | Spoof=0.8817 | Diff=0.1152
+  M1 | Bonafide=0.9988 | Spoof=nan | Diff=nan
+  M2 | Bonafide=0.9953 | Spoof=nan | Diff=nan
+
+[Sentence ID correlations]
+  AE | Bonafide=0.9979 | Spoof=0.8397 | Diff=0.1583
+  AJ | Bonafide=0.9965 | Spoof=0.8438 | Diff=0.1526
+  AK | Bonafide=0.9958 | Spoof=0.8646 | Diff=0.1312
+  AV | Bonafide=0.9955 | Spoof=0.8659 | Diff=0.1296
+  AY | Bonafide=0.9967 | Spoof=0.8685 | Diff=0.1282
