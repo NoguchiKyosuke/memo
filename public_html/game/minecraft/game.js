@@ -1181,6 +1181,7 @@ class MinecraftGame {
         el.className = 'message';
         el.textContent = msg;
         if (type === 'system') el.style.color = '#fbbf24';
+        if (type === 'error') el.style.color = '#ef4444'; // Red for errors
 
         div.appendChild(el);
 
@@ -1585,6 +1586,7 @@ class MinecraftGame {
     }
 
     addMoney(amount) {
+        console.log(`[Game] addMoney called. Current: ${this.money}, Adding: ${amount}`);
         this.money += amount;
         this.saveMoney();
         this.addChatMessage(`+${amount}G を獲得しました！`, 'system');
@@ -1606,9 +1608,9 @@ class MinecraftGame {
 
         // Save to server
         if (window.GameSaver) {
-            console.log('[Minecraft] GameSaver found, saving to server...');
+            // console.log('[Minecraft] GameSaver found, saving to server...');
             GameSaver.save({ money: this.money })
-                .then(() => console.log('[Minecraft] Database save successful.'))
+                .then(() => { }) // Silent success
                 .catch(e => console.error('[Minecraft] Save failed:', e));
         } else {
             console.warn('[Minecraft] GameSaver NOT found. Cannot save to server.');
@@ -1621,6 +1623,11 @@ class MinecraftGame {
         this.isPaused = true;
         document.exitPointerLock();
 
+        if (this.mobileInput.active) {
+            const mc = document.getElementById('mobile-controls');
+            if (mc) mc.style.display = 'none';
+        }
+
         document.getElementById('shop-screen').style.display = 'flex';
         document.getElementById('shop-money-val').textContent = this.money.toLocaleString();
     }
@@ -1628,20 +1635,21 @@ class MinecraftGame {
     closeShop() {
         document.getElementById('shop-screen').style.display = 'none';
         this.isPaused = false;
-        this.canvas.requestPointerLock();
+
+        if (this.mobileInput.active) {
+            const mc = document.getElementById('mobile-controls');
+            if (mc) mc.style.display = 'block';
+        } else {
+            this.canvas.requestPointerLock();
+        }
     }
 
     buyFood(cost, hungerRestore) {
+        console.log(`[Game] buyFood called. Cost: ${cost}, Current Money: ${this.money}`);
         if (this.spendMoney(cost)) {
             // Restore Hunger
             const oldHunger = this.player.hunger;
             this.player.hunger = Math.min(this.player.maxHunger, this.player.hunger + hungerRestore);
-
-            // Allow eating even if full? No, let's just heal if full?
-            // "Buy to satisfy hunger" - implies hunger specific.
-            // Check if user was already full?
-            // Let's also restore a bit of health if hunger is high?
-            // For now, just hunger.
 
             this.updateHUD();
             document.getElementById('shop-money-val').textContent = this.money.toLocaleString();
@@ -1649,7 +1657,8 @@ class MinecraftGame {
             const restored = this.player.hunger - oldHunger;
             this.addChatMessage(`食料を購入しました！ (空腹度 +${restored})`, 'system');
         } else {
-            alert('お金が足りません！');
+            console.log('[Game] Not enough money to buy food.');
+            this.addChatMessage('お金が足りません！', 'error');
         }
     }
 

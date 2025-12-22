@@ -41,6 +41,10 @@ renderHead($title, $description, $keywords);
       <a class="card home-card card-game" href="/game/">
         <h3>GAME PORTAL</h3>
       </a>
+
+      <a class="card home-card card-pdf" href="/pdf_compressor/">
+        <h3>PDF Compressor</h3>
+      </a>
     </div>
   </section>
 </main>

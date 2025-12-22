@@ -123,13 +123,47 @@ session_start();
     </div>
 
     <!-- Shop Screen -->
+    <!-- Shop Screen -->
     <div id="shop-screen" style="display: none;">
-         <div class="shop-content">
-            <h2>アイテムショップ</h2>
-            <div class="shop-money">所持金</div>
-            <div class="shop-items" id="shop-items-container"></div>
-            <button class="menu-btn secondary" onclick="document.getElementById('shop-screen').style.display='none'; document.getElementById('game-canvas').requestPointerLock();">閉じる</button>
-         </div>
+        <div class="shop-content">
+            <h2>🛒 フードショップ</h2>
+            <div class="shop-money">所持金: <span id="shop-money-val">0</span> G</div>
+            <div class="shop-items">
+                <div class="shop-item">
+                    <div class="shop-icon">🍎</div>
+                    <div class="shop-info">
+                        <h3>リンゴ</h3>
+                        <p>空腹度 +2</p>
+                    </div>
+                    <button class="menu-btn" onclick="game.buyFood(50, 2)">50 G</button>
+                </div>
+                <div class="shop-item">
+                    <div class="shop-icon">🍞</div>
+                    <div class="shop-info">
+                        <h3>パン</h3>
+                        <p>空腹度 +5</p>
+                    </div>
+                    <button class="menu-btn" onclick="game.buyFood(100, 5)">100 G</button>
+                </div>
+                <div class="shop-item">
+                    <div class="shop-icon">🥩</div>
+                    <div class="shop-info">
+                        <h3>ステーキ</h3>
+                        <p>空腹度 +8</p>
+                    </div>
+                    <button class="menu-btn" onclick="game.buyFood(200, 8)">200 G</button>
+                </div>
+                <div class="shop-item">
+                    <div class="shop-icon">🌭</div>
+                    <div class="shop-info">
+                        <h3>金のリンゴ</h3>
+                        <p>全回復</p>
+                    </div>
+                    <button class="menu-btn special" onclick="game.buyFood(500, 20)">500 G</button>
+                </div>
+            </div>
+            <button class="menu-btn danger" onclick="game.closeShop()">閉じる</button>
+        </div>
     </div>
 
     <script src="network.js?v=<?php echo time(); ?>"></script>

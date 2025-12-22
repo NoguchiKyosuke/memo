@@ -46,6 +46,7 @@ session_start();
             </div>
             
              <a href="worlds.php" class="menu-btn secondary" style="display: block; width: 100%; text-decoration: none; text-align: center; margin-top: 10px;">🌍 ワールド管理</a>
+             <a href="https://memosite.jp/game" class="menu-btn secondary" style="display: block; width: 100%; text-decoration: none; text-align: center; margin-top: 10px;">🏠 ゲーム一覧へ戻る</a>
 
             <div class="controls-info">
                 <h3>操作方法</h3>

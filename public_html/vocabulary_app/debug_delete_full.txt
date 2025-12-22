@@ -76,3 +76,23 @@ Session User ID: 7
 Target ID: 23
 Word Owner ID: 7
 Deletion SUCCESS.
+2025-12-15 20:00:35 - Request received.
+POST: Array
+(
+    [id] => 64
+)
+
+Session User ID: 7
+Target ID: 64
+Word Owner ID: 7
+Deletion SUCCESS.
+2025-12-19 10:14:33 - Request received.
+POST: Array
+(
+    [id] => 70
+)
+
+Session User ID: 7
+Target ID: 70
+Word Owner ID: 7
+Deletion SUCCESS.

@@ -125,3 +125,9 @@ Output:
 [2025-12-12 16:20:50] Return: 0
 Output: Estimating resolution as 237
 Detected 61 diacritics
+[2025-12-15 12:18:37] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693f7e0d347e3.png' '/tmp/ocr_out_693f7e0d347e4' -l eng+jpn 2>&1
+[2025-12-15 12:18:37] Return: 0
+Output: 
+[2025-12-16 14:21:55] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_6940ec7339515.png' '/tmp/ocr_out_6940ec7339516' -l eng+jpn 2>&1
+[2025-12-16 14:21:55] Return: 0
+Output: Estimating resolution as 159

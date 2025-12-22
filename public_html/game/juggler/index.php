@@ -19,7 +19,7 @@
             color: white;
             touch-action: manipulation;
             font-family: 'Roboto Mono', monospace;
-            overflow: hidden;
+            overflow: auto;
             user-select: none;
             -webkit-user-select: none;
         }

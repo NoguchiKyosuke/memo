@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bowling Score - Liquid Glass Edition</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+                
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass-shadow: rgba(0, 0, 0, 0.1);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --accent-blue: rgba(0, 122, 255, 0.9);
+            --accent-green: rgba(52, 199, 89, 0.9);
+            --accent-gold: rgba(255, 204, 0, 0.9);
+            --accent-red: rgba(255, 69, 58, 0.9);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* ==================== 背景グラデーションアニメーション ==================== */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(30, 60, 114, 0.8),
+                rgba(42, 82, 152, 0.8),
+                rgba(126, 34, 206, 0.8),
+                rgba(219, 39, 119, 0.8)
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: 0;
+        }
+
+        /* ==================== メインコンテナ ==================== */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* ==================== スコアボードエリア（グラスモーフィズム） ==================== */
+        .scoreboard-container {
+            flex: 0 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 
+                0 8px 32px 0 rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scoreboard-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.08),
+                transparent
+            );
+            transition: left 0.6s ease;
+        }
+        
+        .scoreboard-container:hover::before {
+            left: 100%;
+        }
+
+        /* トップバー */
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+        
+        .frame-info {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        
+        .frame-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .frame-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .total-score {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+        
+        .score-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+        
+        .score-value {
+            font-size: 56px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffd60a 0%, #ffc300 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .score-value.updated {
+            animation: scorePopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes scorePopIn {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* フレームグリッド */
+        .frames-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        /* フレームカード（Liquid Glass） */
+        .frame-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        
+        .frame-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+        }
+        
+        .frame-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* アクティブ状態（投球中） */
+        .frame-card.active {
+            border-color: var(--accent-blue);
+            box-shadow: 
+                0 0 0 2px rgba(0, 122, 255, 0.2),
+                0 8px 24px rgba(0, 122, 255, 0.3);
+            transform: translateY(-6px);
+        }
+
+        /* リーチ状態（スペアチャンス） */
+        .frame-card.reach {
+            border-color: var(--accent-red);
+            animation: reachPulse 1s ease-in-out infinite;
+        }
+        
+        @keyframes reachPulse {
+            0%, 100% {
+                box-shadow: 
+                    0 0 0 2px rgba(255, 69, 58, 0.3),
+                    0 8px 24px rgba(255, 69, 58, 0.4);
+            }
+            50% {
+                box-shadow: 
+                    0 0 0 4px rgba(255, 69, 58, 0.5),
+                    0 12px 32px rgba(255, 69, 58, 0.6);
+            }
+        }
+
+        .frame-title {
+            text-align: center;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .frame-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            min-height: 120px;
+        }
+        
+        .throw-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .throw-display:nth-child(2) { border-right: none; }
+        
+        .throw-display.strike {
+            color: var(--accent-gold);
+        }
+        
+        .throw-display.spare {
+            color: var(--accent-green);
+        }
+        
+        .frame-card[data-frame="5"] .frame-body {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
+        .frame-card[data-frame="5"] .throw-display {
+            grid-row: 1;
+            font-size: 28px;
+        }
+
+        .total-display {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            font-weight: 800;
+            background: rgba(255, 204, 0, 0.08);
+            color: var(--accent-gold);
+        }
+
+        /* ==================== 広告エリア（下半分） ==================== */
+        .ad-container {
+            flex: 1;
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ad-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        #ad-normal {
+            z-index: 2;
+            opacity: 1;
+        }
+        
+        #ad-fever {
+            z-index: 1;
+            opacity: 0;
+        }
+        
+        body.fever-mode #ad-normal {
+            opacity: 0;
+            transform: scale(1.05);
+        }
+        
+        body.fever-mode #ad-fever {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ==================== エフェクトレイヤー ==================== */
+        .effects-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        /* モダンなカットイン（控えめ） */
+        .event-notification {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(4rem, 12vw, 8rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            animation: notificationSlide 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            z-index: 10000;
+            max-width: 90vw;
+            text-align: center;
+        }
+        
+        @keyframes notificationSlide {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+                filter: blur(20px);
+            }
+            30% {
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 1;
+                filter: blur(0);
+            }
+            70% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.9);
+                opacity: 0;
+            }
+        }
+        
+        .event-notification.strike {
+            background: linear-gradient(135deg, #ffd60a, #ffc300, #ff9500);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 40px rgba(255, 214, 10, 0.6));
+        }
+        
+        .event-notification.spare {
+            background: linear-gradient(135deg, #34c759, #30d158, #00c7be);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 40px rgba(52, 199, 89, 0.6));
+        }
+
+        /* パーティクル（ミニマル） */
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 2s ease-out forwards;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* リップル効果 */
+        .ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            opacity: 0;
+            animation: rippleExpand 1.5s ease-out forwards;
+        }
+        
+        @keyframes rippleExpand {
+            0% {
+                width: 50px;
+                height: 50px;
+                opacity: 1;
+            }
+            100% {
+                width: 150vmax;
+                height: 150vmax;
+                opacity: 0;
+            }
+        }
+
+        /* 画面フラッシュ（控えめ） */
+        .screen-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.4) 0%,
+                transparent 70%
+            );
+            opacity: 0;
+            animation: flashFade 1s ease-out forwards;
+        }
+        
+        @keyframes flashFade {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* コンボ表示 */
+        .combo-badge {
+            position: fixed;
+            top: 25%;
+            right: 5%;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff9500, #ff3b30);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: comboBounce 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            z-index: 10001;
+        }
+        
+        @keyframes comboBounce {
+            0% {
+                transform: scale(0) rotate(-15deg);
+                opacity: 0;
+            }
+            40% {
+                transform: scale(1.2) rotate(5deg);
+                opacity: 1;
+            }
+            70% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* ==================== コントロールパネル ==================== */
+        .controls {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            display: flex;
+            gap: 12px;
+            z-index: 10000;
+        }
+        
+        .control-btn,
+        .control-toggle {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover,
+        .control-toggle:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .control-btn:active {
+            transform: translateY(0);
+        }
+        
+        .control-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .control-toggle input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* フィーバーモード時の背景変化 */
+        body.fever-mode::before {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 149, 0, 0.4),
+                rgba(255, 59, 48, 0.4),
+                rgba(191, 90, 242, 0.4),
+                rgba(94, 92, 230, 0.4)
+            );
+        }
+
+        /* リーチモード時の背景ダーク化 */
+        body.reach-mode::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                circle at 50% 50%,
+                transparent 0%,
+                rgba(0, 0, 0, 0.4) 100%
+            );
+            z-index: 0;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- スコアボード -->
+        <div class="scoreboard-container">
+            <div class="score-header">
+                <div class="frame-info">
+                    <span class="frame-label">Frame</span>
+                    <span class="frame-number" id="frame-num">1</span>
+                    <span class="frame-label">/ 5</span>
+                </div>
+                <div class="total-score">
+                    <span class="score-label">Total</span>
+                    <span class="score-value" id="total-score">0</span>
+                </div>
+            </div>
+
+            <div class="frames-grid" id="frames-grid"></div>
+        </div>
+
+        <!-- 広告エリア（下半分） -->
+        <div class="ad-container">
+            <video id="ad-normal" autoplay loop muted playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+            <video id="ad-fever" loop muted playsinline src="https://www.w3schools.com/tags/movie.mp4"></video>
+        </div>
+    </div>
+
+    <!-- エフェクトレイヤー -->
+    <div class="effects-layer" id="effects"></div>
+
+    <!-- コントロール -->
+    <div class="controls">
+        <label class="control-toggle">
+            <input type="checkbox" id="auto-mode">
+            <span>Auto Play</span>
+        </label>
+        <button class="control-btn" id="reset-btn">Reset</button>
+    </div>
+
+    <script>
+        // ==================== DOM ====================
+        const effectsLayer = document.getElementById('effects');
+        const totalScoreEl = document.getElementById('total-score');
+        const frameNumEl = document.getElementById('frame-num');
+        const framesGrid = document.getElementById('frames-grid');
+        const adNormal = document.getElementById('ad-normal');
+        const adFever = document.getElementById('ad-fever');
+        const autoMode = document.getElementById('auto-mode');
+        const resetBtn = document.getElementById('reset-btn');
+
+        const FRAMES = 5;
+        let game = {};
+        let autoTimer = null;
+        let combo = 0;
+        let audioReady = false;
+
+        // ==================== AUDIO ====================
+        let strikeSound, spareSound, tickSound, bgAmbient, bgFever;
+
+        async function initAudio() {
+            if (audioReady) return;
+            try {
+                await Tone.start();
+                audioReady = true;
+
+                strikeSound = new Tone.PolySynth(Tone.FMSynth).toDestination();
+                strikeSound.volume.value = -12;
+
+                spareSound = new Tone.PolySynth(Tone.Synth).toDestination();
+                spareSound.volume.value = -12;
+
+                tickSound = new Tone.MembraneSynth().toDestination();
+                tickSound.volume.value = -20;
+
+                const reverb = new Tone.Reverb(3).toDestination();
+                const ambSynth = new Tone.PolySynth(Tone.AMSynth).connect(reverb);
+                ambSynth.volume.value = -30;
+                bgAmbient = new Tone.Loop(time => {
+                    ambSynth.triggerAttackRelease("C2", "2n", time);
+                }, "4m").start(0);
+
+                const feverSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+                feverSynth.volume.value = -20;
+                bgFever = new Tone.Loop(time => {
+                    feverSynth.triggerAttackRelease("C4", "8n", time);
+                    feverSynth.triggerAttackRelease("E4", "8n", time + "8n");
+                }, "2n");
+
+                Tone.Transport.start();
+                console.log("🎵 Audio Ready");
+            } catch (e) {
+                console.error("Audio Error:", e);
+            }
+        }
+
+        // ==================== GAME ====================
+        function initGame() {
+            const frames = [];
+            for (let i = 0; i < FRAMES; i++) {
+                frames.push({ t1: '', t2: '', t3: '', total: '' });
+            }
+            game = {
+                frame: 1,
+                total: 0,
+                frames: frames,
+                throwNum: 1,
+                pinsLeft: 10
+            };
+            combo = 0;
+
+            framesGrid.innerHTML = '';
+            for (let i = 1; i <= FRAMES; i++) {
+                const isLast = (i === FRAMES);
+                framesGrid.innerHTML += `
+                    <div class="frame-card" id="card-${i}" data-frame="${i}">
+                        <div class="frame-title">Frame ${i}</div>
+                        <div class="frame-body">
+                            <div class="throw-display" id="c${i}-t1"></div>
+                            <div class="throw-display" id="c${i}-t2"></div>
+                            ${isLast ? `<div class="throw-display" id="c${i}-t3"></div>` : ''}
+                            <div class="total-display" id="c${i}-total"></div>
+                        </div>
+                    </div>`;
+            }
+
+            updateUI();
+            stopFever();
+            document.body.classList.remove('reach-mode');
+        }
+
+        // ==================== UI ====================
+        function updateUI() {
+            frameNumEl.textContent = game.frame <= FRAMES ? game.frame : FRAMES;
+            
+            const prevTotal = parseInt(totalScoreEl.textContent) || 0;
+            totalScoreEl.textContent = game.total;
+            if (game.total !== prevTotal) {
+                totalScoreEl.classList.add('updated');
+                setTimeout(() => totalScoreEl.classList.remove('updated'), 500);
+            }
+
+            document.querySelectorAll('.frame-card').forEach((card, idx) => {
+                const f = idx + 1;
+                const isActive = (f === game.frame && game.frame <= FRAMES);
+                card.classList.toggle('active', isActive && game.throwNum === 1);
+                card.classList.toggle('reach', isActive && game.throwNum === 2);
+            });
+
+            const isReach = game.frame <= FRAMES && game.throwNum === 2;
+            document.body.classList.toggle('reach-mode', isReach);
+
+            game.frames.forEach((frame, idx) => {
+                const f = idx + 1;
+                const t1 = document.getElementById(`c${f}-t1`);
+                const t2 = document.getElementById(`c${f}-t2`);
+                const total = document.getElementById(`c${f}-total`);
+
+                if (t1) {
+                    t1.textContent = frame.t1;
+                    t1.classList.toggle('strike', frame.t1 === 'X');
+                }
+                if (t2) {
+                    t2.textContent = frame.t2;
+                    t2.classList.toggle('spare', frame.t2 === '/');
+                }
+                if (total) total.textContent = frame.total;
+
+                if (f === FRAMES) {
+                    const t3 = document.getElementById(`c${f}-t3`);
+                    if (t3) {
+                        t3.textContent = frame.t3;
+                        t3.classList.toggle('strike', frame.t3 === 'X');
+                        t3.classList.toggle('spare', frame.t3 === '/');
+                    }
+                }
+            });
+        }
+
+        // ==================== FEVER ====================
+        function startFever() {
+            if (!audioReady) return;
+            document.body.classList.add('fever-mode');
+            if (bgAmbient && bgAmbient.state === 'started') bgAmbient.stop();
+            if (bgFever && bgFever.state !== 'started') bgFever.start(0);
+            adFever.play().catch(() => {});
+        }
+
+        function stopFever() {
+            document.body.classList.remove('fever-mode');
+            if (audioReady) {
+                if (bgFever && bgFever.state === 'started') bgFever.stop();
+                if (bgAmbient && bgAmbient.state !== 'started') bgAmbient.start(0);
+            }
+        }
+
+        // ==================== THROW ====================
+        function simulateThrow() {
+            if (!audioReady) initAudio();
+            stopFever();
+
+            if (game.frame > FRAMES) {
+                console.log("Game Over");
+                setTimeout(initGame, 2500);
+                return;
+            }
+
+            const idx = game.frame - 1;
+            const frame = game.frames[idx];
+            let eventType = null;
+
+            if (game.throwNum === 1) {
+                const r = Math.random();
+                if (r < 0.35) {
+                    frame.t1 = 'X';
+                    game.total += (10 + Math.floor(Math.random() * 10));
+                    eventType = 'strike';
+                    frame.total = game.total.toString();
+
+                    if (game.frame < FRAMES) {
+                        game.frame++;
+                        game.throwNum = 1;
+                    } else {
+                        game.throwNum = 2;
+                        game.pinsLeft = 10;
+                    }
+                } else {
+                    const pins = Math.floor(Math.random() * 9 + 1);
+                    frame.t1 = pins.toString();
+                    game.total += pins;
+                    game.throwNum = 2;
+                    game.pinsLeft = 10 - pins;
+                }
+            } else if (game.throwNum === 2) {
+                const r = Math.random();
+                if (r < 0.5 && game.pinsLeft > 0) {
+                    const pins = game.pinsLeft;
+                    frame.t2 = '/';
+                    game.total += (pins + Math.floor(Math.random() * 8));
+                    eventType = 'spare';
+                } else {
+                    const pins = Math.floor(Math.random() * (game.pinsLeft + 1));
+                    frame.t2 = pins.toString();
+                    game.total += pins;
+                    combo = 0;
+                }
+                frame.total = game.total.toString();
+
+                if (game.frame === FRAMES && (eventType === 'spare' || frame.t1 === 'X')) {
+                    game.throwNum = 3;
+                    game.pinsLeft = 10;
+                } else {
+                    game.frame++;
+                    game.throwNum = 1;
+                    game.pinsLeft = 10;
+                }
+            } else if (game.throwNum === 3) {
+                const r = Math.random();
+                if (r < 0.4) {
+                    frame.t3 = 'X';
+                    game.total += 10;
+                    eventType = 'strike';
+                } else if (r < 0.7 && game.pinsLeft > 0) {
+                    const pins = game.pinsLeft;
+                    frame.t3 = '/';
+                    game.total += pins;
+                    eventType = 'spare';
+                } else {
+                    const pins = Math.floor(Math.random() * (game.pinsLeft + 1));
+                    frame.t3 = pins.toString();
+                    game.total += pins;
+                }
+                frame.total = game.total.toString();
+                game.frame++;
+                game.throwNum = 1;
+            }
+
+            updateUI();
+
+            if (eventType) {
+                playEvent(eventType);
+            }
+        }
+
+        // ==================== EVENT ====================
+        function playEvent(type) {
+            effectsLayer.innerHTML = '';
+
+            startFever();
+
+            // フラッシュ
+            const flash = document.createElement('div');
+            flash.className = 'screen-flash';
+            effectsLayer.appendChild(flash);
+            setTimeout(() => flash.remove(), 1000);
+
+            // リップル
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const ripple = document.createElement('div');
+                    ripple.className = 'ripple';
+                    effectsLayer.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 1500);
+                }, i * 150);
+            }
+
+            // パーティクル
+            for (let i = 0; i < 60; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${50 + (Math.random() - 0.5) * 20}%`;
+                particle.style.top = `${50 + (Math.random() - 0.5) * 20}%`;
+                particle.style.setProperty('--tx', `${(Math.random() - 0.5) * 600}px`);
+                particle.style.setProperty('--ty', `${(Math.random() - 0.5) * 600}px`);
+                particle.style.background = type === 'strike'
+                    ? `rgba(255, 214, 10, ${Math.random() * 0.5 + 0.5})`
+                    : `rgba(52, 199, 89, ${Math.random() * 0.5 + 0.5})`;
+                effectsLayer.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }
+
+            // カットイン（控えめ）
+            const notif = document.createElement('div');
+            notif.className = `event-notification ${type}`;
+            notif.textContent = type === 'strike' ? 'STRIKE' : 'SPARE';
+            effectsLayer.appendChild(notif);
+            setTimeout(() => notif.remove(), 2000);
+
+            // サウンド
+            if (audioReady) {
+                const now = Tone.now();
+                if (type === 'strike') {
+                    combo++;
+                    strikeSound.triggerAttackRelease(["C5", "E5", "G5"], "0.2", now);
+                    if (combo >= 2) showCombo(combo);
+                } else if (type === 'spare') {
+                    combo++;
+                    spareSound.triggerAttackRelease(["C5", "D5", "E5", "G5"], "0.15", now);
+                    if (combo >= 2) showCombo(combo);
+                }
+            }
+
+            setTimeout(() => {
+                effectsLayer.innerHTML = '';
+            }, 2000);
+        }
+
+        // ==================== COMBO ====================
+        function showCombo(count) {
+            const badge = document.createElement('div');
+            badge.className = 'combo-badge';
+            badge.textContent = `${count}× COMBO`;
+            document.body.appendChild(badge);
+            setTimeout(() => badge.remove(), 2000);
+        }
+
+        // ==================== EVENTS ====================
+        autoMode.addEventListener('change', (e) => {
+            initAudio();
+            if (e.target.checked) {
+                initGame();
+                autoTimer = setInterval(simulateThrow, 3000);
+            } else {
+                if (autoTimer) {
+                    clearInterval(autoTimer);
+                    autoTimer = null;
+                }
+                stopFever();
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            initAudio();
+            autoMode.checked = false;
+            if (autoTimer) {
+                clearInterval(autoTimer);
+                autoTimer = null;
+            }
+            stopFever();
+            initGame();
+        });
+
+        // ==================== INIT ====================
+        window.addEventListener('load', () => {
+            initGame();
+            console.log("✨ Liquid Glass Edition Ready");
+        });
+    </script>
+</body>
+</html>
