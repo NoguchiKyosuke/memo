@@ -6,7 +6,10 @@
   var COUNTDOWN_THRESHOLD_MS = 3600000;
   var TRIGGER_WINDOW_MS = 15000;
   var RESYNC_INTERVAL_MS = 5 * 60 * 1000;
-  var TIME_API_ENDPOINTS = ['https://worldtimeapi.org/api/ip'];
+  var TIME_API_ENDPOINTS = [
+    'https://worldtimeapi.org/api/ip',
+    'https://timeapi.io/api/Time/current/zone?timeZone=UTC'
+  ];
 
   var dom = {
     clock: null,
@@ -815,6 +818,10 @@
     });
   }
 
+
+
+  /* ... handlers ... */
+
   function handleWorldTimeApi(data, url) {
     if (!data || typeof data.utc_datetime !== 'string') {
       throw new Error('Invalid response');
@@ -840,6 +847,38 @@
     var timezone = typeof data.timezone === 'string' ? data.timezone : '';
     timeState.apiUrl = url;
     setTimeSource(utcMs, offsetSeconds, timezone, 'worldtimeapi.org');
+    scheduleResync();
+  }
+
+  function handleTimeApiIo(data, url) {
+    // Expecting UTC response from zone?timeZone=UTC
+    if (!data || typeof data.dateTime !== 'string') {
+      throw new Error('Invalid response');
+    }
+    // Append Z to ensure it is parsed as UTC if missing
+    var dateStr = data.dateTime;
+    if (dateStr.indexOf('Z') === -1 && dateStr.indexOf('+') === -1) {
+      dateStr += 'Z';
+    }
+    var utcMs = Date.parse(dateStr);
+    if (!Number.isFinite(utcMs)) {
+      throw new Error('Invalid UTC datetime');
+    }
+
+    // Since we requested UTC, we don't get the user's local offset/timezone from this API.
+    // We fall back to local browser detection for those, but we have accurate UTC.
+    // Pass null/0 for offset so the system keeps using what it has or defaults to local.
+    // Actually setTimeSource overwrites everything.
+    // We should probably rely on local timezone if we can't get it from IP.
+
+    var localOffset = -new Date().getTimezoneOffset() * 60;
+    var localTz = '';
+    try {
+      localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    } catch (e) { }
+
+    timeState.apiUrl = url;
+    setTimeSource(utcMs, localOffset, localTz, 'timeapi.io');
     scheduleResync();
   }
 
@@ -877,6 +916,8 @@
         .then(function (data) {
           if (url.indexOf('worldtimeapi') !== -1) {
             handleWorldTimeApi(data, url);
+          } else if (url.indexOf('timeapi.io') !== -1) {
+            handleTimeApiIo(data, url);
           }
         })
         .catch(function () {
@@ -941,8 +982,8 @@
     detectLocation();
     bindOverlay();
     startClockLoop();
-  registerServiceWorker();
-  setupInstallPrompt();
+    registerServiceWorker();
+    setupInstallPrompt();
     fetchRemoteTime();
 
     window.addEventListener('focus', function () {
