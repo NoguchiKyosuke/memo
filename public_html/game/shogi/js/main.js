@@ -12,20 +12,35 @@ class GameController {
                 document.getElementById('komadai-gote')
             ]
         );
+        // Initialize CPU menu content here, as per user's intended edit location
+        document.getElementById('cpu-menu').innerHTML = `
+            <h2>難易度選択</h2>
+            <button onclick="game.startCPU('weak')">初級 (Weak)</button>
+            <button onclick="game.startCPU('normal')">中級 (Normal)</button>
+            <button onclick="game.startCPU('strong')">上級 (Strong)</button>
+            <button onclick="game.startCPU('god')" style="background: linear-gradient(45deg, #FFD700, #FFA500); color: black; font-weight: bold;">超上級 (God)</button>
+            <button onclick="game.showMainMenu()">戻る</button>
+        `;
         this.cpu = new CPU(this.game);
         this.network = new ShogiNetwork();
 
         this.mode = 'solo'; // 'solo', 'cpu', 'net'
-        this.myRole = SENTE; // 0 or 1
-        this.selection = null; // { type: 'board', x, y } or { type: 'hand', index, pieceType }
-
         // Setup Network Callbacks
         this.network.on('onConnect', (data) => this.onNetConnect(data));
         this.network.on('onData', (data) => this.onNetData(data));
         this.network.on('onDisconnect', () => this.onNetDisconnect());
 
+        // BGM
+        this.bgm = new Audio('assets/sound/bgm.mp3');
+        this.bgm.loop = true;
+        this.bgm.volume = 0.3; // Not too loud
+
         // Setup DOM Events
         this.setupEvents();
+
+        this.mode = 'solo'; // 'solo', 'cpu', 'net'
+        this.myRole = SENTE; // 0 or 1
+        this.selection = null; // { type: 'board', x, y } or { type: 'hand', index, pieceType }
 
         this.render();
     }
@@ -40,20 +55,50 @@ class GameController {
         document.getElementById('game-container').classList.remove('role-gote');
     }
 
-    startCPU() {
+    startCPU(level = 'weak') {
         this.game.init();
         this.mode = 'cpu';
-        this.myRole = SENTE; // Player is Black
+        this.isPlaying = true; // Critical Fix
         this.selection = null;
-        document.getElementById('game-container').classList.remove('role-gote');
+
+        // BGM Play
+        if (this.bgm) {
+            this.bgm.play().catch(e => console.log('BGM Play Blocked', e));
+        }
+
+        this.cpu.setLevel(level); // Set Difficulty
+
+        // Setup Role based on Level
+        // Strong: User = Gote (CPU = Sente)
+        // Others: User = Sente (CPU = Gote)
+        if (level === 'strong') {
+            this.myRole = GOTE;
+            document.getElementById('game-container').classList.add('role-gote');
+        } else {
+            this.myRole = SENTE;
+            document.getElementById('game-container').classList.remove('role-gote');
+        }
+
         this.showGameUI();
         this.updateTurnInfo();
+
+        // If User is Gote, CPU (Sente) must move first.
+        // Trigger postTurn to start CPU thinking loop.
+        if (this.myRole === GOTE) {
+            setTimeout(() => this.postTurn(), 500);
+        }
     }
 
     showNetworkMenu() {
         document.getElementById('menu').style.display = 'none';
         document.getElementById('network-menu').style.display = 'block';
     }
+
+    showCpuMenu() {
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('cpu-menu').style.display = 'block';
+    }
+
 
     showMainMenu() {
         document.getElementById('network-menu').style.display = 'none';
@@ -305,22 +350,48 @@ class GameController {
         }
 
         if (this.mode === 'cpu' && this.game.turn !== this.myRole) {
-            // CPU Turn (with delay)
-            this.cpu.think().then(move => {
-                if (move) {
-                    if (move.type === 'move') {
-                        this.game.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
-                        this.postTurn({ to: move.to });
-                    } else {
-                        // Correct owner for CPU drops
-                        this.game.drop(this.game.turn, move.piece, move.to.x, move.to.y);
-                        this.postTurn({ to: move.to });
-                    }
-                } else {
-                    // CPU Resign
-                    this.showResult(true, 'CPUが投了しました');
-                }
-            });
+            // CPU Turn
+            this.playCPUTurn();
+        }
+    }
+
+    // Helper to execute CPU move (handling drops correctly)
+    // Wait, executeMove in main.js line 290 only handles board moves?
+    // Let's refactor CPU handling block to be safer.
+
+    async playCPUTurn() {
+        if (!this.isPlaying || this.mode !== 'cpu') return;
+        if (this.game.turn === this.myRole) return; // Not CPU turn
+        if (this.game.winner !== null) return;
+
+        this.view.setThinking(true);
+        // Delay for realism?
+        // await new Promise(r => setTimeout(r, 500)); 
+        // think() already has some delays in networking/loading, but for local heavy think it is sync-ish unless Worker.
+        // JS is single threaded. Heavy think blocks UI.
+        // We really should use Worker, but for now just await.
+
+        // Use setTimeout to allow UI to render "Thinking..." before blocking
+        await new Promise(resolve => setTimeout(resolve, 50));
+
+        const move = await this.cpu.think();
+        this.view.setThinking(false);
+
+        if (!move || move.resign) {
+            this.game.winner = this.myRole;
+            this.showResult(true, 'CPUが投了しました (参りました)');
+            return;
+        }
+
+        if (move.type === 'drop') {
+            if (this.game.drop(this.game.turn, move.piece, move.to.x, move.to.y)) {
+                this.postTurn({ to: move.to, drop: true });
+            }
+        } else {
+            // Move
+            if (this.game.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote)) {
+                this.postTurn({ to: move.to });
+            }
         }
     }
 
@@ -336,23 +407,60 @@ class GameController {
         }
     }
 
-    showResult(isWin, msg) {
+    async showResult(isWin, message) {
+        this.isPlaying = false;
+        if (this.bgm) {
+            this.bgm.pause();
+            this.bgm.currentTime = 0;
+        }
+
+        // Fix: Use correct ID and display method matching CSS
         const overlay = document.getElementById('result-overlay');
         const title = document.getElementById('result-title');
-        const message = document.getElementById('result-message');
+        const msg = document.getElementById('result-message');
+        const actionBtn = document.querySelector('.result-action-btn');
 
-        overlay.className = isWin ? 'result-win' : 'result-lose';
-        title.textContent = isWin ? 'VICTORY' : 'DEFEAT';
-        message.textContent = msg;
+        // CPU Training Overlay
+        if (this.mode === 'cpu') {
+            overlay.style.display = 'flex';
+            overlay.className = 'active'; // Just base
 
-        overlay.style.display = 'flex';
+            title.style.display = 'none'; // Hide Victory/Defeat initially
+            msg.textContent = "AIモデルを訓練中... (そのままお待ちください)";
+            msg.style.color = "#FFD700";
+            actionBtn.style.display = 'none';
 
-        // Sound effect? (Optional)
+            // Train
+            try {
+                const winner = isWin ? this.myRole : (this.myRole === 0 ? 1 : 0);
+                await this.cpu.train(this.game.history, winner);
+            } catch (e) {
+                console.error("Training error", e);
+            }
+
+            // Show Final Result
+            title.style.display = 'block';
+            overlay.className = isWin ? 'result-win' : 'result-lose';
+            title.textContent = isWin ? 'VICTORY' : 'DEFEAT';
+            msg.textContent = message + "\n(訓練が完了しました)";
+            msg.style.color = "";
+
+            actionBtn.disabled = false;
+            actionBtn.style.display = 'inline-block';
+        } else {
+            // Normal
+            overlay.style.display = 'flex';
+            overlay.className = isWin ? 'result-win' : 'result-lose';
+            title.textContent = isWin ? 'VICTORY' : 'DEFEAT';
+            msg.textContent = message;
+            title.style.display = 'block';
+            actionBtn.style.display = 'inline-block';
+        }
     }
 
     closeResult() {
         document.getElementById('result-overlay').style.display = 'none';
-        this.reset();
+        this.showMainMenu();
     }
 
     render(lastMove) {
@@ -363,8 +471,10 @@ class GameController {
         const turnText = this.game.turn === SENTE ? '先手' : '後手';
         const isMyTurn = this.game.turn === this.myRole;
         const ind = document.getElementById('turn-indicator');
-        ind.textContent = `${turnText} の番です ${isMyTurn ? '(あなた)' : ''} `;
-        ind.style.color = isMyTurn ? '#fbbf24' : '#fff';
+        if (ind) {
+            ind.textContent = `${turnText} の番です ${isMyTurn ? '(あなた)' : ''} `;
+            ind.style.color = isMyTurn ? '#fbbf24' : '#fff';
+        }
     }
 
     addChatMessage(msg) {
@@ -375,6 +485,7 @@ class GameController {
         div.scrollTop = div.scrollHeight;
     }
 }
+window.GameController = GameController; // Export
 
 // Start
 const game = new GameController();

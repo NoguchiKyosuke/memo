@@ -118,4 +118,18 @@ class ShogiView {
             if (parseInt(p.dataset.type) === type) p.classList.add('selected');
         });
     }
+
+    setThinking(isThinking) {
+        const ind = document.getElementById('turn-indicator');
+        if (!ind) return;
+
+        if (isThinking) {
+            ind.textContent += " (考え中...)";
+            ind.style.opacity = 0.7;
+        } else {
+            // Restore? updateTurnInfo will usually be called immediately after, reverting text.
+            // But just in case:
+            ind.style.opacity = 1;
+        }
+    }
 }

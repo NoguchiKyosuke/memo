@@ -1,3 +1,4 @@
+<?php // Shogi Game Entry ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -18,9 +19,18 @@
             <div id="menu">
                 <div class="menu-section">
                     <h3>モード選択</h3>
-                    <button class="btn primary" onclick="game.startCPU()">👤 vs 🤖 CPU対戦</button>
+                    <button class="btn primary" onclick="game.showCpuMenu()">👤 vs 🤖 CPU対戦</button>
                     <button class="btn secondary" onclick="game.showNetworkMenu()">🌐 ネット対戦</button>
                 </div>
+            </div>
+
+            <div id="cpu-menu" style="display: none;">
+                <h3>CPU難易度</h3>
+                <button class="btn" onclick="game.startCPU('weak')">🐣 初級 (Weak)</button>
+                <button class="btn" onclick="game.startCPU('normal')">🐥 中級 (Normal)</button>
+                <button class="btn primary" onclick="game.startCPU('strong')">🦅 上級 (Strong)</button>
+                <button class="btn" onclick="game.startCPU('god')" style="background: linear-gradient(45deg, #FFD700, #FFA500); color: black; font-weight: bold;">超上級 (God)</button>
+                <button class="btn danger sm" onclick="game.showMainMenu()">戻る</button>
             </div>
 
             <div id="network-menu" style="display: none;">
@@ -84,10 +94,10 @@
         <button class="result-action-btn" onclick="game.closeResult()">タイトルへ戻る</button>
     </div>
 
-    <script src="js/shogi.js?v=3"></script>
-    <script src="js/view.js?v=3"></script>
-    <script src="js/cpu.js?v=3"></script>
-    <script src="js/network.js?v=3"></script>
-    <script src="js/main.js?v=3"></script>
+    <script src="js/shogi.js?v=31"></script>
+    <script src="js/view.js?v=31"></script>
+    <script src="js/cpu.js?v=31"></script>
+    <script src="js/network.js?v=31"></script>
+    <script src="js/main.js?v=31"></script>
 </body>
 </html>
