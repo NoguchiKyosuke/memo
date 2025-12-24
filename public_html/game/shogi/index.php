@@ -20,6 +20,7 @@
                 <div class="menu-section">
                     <h3>モード選択</h3>
                     <button class="btn primary" onclick="game.showCpuMenu()">👤 vs 🤖 CPU対戦</button>
+                    <button class="btn secondary" onclick="game.startCPUWatch()">🤖 vs 🤖 CPU同士の対戦を観戦</button>
                     <button class="btn secondary" onclick="game.showNetworkMenu()">🌐 ネット対戦</button>
                 </div>
             </div>
@@ -94,10 +95,10 @@
         <button class="result-action-btn" onclick="game.closeResult()">タイトルへ戻る</button>
     </div>
 
-    <script src="js/shogi.js?v=34"></script>
-    <script src="js/view.js?v=34"></script>
-    <script src="js/cpu.js?v=34"></script>
-    <script src="js/network.js?v=34"></script>
-    <script src="js/main.js?v=34"></script>
+    <script src="js/shogi.js?v=37"></script>
+    <script src="js/view.js?v=37"></script>
+    <script src="js/cpu.js?v=37"></script>
+    <script src="js/network.js?v=37"></script>
+    <script src="js/main.js?v=37"></script>
 </body>
 </html>

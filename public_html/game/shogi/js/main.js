@@ -53,19 +53,16 @@ class GameController {
     startCPU(level = 'weak') {
         this.game.init();
         this.mode = 'cpu';
-        this.isPlaying = true; // Critical Fix
+        this.isPlaying = true;
         this.selection = null;
 
-        // BGM Play
         if (this.bgm) {
             this.bgm.play().catch(e => console.log('BGM Play Blocked', e));
         }
 
-        this.cpu.setLevel(level); // Set Difficulty
+        this.cpu.setLevel(level);
 
-        // Setup Role based on Level
         // Strong: User = Gote (CPU = Sente)
-        // Others: User = Sente (CPU = Gote)
         if (level === 'strong') {
             this.myRole = GOTE;
             document.getElementById('game-container').classList.add('role-gote');
@@ -77,11 +74,37 @@ class GameController {
         this.showGameUI();
         this.updateTurnInfo();
 
-        // If User is Gote, CPU (Sente) must move first.
-        // Trigger postTurn to start CPU thinking loop.
         if (this.myRole === GOTE) {
-            setTimeout(() => this.postTurn(), 500);
+            this.playCPUTurn();
         }
+    }
+
+    startCPUWatch() {
+        this.game.init();
+        this.mode = 'cpu_watch';
+        this.isPlaying = true;
+        this.selection = null;
+        this.myRole = -1; // Observer
+
+        if (this.bgm) {
+            this.bgm.play().catch(e => console.log('BGM Play Blocked', e));
+        }
+
+        // Configure Asymmetric Levels: Strong vs God
+        this.watchModeLevels = {
+            [SENTE]: 'strong',
+            [GOTE]: 'god'
+        };
+
+        // Initialize CPU with Sente's level
+        this.cpu.setLevel(this.watchModeLevels[SENTE]);
+
+        document.getElementById('game-container').classList.remove('role-gote'); // Default view
+        this.showGameUI();
+
+        // Start Loop
+        this.updateTurnInfo();
+        this.playCPUTurn();
     }
 
     showNetworkMenu() {
@@ -339,12 +362,18 @@ class GameController {
         this.updateTurnInfo();
 
         if (this.game.winner !== null) {
-            const isMe = this.game.winner === this.myRole;
-            this.showResult(isMe, isMe ? 'あなたの勝利です！' : 'あなたの敗北です...');
+            let msg = '';
+            if (this.mode === 'cpu_watch') {
+                msg = (this.game.winner === SENTE ? '先手' : '後手') + 'の勝利です！';
+            } else {
+                const isMe = this.game.winner === this.myRole;
+                msg = isMe ? 'あなたの勝利です！' : 'あなたの敗北です...';
+            }
+            this.showResult(true, msg);
             return;
         }
 
-        if (this.mode === 'cpu' && this.game.turn !== this.myRole) {
+        if ((this.mode === 'cpu' && this.game.turn !== this.myRole) || this.mode === 'cpu_watch') {
             // CPU Turn
             this.playCPUTurn();
         }
@@ -355,26 +384,37 @@ class GameController {
     // Let's refactor CPU handling block to be safer.
 
     async playCPUTurn() {
-        if (!this.isPlaying || this.mode !== 'cpu') return;
-        if (this.game.turn === this.myRole) return; // Not CPU turn
+        if (!this.isPlaying) return;
+        if (this.mode !== 'cpu' && this.mode !== 'cpu_watch') return;
+
+        // In 'cpu' mode, ensure valid turn. In 'cpu_watch', always runs.
+        if (this.mode === 'cpu' && this.game.turn === this.myRole) return;
+
         if (this.game.winner !== null) return;
 
-        this.view.setThinking(true);
-        // Delay for realism?
-        // await new Promise(r => setTimeout(r, 500)); 
-        // think() already has some delays in networking/loading, but for local heavy think it is sync-ish unless Worker.
-        // JS is single threaded. Heavy think blocks UI.
-        // We really should use Worker, but for now just await.
+        // Dynamic Level Switching for Watch Mode
+        if (this.mode === 'cpu_watch' && this.watchModeLevels) {
+            const level = this.watchModeLevels[this.game.turn];
+            if (level) {
+                this.cpu.setLevel(level);
+            }
+        }
 
-        // Use setTimeout to allow UI to render "Thinking..." before blocking
-        await new Promise(resolve => setTimeout(resolve, 50));
+        this.view.setThinking(true);
+
+        // Add visual delay for watch mode
+        const delay = (this.mode === 'cpu_watch') ? 800 : 50;
+        await new Promise(resolve => setTimeout(resolve, delay));
 
         const move = await this.cpu.think();
         this.view.setThinking(false);
 
         if (!move || move.resign) {
-            this.game.winner = this.myRole;
-            this.showResult(true, 'CPUが投了しました (参りました)');
+            this.game.winner = (this.game.turn === SENTE ? GOTE : SENTE);
+            const winnerName = (this.game.winner === SENTE ? '先手' : '後手');
+            const loserName = (this.game.winner === SENTE ? '後手' : '先手');
+
+            this.showResult(true, `${loserName}が投了しました。\n${winnerName}の勝利です！`);
             return;
         }
 

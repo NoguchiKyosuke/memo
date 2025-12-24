@@ -635,7 +635,109 @@ class CPU {
                 }
             }
         }
-        return moves;
+        const safeMoves = moves.filter(move => {
+            const undo = this.makeMove(move);
+            // Check if Own King is under attack
+            const safe = !this.isKingInCheck(turn);
+            this.undoMove(undo);
+            return safe;
+        });
+
+        return safeMoves;
+    }
+
+    isKingInCheck(turn) {
+        // Find King
+        let kx = -1, ky = -1;
+        for (let y = 0; y < 9; y++) {
+            for (let x = 0; x < 9; x++) {
+                const p = this.game.board[y][x];
+                if (p && p.owner === turn && p.type === 8) { // OU = 8
+                    kx = x; ky = y;
+                    break;
+                }
+            }
+            if (kx !== -1) break;
+        }
+
+        if (kx === -1) return true; // King missing = Effectively checked/mate
+
+        const opponent = (turn === SENTE) ? GOTE : SENTE;
+        return this.isSquareAttacked(kx, ky, opponent);
+    }
+
+    isSquareAttacked(tx, ty, attacker) {
+        const board = this.game.board;
+        const forward = (attacker === SENTE) ? -1 : 1;
+
+        for (let y = 0; y < 9; y++) {
+            for (let x = 0; x < 9; x++) {
+                const p = board[y][x];
+                if (p && p.owner === attacker) {
+                    if (this.canPieceAttack(p.type, x, y, tx, ty, forward)) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    canPieceAttack(type, fx, fy, tx, ty, forward) {
+        const dx = tx - fx;
+        const dy = ty - fy;
+
+        // Simplified based on Shogi types
+        switch (type) {
+            case 1: // FU
+                return dx === 0 && dy === forward;
+            case 2: // KY
+                if (dx !== 0) return false;
+                if (forward === -1 && dy >= 0) return false; // Sente must move up (dy < 0)
+                if (forward === 1 && dy <= 0) return false; // Gote must move down (dy > 0)
+                return this.isPathClear(fx, fy, tx, ty);
+            case 3: // KE
+                return Math.abs(dx) === 1 && dy === forward * 2;
+            case 4: // GI
+                if (dy === forward) return Math.abs(dx) <= 1;
+                if (dy === -forward) return Math.abs(dx) === 1;
+                return false;
+            case 5: case 9: case 10: case 11: case 12: // KI & Promoted (except Dragon/Horse)
+                // Gold move: Front 3, Side 2, Back 1 (straight back)
+                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) return false;
+                if (dy === forward) return true; // Front 3
+                if (dy === 0) return true; // Side 2
+                if (dy === -forward) return dx === 0; // Back 1
+                return false;
+            case 6: // KA
+                if (Math.abs(dx) !== Math.abs(dy)) return false;
+                return this.isPathClear(fx, fy, tx, ty);
+            case 7: // HI
+                if (dx !== 0 && dy !== 0) return false;
+                return this.isPathClear(fx, fy, tx, ty);
+            case 8: // OU
+                return Math.abs(dx) <= 1 && Math.abs(dy) <= 1;
+            case 13: // UM (Dragon Horse) - Bishop + King
+                if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) return true;
+                if (Math.abs(dx) !== Math.abs(dy)) return false;
+                return this.isPathClear(fx, fy, tx, ty);
+            case 14: // RY (Dragon King) - Rook + King
+                if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) return true;
+                if (dx !== 0 && dy !== 0) return false;
+                return this.isPathClear(fx, fy, tx, ty);
+        }
+        return false;
+    }
+
+    isPathClear(fx, fy, tx, ty) {
+        let dx = Math.sign(tx - fx);
+        let dy = Math.sign(ty - fy);
+        let x = fx + dx;
+        let y = fy + dy;
+        while (x !== tx || y !== ty) {
+            if (this.game.board[y][x]) return false;
+            x += dx;
+            y += dy;
+        }
+        return true;
     }
 
     canDrop(owner, type, x, y) {
