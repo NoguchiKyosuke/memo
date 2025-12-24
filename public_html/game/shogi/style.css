@@ -92,6 +92,69 @@ h1 {
     font-size: 0.9rem;
 }
 
+/* Difficulty Buttons */
+.btn.weak {
+    background: #81c784;
+    /* Soft Green */
+    color: #1b5e20;
+    font-weight: bold;
+}
+
+.btn.weak:hover {
+    background: #66bb6a;
+}
+
+.btn.normal {
+    background: #64b5f6;
+    /* Soft Blue */
+    color: #0d47a1;
+    font-weight: bold;
+}
+
+.btn.normal:hover {
+    background: #42a5f5;
+}
+
+.btn.strong {
+    background: #e57373;
+    /* Soft Red */
+    color: #b71c1c;
+    font-weight: bold;
+}
+
+.btn.strong:hover {
+    background: #ef5350;
+}
+
+.btn.god {
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+    background-size: 200% 200%;
+    color: black;
+    font-weight: 900;
+    animation: shine 3s infinite linear;
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px #FFD700;
+}
+
+.btn.god:hover {
+    box-shadow: 0 0 20px #FFD700, 0 0 40px #FFA500;
+    transform: scale(1.02);
+}
+
+@keyframes shine {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .divider {
     text-align: center;
     margin: 10px 0;

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebShogi - ブラウザ将棋</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=33">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 </head>
@@ -26,10 +26,10 @@
 
             <div id="cpu-menu" style="display: none;">
                 <h3>CPU難易度</h3>
-                <button class="btn" onclick="game.startCPU('weak')">🐣 初級 (Weak)</button>
-                <button class="btn" onclick="game.startCPU('normal')">🐥 中級 (Normal)</button>
-                <button class="btn primary" onclick="game.startCPU('strong')">🦅 上級 (Strong)</button>
-                <button class="btn" onclick="game.startCPU('god')" style="background: linear-gradient(45deg, #FFD700, #FFA500); color: black; font-weight: bold;">超上級 (God)</button>
+                <button class="btn weak" onclick="game.startCPU('weak')">🐣 初級 (Weak)</button>
+                <button class="btn normal" onclick="game.startCPU('normal')">🐥 中級 (Normal)</button>
+                <button class="btn strong" onclick="game.startCPU('strong')">🦅 上級 (Strong)</button>
+                <button class="btn god" onclick="game.startCPU('god')">👑 超上級 (God) 👑</button>
                 <button class="btn danger sm" onclick="game.showMainMenu()">戻る</button>
             </div>
 
@@ -94,10 +94,10 @@
         <button class="result-action-btn" onclick="game.closeResult()">タイトルへ戻る</button>
     </div>
 
-    <script src="js/shogi.js?v=32"></script>
-    <script src="js/view.js?v=32"></script>
-    <script src="js/cpu.js?v=32"></script>
-    <script src="js/network.js?v=32"></script>
-    <script src="js/main.js?v=32"></script>
+    <script src="js/shogi.js?v=34"></script>
+    <script src="js/view.js?v=34"></script>
+    <script src="js/cpu.js?v=34"></script>
+    <script src="js/network.js?v=34"></script>
+    <script src="js/main.js?v=34"></script>
 </body>
 </html>

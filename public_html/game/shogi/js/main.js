@@ -13,14 +13,9 @@ class GameController {
             ]
         );
         // Initialize CPU menu content here, as per user's intended edit location
-        document.getElementById('cpu-menu').innerHTML = `
-            <h2>難易度選択</h2>
-            <button onclick="game.startCPU('weak')">初級 (Weak)</button>
-            <button onclick="game.startCPU('normal')">中級 (Normal)</button>
-            <button onclick="game.startCPU('strong')">上級 (Strong)</button>
-            <button onclick="game.startCPU('god')" style="background: linear-gradient(45deg, #FFD700, #FFA500); color: black; font-weight: bold;">超上級 (God)</button>
-            <button onclick="game.showMainMenu()">戻る</button>
-        `;
+        // Initialize CPU menu content here, as per user's intended edit location
+        // REMOVED to allow index.php customization
+        // document.getElementById('cpu-menu').innerHTML = ...;
         this.cpu = new CPU(this.game);
         this.network = new ShogiNetwork();
 
