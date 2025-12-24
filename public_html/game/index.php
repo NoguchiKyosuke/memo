@@ -330,6 +330,16 @@ $keywords = 'game,3d,tetris,juggler,minecraft,space';
                 <span class="play-btn">LAUNCH</span>
             </div>
         </a>
+
+        <!-- Shogi Card -->
+        <a href="/game/shogi/index.php" class="game-card card-shogi" style="border-color: #d4a373;">
+            <div class="card-content">
+                <span class="game-icon">☗</span>
+                <h2 class="game-title">WEBSHOGI</h2>
+                <p class="game-desc">Strategic battles on the 9x9 board. Solo or Network play.</p>
+                <span class="play-btn">LAUNCH</span>
+            </div>
+        </a>
     </div>
 </div>
 
