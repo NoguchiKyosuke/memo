@@ -106,6 +106,15 @@ class GameController {
             this.game.move(from.x, from.y, to.x, to.y, promote);
             this.render({ from, to });
             this.updateTurnInfo();
+            // Check for Game Over after remote move (e.g. they moved into checkmate or king capture - managed by postTurn logic usually, but here we just moved.)
+            // Actually, we need to check if that move caused a win.
+            if (this.game.winner !== null) {
+                // If they made a move that set winner (e.g. captured king), the move() call would set it.
+                // We should check and show result.
+                const isMe = this.game.winner === this.myRole;
+                this.showResult(isMe, isMe ? 'あなたの勝利です！' : 'あなたの敗北です...');
+            }
+
         } else if (data.type === 'drop') {
             const { piece, to } = data;
             // Inverse owner for network data? No, if received, it's opponent's turn.
@@ -116,6 +125,9 @@ class GameController {
             this.updateTurnInfo();
         } else if (data.type === 'chat') {
             this.addChatMessage('相手: ' + data.message);
+        } else if (data.type === 'resign') {
+            this.game.winner = this.myRole; // Opponent resigned, so I win
+            this.showResult(true, '相手が降参しました！');
         }
     }
 
@@ -319,8 +331,7 @@ class GameController {
             // If network, send resignation? (Not implemented in protocol yet, simplistic)
             // Ideally we send a 'resign' message.
             if (this.mode === 'net') {
-                this.network.send({ type: 'chat', message: '降参しました' });
-                // Force logic could be better but chat checks out for now.
+                this.network.send({ type: 'resign' });
             }
         }
     }

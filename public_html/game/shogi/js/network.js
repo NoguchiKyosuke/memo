@@ -12,8 +12,15 @@ class ShogiNetwork {
     trigger(event, data) { if (this.callbacks[event]) this.callbacks[event](data); }
 
     host() {
+        if (this.peer) this.peer.destroy();
         this.isHost = true;
-        const roomID = 'SHOGI' + Math.random().toString(36).substring(2, 6).toUpperCase();
+        this.createRoom();
+    }
+
+    createRoom() {
+        // 4 char random ID
+        const code = Math.random().toString(36).substring(2, 6).toUpperCase();
+        const roomID = 'MEMO_SHOGI_' + code;
 
         this.peer = new Peer(roomID, {
             debug: 1,
@@ -22,7 +29,8 @@ class ShogiNetwork {
 
         this.peer.on('open', (id) => {
             console.log('Hosting room:', id);
-            this.trigger('onConnect', { roomID: id, role: SENTE }); // Host is Sente
+            // Display only the code part
+            this.trigger('onConnect', { roomID: code, role: SENTE });
         });
 
         this.peer.on('connection', (conn) => {
@@ -33,23 +41,50 @@ class ShogiNetwork {
             this.setupConnection();
         });
 
-        this.peer.on('error', err => console.error(err));
+        this.peer.on('error', err => {
+            console.error(err);
+            if (err.type === 'unavailable-id') {
+                // Formatting collision? Retry automatically
+                console.log('ID Collision, retrying...');
+                this.peer.destroy();
+                setTimeout(() => this.createRoom(), 500);
+            }
+        });
     }
 
-    join(roomID) {
+    join(inputCode) {
+        if (this.peer) this.peer.destroy();
         this.isHost = false;
-        this.peer = new Peer('G_' + this.id, {
+
+        // Regenerate my ID
+        const myID = 'MEMO_GUEST_' + Math.random().toString(36).substring(2, 8);
+
+        this.peer = new Peer(myID, {
             config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }
         });
 
+        const targetID = 'MEMO_SHOGI_' + inputCode.trim().toUpperCase();
+
         this.peer.on('open', () => {
-            this.conn = this.peer.connect(roomID);
+            this.conn = this.peer.connect(targetID);
             this.setupConnection();
         });
 
         this.peer.on('error', err => {
             console.error(err);
-            alert('接続エラー: ' + err.type);
+            if (err.type === 'peer-unavailable') {
+                if (!this.retryCount) this.retryCount = 0;
+                if (this.retryCount < 3) {
+                    this.retryCount++;
+                    console.log(`Peer unavailable, retrying (${this.retryCount}/3)...`);
+                    setTimeout(() => {
+                        this.conn = this.peer.connect(targetID);
+                        this.setupConnection();
+                    }, 1000);
+                    return;
+                }
+            }
+            alert('接続エラー: ' + err.type + '\n（相手が見つかりません。IDを確認するか、相手が再接続してください）');
         });
     }
 

@@ -84,10 +84,10 @@
         <button class="result-action-btn" onclick="game.closeResult()">タイトルへ戻る</button>
     </div>
 
-    <script src="js/shogi.js"></script>
-    <script src="js/view.js"></script>
-    <script src="js/cpu.js"></script>
-    <script src="js/network.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/shogi.js?v=3"></script>
+    <script src="js/view.js?v=3"></script>
+    <script src="js/cpu.js?v=3"></script>
+    <script src="js/network.js?v=3"></script>
+    <script src="js/main.js?v=3"></script>
 </body>
 </html>

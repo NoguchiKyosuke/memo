@@ -11,7 +11,7 @@ class ShogiView {
         this.cells = [];
         for (let y = 0; y < 9; y++) {
             const row = [];
-            for (let x = 8; x >= 0; x--) { // 9..1
+            for (let x = 0; x < 9; x++) { // 9..1 (9-suji is Left, x=0)
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.dataset.x = x;
