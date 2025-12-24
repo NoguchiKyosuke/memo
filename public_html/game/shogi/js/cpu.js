@@ -16,7 +16,7 @@ class CPU {
             5: 700, // KI
             6: 800, // KA
             7: 900, // HI
-            8: 15000, // OU
+            8: 99999, // OU (King) - High value to ensure Mate is prioritized
             9: 700, // TO
             10: 700, // NY
             11: 700, // NK
@@ -214,9 +214,9 @@ class CPU {
         let beta = Infinity;
         let bestScore = (turn === SENTE) ? -Infinity : Infinity;
 
-        // Early Resign Threshold (approx mate score is +/- 15000)
-        // If score is worse than -14000 (Sente) or +14000 (Gote), resign.
-        const MATE_SCORE = 14000;
+        // Early Resign Threshold (Mate score is +/- 99999)
+        // If score is worse than -90000 (Sente) or +90000 (Gote), resign.
+        const MATE_SCORE = 90000;
 
         for (const move of moves) {
             const undo = this.makeMove(move);
