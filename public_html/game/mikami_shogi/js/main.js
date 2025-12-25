@@ -216,7 +216,7 @@ class GameController {
         // 1. Initialize Peer (same as Host but we don't know if we are Host or Client yet)
         // Actually we need a Peer ID to enter the queue.
         // So let's "host" temporarily to get an ID.
-        this.network.host(); // This creates a Room ID.
+        this.network.host(true); // isRankMatch = true
         document.getElementById('network-status').textContent = "マッチング中... (待機or検索)";
 
         // Wait for Peer Open (to get ID)
