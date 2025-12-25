@@ -20,7 +20,27 @@ try {
 
     if ($user) {
         // Found
-        echo json_encode(['status' => 'registered', 'username' => $user['username']]);
+        if (isset($input['username'])) {
+             // Update Name
+             $newName = trim($input['username']);
+             if (!empty($newName)) {
+                 try {
+                     $upd = $pdo->prepare("UPDATE shogi_ranking SET username = :name WHERE google_user_id = :gid");
+                     $upd->execute([':name' => $newName, ':gid' => $googleId]);
+                     echo json_encode(['status' => 'updated', 'username' => $newName]);
+                 } catch (PDOException $e) {
+                     if ($e->getCode() == 23000) {
+                        echo json_encode(['error' => 'Username taken']);
+                     } else {
+                        throw $e;
+                     }
+                 }
+             } else {
+                 echo json_encode(['error' => 'Empty name']);
+             }
+        } else {
+             echo json_encode(['status' => 'registered', 'username' => $user['username']]);
+        }
     } else {
         // Not found
         if (isset($input['username'])) {

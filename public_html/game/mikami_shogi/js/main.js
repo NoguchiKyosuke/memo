@@ -62,6 +62,8 @@ class GameController {
             if (data.status === 'registered') {
                 this.myPlayerName = data.username;
                 console.log("Logged in as:", this.myPlayerName);
+                const input = document.getElementById('player-name-input');
+                if (input) input.value = this.myPlayerName;
             } else {
                 // Not registered, ask name
                 let name = prompt("Web将棋へようこそ！\nランキング用の名前を入力してください:");
@@ -85,6 +87,33 @@ class GameController {
         }
     }
 
+    async updateName() {
+        const input = document.getElementById('player-name-input');
+        if (!input) return;
+        const newName = input.value.trim();
+        if (!newName) { alert("名前を入力してください"); return; }
+
+        try {
+            const res = await fetch('register_user.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: newName })
+            });
+            const data = await res.json();
+            if (data.status === 'updated' || data.status === 'registered') {
+                this.myPlayerName = data.username;
+                alert("名前を変更しました: " + this.myPlayerName);
+            } else {
+                alert("エラー: " + (data.error || '不明なエラー'));
+                // Revert
+                input.value = this.myPlayerName || '';
+            }
+        } catch (e) {
+            console.error(e);
+            alert("通信エラー");
+        }
+    }
+
     reset() {
         this.stopTimer();
         this.game.init();
@@ -93,6 +122,15 @@ class GameController {
         document.body.classList.remove('mikami-inverted');
         this.render();
         document.getElementById('turn-indicator').textContent = "モードを選択してください";
+
+        // Disable Chat & Clear
+        const chatInput = document.getElementById('chat-input');
+        if (chatInput) {
+            chatInput.disabled = true;
+            chatInput.placeholder = "未接続";
+        }
+        const chatMsgs = document.getElementById('chat-messages');
+        if (chatMsgs) chatMsgs.innerHTML = '';
 
         // Hide all specific menus/infos
         document.getElementById('game-info').style.display = 'none';
@@ -104,7 +142,7 @@ class GameController {
 
         document.getElementById('game-container').classList.remove('role-gote');
         // Reset labels to default Sente=You, Gote=Opponent
-        this.myPlayerName = null;
+        // this.myPlayerName = null; // Do not clear my name!
         this.netOpponentName = null;
         this.updatePlayerLabels();
     }
@@ -337,6 +375,13 @@ class GameController {
         document.getElementById('room-info').style.display = 'block';
         document.getElementById('current-room-id').textContent = data.roomID;
         this.updateTurnInfo();
+
+        // Enable Chat
+        const chatInput = document.getElementById('chat-input');
+        if (chatInput) {
+            chatInput.disabled = false;
+            chatInput.placeholder = "メッセージを入力...";
+        }
     }
 
     onNetData(data) {

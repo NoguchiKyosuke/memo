@@ -56,7 +56,11 @@ $userName = $_SESSION['user_name'] ?? 'Unknown'; // Default name?
 
                 <!-- Setup Name -->
                 <div id="network-setup">
-                     <!-- Name handled by Auth -->
+                     <p>プレイヤー名</p>
+                     <div style="display:flex; gap:5px; margin-bottom:10px;">
+                        <input type="text" id="player-name-input" placeholder="ユーザー名" style="flex:1; padding:8px;">
+                        <button class="btn secondary sm" onclick="game.updateName()">変更</button>
+                     </div>
                 </div>
 
                 <div class="network-controls" style="background:#222; padding:10px; border-radius:5px; margin-bottom:15px;">
