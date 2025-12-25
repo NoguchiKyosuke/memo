@@ -688,6 +688,11 @@ class GameController {
                     loser: this.netOpponentName
                 };
 
+                // Trigger AI Training (Background)
+                this.cpu.train(this.game.history, this.myRole).then(() => {
+                    msg.textContent += "\n[AI] 対局データから学習しました";
+                }).catch(e => console.error(e));
+
                 fetch('report_result.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

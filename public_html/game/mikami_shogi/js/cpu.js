@@ -491,6 +491,7 @@ class CPU {
 
     // --- Training (Reinforcement Learning Lite) ---
     async train(history, winner) {
+        if (this.loadingPromise) await this.loadingPromise;
         if (!this.model) return; // Cannot train without model
 
         console.log("Training started...");
