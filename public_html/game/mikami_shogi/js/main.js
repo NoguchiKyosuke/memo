@@ -86,6 +86,7 @@ class GameController {
     }
 
     reset() {
+        this.stopTimer();
         this.game.init();
         this.selection = null;
         this.chaosProbability = 0;
@@ -342,8 +343,11 @@ class GameController {
         if (data.type === 'move') {
             const { from, to, promote } = data;
             this.game.move(from.x, from.y, to.x, to.y, promote);
-            this.render({ from, to });
-            this.updateTurnInfo();
+            // this.render({ from, to }); // postTurn
+            // this.updateTurnInfo(); // postTurn
+
+            this.postTurn({ to: to }); // Trigger Chaos Check & Game Over check
+
             // Check for Game Over after remote move (e.g. they moved into checkmate or king capture - managed by postTurn logic usually, but here we just moved.)
             // Actually, we need to check if that move caused a win.
             if (this.game.winner !== null) {
@@ -359,8 +363,11 @@ class GameController {
             // Opponent is not myRole.
             const opponent = this.myRole === SENTE ? GOTE : SENTE;
             this.game.drop(opponent, piece, to.x, to.y);
-            this.render({ to: to }); // highlight drop pos
-            this.updateTurnInfo();
+            // this.render({ to: to }); // postTurn handles this
+            // this.updateTurnInfo(); // postTurn handles this
+
+            // Call postTurn to trigger Chaos check
+            this.postTurn({ to: to, drop: true, piece: piece });
         } else if (data.type === 'chat') {
             this.addChatMessage('相手: ' + data.message);
         } else if (data.type === 'resign') {
