@@ -224,6 +224,9 @@ $keywords = 'game,3d,tetris,juggler,minecraft,space';
         .card-minecraft:hover { border-color: #4caf50; }
         .card-minecraft:hover .game-title { color: #4caf50; text-shadow: 0 0 20px #4caf50; }
 
+        .card-mikami:hover { border-color: #ff4757; }
+        .card-mikami:hover .game-title { color: #ff4757; text-shadow: 0 0 20px #ff4757; }
+
         /* Back to Home Button */
         .home-btn {
             position: fixed;
@@ -338,6 +341,16 @@ $keywords = 'game,3d,tetris,juggler,minecraft,space';
                 <h2 class="game-title">WEBSHOGI</h2>
                 <p class="game-desc">Strategic battles on the 9x9 board. Solo or Network play.</p>
                 <span class="play-btn">LAUNCH</span>
+            </div>
+        </a>
+
+        <!-- Mikami Shogi Card -->
+        <a href="/game/mikami_shogi/index.php" class="game-card card-mikami" style="border-color: #ff4757;">
+            <div class="card-content">
+                <span class="game-icon">🌀</span>
+                <h2 class="game-title">MIKAMI SHOGI</h2>
+                <p class="game-desc">Chaos Mode: Nifu allowed. <br>Warning: Board Rotation Hazard.</p>
+                <span class="play-btn">ENTER CHAOS</span>
             </div>
         </a>
     </div>
