@@ -32,6 +32,9 @@ $userName = $_SESSION['user_name'] ?? 'Unknown'; // Default name?
         <!-- Sidebar / Controls -->
         <div id="sidebar">
             <h1>WebShogi</h1>
+            <div style="margin-bottom: 20px;">
+                <a href="../index.php" class="btn danger sm" style="text-decoration:none; display:inline-block; width:100%; box-sizing:border-box; text-align:center;">🏠 ゲーム一覧へ戻る</a>
+            </div>
             
             <div id="menu">
                 <div class="menu-section">
@@ -141,6 +144,12 @@ $userName = $_SESSION['user_name'] ?? 'Unknown'; // Default name?
         <div id="result-title">VICTORY</div>
         <div id="result-message">あなたの勝利です！</div>
         <button class="result-action-btn" onclick="game.closeResult()">タイトルへ戻る</button>
+    </div>
+
+    <!-- Chaos Overlay (Mikami Shogi) -->
+    <div id="chaos-overlay">
+        <div class="chaos-text">天地明察</div>
+        <div class="chaos-sub">盤面反転！</div>
     </div>
 
     <script src="js/shogi.js?v=2"></script>

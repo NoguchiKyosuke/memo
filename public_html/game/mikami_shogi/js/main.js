@@ -119,6 +119,8 @@ class GameController {
         this.game.init();
         this.selection = null;
         this.chaosProbability = 0;
+        this.nifuPending = false;
+        this.nifuTurnCount = 0;
         document.body.classList.remove('mikami-inverted');
         this.render();
         document.getElementById('turn-indicator').textContent = "モードを選択してください";
@@ -629,15 +631,12 @@ class GameController {
     }
 
     checkChaos(lastMove) {
-        if (!lastMove) return;
-
-        // 1. Nifu Detection (Deterministic)
-        if (lastMove.drop && lastMove.to) {
+        // 1. Nifu Detection (Trigger Probability)
+        if (lastMove && lastMove.drop && lastMove.to) {
             const x = lastMove.to.x;
             const y = lastMove.to.y;
             const piece = this.game.getPiece(x, y);
 
-            // If it's a Pawn (Type 1), count pawns on this file
             if (piece && piece.type === 1) { // FU
                 let count = 0;
                 for (let ry = 0; ry < 9; ry++) {
@@ -645,34 +644,52 @@ class GameController {
                     if (p && p.owner === piece.owner && p.type === 1) count++;
                 }
 
-                if (count >= 2) {
-                    console.log("Nifu Detected! Triggering Inversion.");
-                    this.triggerInversion();
-                    return; // Deterministic trigger, skip random chaos
+                if (count >= 2 && !this.nifuPending) {
+                    console.log("Nifu Detected! Starting Probability Chain.");
+                    this.nifuPending = true;
+                    this.nifuTurnCount = 1; // x = 1 (50%)
                 }
             }
         }
 
-        // 2. Random Chaos (Accumulate probability for other moves if desired)
-        // Currently only Nifu logic uses this heavily effectively?
-        // Or if we want to keep the "Chaos Probability" mechanic for non-Nifu moves:
-        if (this.chaosProbability > 0) {
-            // Compound increase
-            this.chaosProbability = Math.min(1.0, this.chaosProbability * 1.5);
+        // 2. Probability Check (Runs if Nifu Pending)
+        if (this.nifuPending) {
+            // Formula: x / (1 + x)
+            const x = this.nifuTurnCount;
+            const prob = x / (4 + x);
 
-            console.log("Chaos Probability Check:", this.chaosProbability);
-            if (Math.random() < this.chaosProbability) {
-                // Trigger Inversion
+            console.log(`Chaos Check (x=${x}): Prob ${prob.toFixed(4)}`);
+
+            if (Math.random() < prob) {
+                // Success
                 this.triggerInversion();
-                this.chaosProbability = 0; // Reset
+                this.nifuPending = false;
+                this.nifuTurnCount = 0;
+            } else {
+                // Fail - Increment Turn Count
+                this.nifuTurnCount++;
+                console.log(`Chaos Failed. Next x=${this.nifuTurnCount}`);
             }
         }
     }
 
     triggerInversion() {
         console.log("INVERSION TRIGGERED!");
+
+        // Trigger Animation
+        const overlay = document.getElementById('chaos-overlay');
+        if (overlay) {
+            overlay.classList.add('active');
+
+            // Wait for partial animation (?) or just let it play over.
+            // Remove class after animation ends (2s)
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 2500);
+        }
+
         const body = document.body;
-        alert("天地明察！盤面反転！"); // Debug Alert
+        // alert("天地明察！盤面反転！"); // REMOVED
 
         if (body.classList.contains('mikami-inverted')) {
             body.classList.remove('mikami-inverted');

@@ -274,7 +274,7 @@ $keywords = 'game,3d,tetris,juggler,minecraft,space';
 </a>
 
 <div class="portal-container">
-    <h1 class="hero-title">UNIVERSE</h1>
+    <h1 class="hero-title">GAMES</h1>
 
     <!-- Login Section -->
     <!-- Login Section -->

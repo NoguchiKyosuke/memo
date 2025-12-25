@@ -538,3 +538,113 @@ body.mikami-inverted .role-gote .komadai-container {
         font-size: 0.8rem;
     }
 }
+
+/* Chaos Overlay Animation */
+#chaos-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(100, 0, 0, 0.4);
+    /* Red tint */
+    z-index: 4000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+}
+
+#chaos-overlay.active {
+    display: flex;
+    animation: flashBg 2s ease-out forwards;
+}
+
+.chaos-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 6rem;
+    color: #fff;
+    font-weight: 900;
+    text-shadow: 0 0 20px #ff0000, 0 0 40px #aa0000;
+    transform: scale(0);
+    opacity: 0;
+}
+
+#chaos-overlay.active .chaos-text {
+    animation: chaosPop 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.chaos-sub {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 3rem;
+    color: #ffd700;
+    text-shadow: 0 0 10px #ff0000;
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+#chaos-overlay.active .chaos-sub {
+    animation: chaosSlideUp 1.5s ease-out 0.5s forwards;
+}
+
+@keyframes flashBg {
+    0% {
+        background: rgba(255, 0, 0, 0.6);
+    }
+
+    100% {
+        background: rgba(0, 0, 0, 0);
+    }
+}
+
+@keyframes chaosPop {
+    0% {
+        transform: scale(0) rotate(-10deg);
+        opacity: 0;
+    }
+
+    20% {
+        transform: scale(1.2) rotate(5deg);
+        opacity: 1;
+    }
+
+    40% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+
+    90% {
+        transform: scale(1.1) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+@keyframes chaosSlideUp {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    20% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+}
