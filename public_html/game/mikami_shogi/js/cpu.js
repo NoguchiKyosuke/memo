@@ -86,8 +86,6 @@ class CPU {
                     return bookMove;
                 }
             }
-            // Depth 10 is impossible in browser (freeze). 
-            // Depth 4 is the practical limit for "Normal" speed.
             return this.minimaxRoot(4, this.game.turn);
         }
 
@@ -100,21 +98,19 @@ class CPU {
                     return bookMove;
                 }
             }
-            // Depth 15 causes browser crash. 
-            // Depth 6 is very strong for JS engine (~10-20s think time possible).
-            return this.minimaxRoot(5, this.game.turn);
+            // Use Iterative Deepening for safer timing
+            return this.iterativeDeepening(1500, this.game.turn); // 1.5s
         }
 
-        // God (Super Strong): Joseki (Both) + Depth 5 + DL Eval
+        // God (Super Strong): Joseki (Both) + ID (Time Limited) + DL Eval
         if (this.level === 'god') {
             const bookMove = this.getJosekiMove();
             if (bookMove) {
                 console.log("Joseki Move (God):", bookMove);
                 return bookMove;
             }
-            // Use DL Evaluation in minimax (via check in evaluate())
-            console.log("Thinking with DL Model...");
-            return this.minimaxRoot(5, this.game.turn);
+            console.log("Thinking with DL Model (ID)...");
+            return this.iterativeDeepening(3000, this.game.turn); // 3s Max
         }
 
         return this.minimaxRoot(2, this.game.turn);
@@ -145,9 +141,6 @@ class CPU {
     getHistoryKey() {
         return this.game.history.map(m => {
             if (m.drop) {
-                // Drop format: D + PieceType + Suji + Dan (e.g. D155)
-                // Simplify? Dropping is rare in strict opening book.
-                // Let's just return a distinct string.
                 return `D${m.piece}${9 - m.to.x}${m.to.y + 1}`;
             }
             return `${9 - m.from.x}${m.from.y + 1}${9 - m.to.x}${m.to.y + 1}`;
@@ -156,74 +149,92 @@ class CPU {
 
     createMoveIfValid(fx, fy, tx, ty) {
         const moves = this.getAllMoves(this.game.turn);
-        // Filter for matching coordinates
         const matches = moves.filter(m => m.type === 'move' && m.from.x === fx && m.from.y === fy && m.to.x === tx && m.to.y === ty);
 
         if (matches.length === 0) return null;
 
-        // "Always promote when able" requested by user.
-        // Return the promoted version if available.
         const promoted = matches.find(m => m.promote);
         if (promoted) return promoted;
 
         return matches[0];
     }
 
-    getGreedyMove(randomness = 0) {
-        const moves = this.getAllMoves(this.game.turn);
-        if (moves.length === 0) return null;
+    // --- Iterative Deepening with Time Management ---
+    iterativeDeepening(maxTimeMs, turn) {
+        this.searchStartTime = Date.now();
+        this.timeLimit = maxTimeMs;
+        this.shouldStop = false;
 
-        if (Math.random() < randomness) return moves[Math.floor(Math.random() * moves.length)];
-
+        let bestMove = null;
         let bestScore = -Infinity;
-        let bestMoves = [];
 
-        moves.forEach(move => {
-            const score = this.evaluateSimple(move);
-            if (score > bestScore) {
-                bestScore = score;
-                bestMoves = [move];
-            } else if (score === bestScore) {
-                bestMoves.push(move);
+        // Try Depth 3, 4, 5, 6...
+        // Start from 3 because 1-2 are instant anyway.
+        for (let d = 2; d <= 20; d++) {
+            try {
+                // Pass bestMove from previous iteration to helper?
+                // For simplicity, we just rely on `minimaxRoot` to search.
+                // Ideally we pass PV to sort moves.
+                // We'll set `this.pvMove` for `orderMoves` to use.
+                if (bestMove) this.pvMove = bestMove;
+
+                // Run Search
+                const result = this.minimaxRoot(d, turn, true); // true = use timer
+
+                if (this.shouldStop) {
+                    console.log(`ID: Stopped at depth ${d} due to timeout.`);
+                    break;
+                }
+
+                bestMove = result.move;
+                bestScore = result.score;
+
+                console.log(`ID: Depth ${d} done. Score: ${bestScore}`, bestMove);
+
+                // Early Exit on Mate
+                if (bestScore > 80000 || bestScore < -80000) {
+                    break;
+                }
+
+                // Check Time: If we used > 50% of time, next depth likely timeouts.
+                if ((Date.now() - this.searchStartTime) > (maxTimeMs * 0.5)) {
+                    break;
+                }
+
+            } catch (e) {
+                console.log("ID Interrupted", e);
+                break;
             }
-        });
-        return bestMoves[Math.floor(Math.random() * bestMoves.length)];
-    }
-
-    evaluateSimple(move) {
-        let score = 0;
-        if (move.type === 'move') {
-            const target = this.game.getPiece(move.to.x, move.to.y);
-            if (target) score += (this.values[target.type] || 0);
-            if (move.promote) score += 500;
         }
-        return score;
+        return bestMove || this.minimaxRoot(2, turn, false).move; // Fallback
     }
 
-    // --- Minimax Engine ---
+    // New Root
+    minimaxRoot(depth, turn, useTimer = false) {
+        this.nodesCount = 0; // Debug
 
-    minimaxRoot(depth, turn) {
         const moves = this.getAllMoves(turn);
-        if (moves.length === 0) return { resign: true }; // No moves = Mate (should be detected by game over but check here)
+        if (moves.length === 0) return { resign: true, startMove: null };
 
-        // Sorting improves pruning
-        this.orderMoves(moves);
+        // Sorting
+        this.orderMoves(moves); // Uses this.pvMove if available
 
         let bestMove = null;
         let alpha = -Infinity;
         let beta = Infinity;
         let bestScore = (turn === SENTE) ? -Infinity : Infinity;
-
-        // Early Resign Threshold (Mate score is +/- 99999)
-        // If score is worse than -90000 (Sente) or +90000 (Gote), resign.
         const MATE_SCORE = 90000;
 
         for (const move of moves) {
             const undo = this.makeMove(move);
-            const score = this.minimax(depth - 1, alpha, beta, turn === GOTE); // Next is Opponent
+
+            // Call minimax
+            const score = this.minimax(depth - 1, alpha, beta, turn === GOTE, useTimer);
+
             this.undoMove(undo);
 
-            // console.log(`Move: ${move.from.x},${move.from.y}->${move.to.x},${move.to.y} Score: ${score}`);
+            // Timeout Check at Root (Safe to break, partial results ok? No, unsafe partial)
+            if (this.shouldStop) return { move: bestMove || moves[0], score: bestScore };
 
             if (turn === SENTE) {
                 if (score > bestScore) {
@@ -231,34 +242,41 @@ class CPU {
                     bestMove = move;
                 }
                 alpha = Math.max(alpha, score);
-                if (score >= beta) break;
             } else {
                 if (score < bestScore) {
                     bestScore = score;
                     bestMove = move;
                 }
                 beta = Math.min(beta, score);
-                if (score <= alpha) break;
             }
+            // Root Alpha-Beta pruning?
+            // Usually valid if we just want *A* good move, but Root needs best.
+            // With alpha-beta, we still find the best move (within bounds).
+            // But if we broke, we might miss better moves if window wasn't full.
+            // Here window is -Inf to Inf, so normal A/B logic holds.
+            if (turn === SENTE && score >= beta) break;
+            if (turn === GOTE && score <= alpha) break;
         }
 
-        // Check for resignation
-        // If Sente and bestScore is extremely low (e.g. -14500), it implies Gote mates Sente.
-        // If Gote and bestScore is extremely high (e.g. +14500), it implies Sente mates Gote.
+        if (turn === SENTE && bestScore < -MATE_SCORE) return { resign: true };
+        if (turn === GOTE && bestScore > MATE_SCORE) return { resign: true };
 
-        if (turn === SENTE && bestScore < -MATE_SCORE) {
-            console.log("Resigning... Score:", bestScore);
-            return { resign: true };
-        }
-        if (turn === GOTE && bestScore > MATE_SCORE) {
-            console.log("Resigning... Score:", bestScore);
-            return { resign: true };
-        }
-
+        // Return object for ID, but just move for compatibility
+        if (useTimer) return { move: bestMove || moves[0], score: bestScore };
         return bestMove || moves[0];
     }
 
-    minimax(depth, alpha, beta, isSenteTurn) {
+    minimax(depth, alpha, beta, isSenteTurn, useTimer) {
+        if (useTimer) {
+            this.nodesCount++;
+            if ((this.nodesCount & 1023) === 0) { // Check every 1024 nodes
+                if (Date.now() - this.searchStartTime > this.timeLimit) {
+                    this.shouldStop = true;
+                }
+            }
+            if (this.shouldStop) return isSenteTurn ? alpha : beta; // Return dummy safe value
+        }
+
         if (depth === 0) return this.evaluate();
 
         const turn = isSenteTurn ? SENTE : GOTE;
@@ -266,15 +284,17 @@ class CPU {
 
         if (moves.length === 0) return isSenteTurn ? -100000 : 100000;
 
-        // Optimization for God: Sort heavier at shallow depths? 
-        // For now standard is fine.
+        this.orderMoves(moves); // Recursively sort? (Killers etc). For now just captures.
 
         if (isSenteTurn) {
             let maxEval = -Infinity;
             for (const move of moves) {
                 const undo = this.makeMove(move);
-                const evalScore = this.minimax(depth - 1, alpha, beta, false);
+                const evalScore = this.minimax(depth - 1, alpha, beta, false, useTimer);
                 this.undoMove(undo);
+
+                if (this.shouldStop) return alpha;
+
                 maxEval = Math.max(maxEval, evalScore);
                 alpha = Math.max(alpha, evalScore);
                 if (beta <= alpha) break;
@@ -284,8 +304,11 @@ class CPU {
             let minEval = Infinity;
             for (const move of moves) {
                 const undo = this.makeMove(move);
-                const evalScore = this.minimax(depth - 1, alpha, beta, true);
+                const evalScore = this.minimax(depth - 1, alpha, beta, true, useTimer);
                 this.undoMove(undo);
+
+                if (this.shouldStop) return beta;
+
                 minEval = Math.min(minEval, evalScore);
                 beta = Math.min(beta, evalScore);
                 if (beta <= alpha) break;
@@ -369,6 +392,33 @@ class CPU {
 
     orderMoves(moves) {
         moves.sort((a, b) => {
+            // PV Move First (for ID)
+            // PV Move First (for ID)
+            if (this.pvMove) {
+                // Determine equality based on move type
+                let isPVA = false;
+                let isPVB = false;
+
+                if (this.pvMove.type === 'move') {
+                    if (a.type === 'move') {
+                        isPVA = (a.from.x === this.pvMove.from.x && a.from.y === this.pvMove.from.y && a.to.x === this.pvMove.to.x && a.to.y === this.pvMove.to.y);
+                    }
+                    if (b.type === 'move') {
+                        isPVB = (b.from.x === this.pvMove.from.x && b.from.y === this.pvMove.from.y && b.to.x === this.pvMove.to.x && b.to.y === this.pvMove.to.y);
+                    }
+                } else if (this.pvMove.type === 'drop') {
+                    if (a.type === 'drop') {
+                        isPVA = (a.piece === this.pvMove.piece && a.to.x === this.pvMove.to.x && a.to.y === this.pvMove.to.y);
+                    }
+                    if (b.type === 'drop') {
+                        isPVB = (b.piece === this.pvMove.piece && b.to.x === this.pvMove.to.x && b.to.y === this.pvMove.to.y);
+                    }
+                }
+
+                if (isPVA) return -1;
+                if (isPVB) return 1;
+            }
+
             // Capture/Promote first
             let scoreA = 0;
             if (a.type === 'move') {

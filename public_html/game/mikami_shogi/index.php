@@ -1,4 +1,15 @@
-<?php // Shogi Game Entry ?>
+<?php
+// Shogi Game Entry
+// Enforce Login
+require_once __DIR__ . '/../auth/check_login.php'; // Redirects if not logged in
+// DB Setup (Auto-run)
+require_once 'setup_ranking.php';
+require_once 'setup_queue.php';
+
+// Get User Info for JS
+$userId = $_SESSION['user_id'] ?? null;
+$userName = $_SESSION['user_name'] ?? 'Unknown'; // Default name?
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -8,6 +19,12 @@
     <link rel="stylesheet" href="style.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script>
+        const CURRENT_USER = {
+            id: <?php echo json_encode($userId); ?>,
+            name: <?php echo json_encode($userName); ?>
+        };
+    </script>
 </head>
 <body>
 
@@ -39,26 +56,23 @@
 
                 <!-- Setup Name -->
                 <div id="network-setup">
-                     <p>あなたの名前を入力してください</p>
-                     <input type="text" id="player-name-input" placeholder="ユーザー名" style="width:100%; padding:8px; margin-bottom:10px;">
+                     <!-- Name handled by Auth -->
                 </div>
 
-                <div class="network-controls">
-                    <h4>ルーム対戦</h4>
+                <div class="network-controls" style="background:#222; padding:10px; border-radius:5px; margin-bottom:15px;">
+                    <h4 style="margin-top:0; color:#fff;">ルーム対戦 (ID指定)</h4>
+                    <p style="font-size:0.8rem; color:#aaa; margin-bottom:5px;">友達と遊ぶ場合はこちら</p>
                     <button class="btn" onclick="game.hostGame()">部屋を作る (Host)</button>
                     <div class="divider">OR</div>
-                    <input type="text" id="room-code-input" placeholder="ルームID">
+                    <input type="text" id="room-code-input" placeholder="ルームID (参加時のみ)">
                     <button class="btn" onclick="game.joinGame()">参加する (Join)</button>
                 </div>
                 
-                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #444;">
-                <div class="network-controls">
-                    <h4>ランクマッチ</h4>
-                     <button class="btn strong" onclick="game.showRanking()">🏆 ランキングを見る</button>
-                     <!-- Rank match just uses Host/Join but with tracking? Or auto-match? -->
-                     <!-- Simplification: Use same Host/Join but flag as Ranked? Or just "Report Result" is always active in Net play? -->
-                     <!-- Let's just assume all Net play is Ranked if name is provided. -->
-                     <p style="font-size:0.8rem; color:#888;">※ネット対戦を完了するとレートが変動します。</p>
+                <div class="network-controls" style="background:#422; padding:10px; border-radius:5px;">
+                    <h4 style="margin-top:0; color:#ffd700;">ランクマッチ (自動)</h4>
+                    <p style="font-size:0.8rem; color:#dac; margin-bottom:5px;">ランダムな相手と対戦します<br>(ID入力不要・自動マッチング)</p>
+                     <button class="btn strong" onclick="game.startRankMatch()">⚔️ ランクマッチ開始</button>
+                     <button class="btn" style="margin-top:5px; font-size: 0.9rem;" onclick="game.showRanking()">🏆 ランキングを見る</button>
                 </div>
 
                 <button class="btn danger sm" onclick="game.showMainMenu()">戻る</button>
@@ -77,6 +91,7 @@
 
             <div id="game-info" style="display: none;">
                 <div id="turn-indicator">先手 (あなた) の番です</div>
+                <div id="game-timer" style="font-size: 1.5rem; color: #ffeb3b; font-weight: bold; margin: 10px 0;">残り: 10秒</div>
                 <div id="room-info" style="display: none;">ルームID: <span id="current-room-id"></span></div>
                 <button class="btn danger sm" onclick="game.surrender()">🏳️ 降参する</button>
             </div>

@@ -12,7 +12,14 @@ try {
         last_played TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )";
     $pdo->exec($sql);
-    echo "Table shogi_ranking created successfully.\n";
+    // Silent success
+
+    // Ensure google_user_id column exists
+    $stmt = $pdo->query("SHOW COLUMNS FROM shogi_ranking LIKE 'google_user_id'");
+    if (!$stmt->fetch()) {
+        $sqlAlter = "ALTER TABLE shogi_ranking ADD COLUMN google_user_id VARCHAR(255) UNIQUE AFTER id";
+        $pdo->exec($sqlAlter);
+    }
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage() . "\n";

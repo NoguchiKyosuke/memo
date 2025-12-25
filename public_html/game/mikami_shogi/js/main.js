@@ -38,7 +38,51 @@ class GameController {
         this.selection = null; // { type: 'board', x, y } or { type: 'hand', index, pieceType }
 
         this.render();
+        this.render();
         this.chaosProbability = 0; // Mikami
+
+        // Auto-Check User on Load
+        this.checkUser();
+    }
+
+    async checkUser() {
+        if (!CURRENT_USER || !CURRENT_USER.id) {
+            alert("ログインしてください");
+            return;
+        }
+
+        try {
+            const res = await fetch('register_user.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({}) // Check exist
+            });
+            const data = await res.json();
+
+            if (data.status === 'registered') {
+                this.myPlayerName = data.username;
+                console.log("Logged in as:", this.myPlayerName);
+            } else {
+                // Not registered, ask name
+                let name = prompt("Web将棋へようこそ！\nランキング用の名前を入力してください:");
+                if (name) {
+                    const regRes = await fetch('register_user.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username: name })
+                    });
+                    const regData = await regRes.json();
+                    if (regData.status === 'registered') {
+                        this.myPlayerName = regData.username;
+                        alert("登録しました！");
+                    } else {
+                        alert("登録エラー: " + (regData.error || 'Unknown'));
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("Auth Error", e);
+        }
     }
 
     reset() {
@@ -147,18 +191,14 @@ class GameController {
 
     // --- Network Actions ---
     hostGame() {
-        const name = document.getElementById('player-name-input').value.trim();
-        if (!name) { alert("名前を入力してください。"); return; }
-        this.myPlayerName = name; // Store my name
+        if (!this.myPlayerName) { alert("ユーザー登録が必要です。ページを再読み込みしてください。"); return; }
 
         this.network.host();
         document.getElementById('network-status').textContent = "部屋を作成中...";
     }
 
     joinGame() {
-        const name = document.getElementById('player-name-input').value.trim();
-        if (!name) { alert("名前を入力してください。"); return; }
-        this.myPlayerName = name; // Store my name
+        if (!this.myPlayerName) { alert("ユーザー登録が必要です。ページを再読み込みしてください。"); return; }
 
         const id = document.getElementById('room-code-input').value;
         if (id) {
@@ -167,6 +207,76 @@ class GameController {
         } else {
             alert('IDを入力してください');
         }
+    }
+
+    // Auto Match Logic
+    async startRankMatch() {
+        if (!this.myPlayerName) { alert("ユーザー登録が必要です。ページを再読み込みしてください。"); return; }
+
+        // 1. Initialize Peer (same as Host but we don't know if we are Host or Client yet)
+        // Actually we need a Peer ID to enter the queue.
+        // So let's "host" temporarily to get an ID.
+        this.network.host(); // This creates a Room ID.
+        document.getElementById('network-status').textContent = "マッチング中... (待機or検索)";
+
+        // Wait for Peer Open (to get ID)
+        await new Promise(resolve => {
+            if (this.network.peer && this.network.peer.open) resolve();
+            else this.network.peer.on('open', resolve);
+        });
+
+        const myPeerId = this.network.peer.id;
+        console.log("My Peer ID for Matching:", myPeerId);
+
+        // 2. Start Polling Loop
+        this.matchLoop = setInterval(async () => {
+            if (this.mode === 'net') { // Already connected
+                clearInterval(this.matchLoop);
+                return;
+            }
+
+            try {
+                const res = await fetch('match_make.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ peer_id: myPeerId })
+                });
+                const data = await res.json();
+
+                if (data.status === 'found') {
+                    // Found opponent! Connect to them.
+                    document.getElementById('network-status').textContent = "対戦相手が見つかりました！接続中...";
+                    clearInterval(this.matchLoop);
+                    this.network.join(data.opponent_id.replace('MEMO_SHOGI_', '')); // Helper? 
+                    // Wait, network.join() expects "Code" (Suffix) usually?
+                    // network.join logic: const targetID = 'MEMO_SHOGI_' + inputCode.trim().toUpperCase();
+                    // But here we likely get FULL ID from DB.
+                    // Let's modify join to accept full ID or handle this manually.
+                    // Actually, if I call join(), it destroys current peer. 
+                    // If I destroy current peer, I lose my ID in queue?
+                    // Ah. if I connect as Client, I don't need my host ID anymore.
+                    // BUT, 'match_make.php' deleted opponent from queue.
+                    // So I must connect to them successfully.
+
+                    // network.join() recreates Peer. That's fine.
+                    // But join() takes CODE. If DB stored full ID "MEMO_SHOGI_ABCD", 
+                    // I need to strip prefix.
+
+                    const code = data.opponent_id.replace('MEMO_SHOGI_', '');
+                    this.network.join(code);
+
+                } else if (data.status === 'waiting') {
+                    // Just wait. PeerJS is listening for connections from others who 'Find' me.
+                    // Since I called network.host(), I am ready to receive connections.
+                    // If someone else finds me, they will connect to me.
+                    // Then onNetConnect triggers, setting mode='net'.
+                    const dots = ".".repeat((Date.now() / 500) % 4);
+                    document.getElementById('network-status').textContent = "対戦相手を探しています" + dots;
+                }
+            } catch (e) {
+                console.error("Matchmaking error", e);
+            }
+        }, 3000); // Check every 3 seconds
     }
 
     async showRanking() {
@@ -725,9 +835,109 @@ class GameController {
         const turnText = this.game.turn === SENTE ? '先手' : '後手';
         const isMyTurn = this.game.turn === this.myRole;
         const ind = document.getElementById('turn-indicator');
+
+        let suffix = "";
+        if (this.mode === 'cpu_watch') suffix = " (観戦)";
+        else if (this.mode === 'net') suffix = isMyTurn ? " (あなた)" : " (相手)";
+        else suffix = isMyTurn ? " (あなた)" : "";
+
         if (ind) {
-            ind.textContent = `${turnText} の番です ${isMyTurn ? '(あなた)' : ''} `;
+            ind.textContent = `${turnText} の番です${suffix}`;
             ind.style.color = isMyTurn ? '#fbbf24' : '#fff';
+        }
+
+        // Timer Logic
+        if (this.mode === 'net') {
+            if (isMyTurn && this.game.winner === null) {
+                this.startTimer();
+            } else {
+                this.stopTimer();
+            }
+        } else {
+            this.stopTimer();
+        }
+    }
+
+    startTimer() {
+        this.stopTimer(); // Reset
+        this.timeLeft = 10;
+        const timerEl = document.getElementById('game-timer');
+        if (timerEl) {
+            timerEl.textContent = `残り: ${this.timeLeft}秒`;
+            timerEl.style.display = 'block';
+        }
+
+        this.timerInterval = setInterval(() => {
+            this.timeLeft--;
+            if (timerEl) timerEl.textContent = `残り: ${this.timeLeft}秒`;
+
+            if (this.timeLeft <= 0) {
+                this.onTimeout();
+            }
+        }, 1000);
+    }
+
+    stopTimer() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+        const timerEl = document.getElementById('game-timer');
+        if (timerEl) timerEl.style.display = 'none';
+    }
+
+    onTimeout() {
+        this.stopTimer();
+        if (this.game.turn !== this.myRole) return;
+
+        console.log("Time Limit Reached! Random Move.");
+
+        // Random Move Logic
+        const moves = [];
+
+        // Board Moves
+        for (let x = 0; x < 9; x++) {
+            for (let y = 0; y < 9; y++) {
+                const p = this.game.getPiece(x, y);
+                if (p && p.owner === this.myRole) {
+                    const valids = this.game.getValidMoves(x, y);
+                    valids.forEach(to => {
+                        moves.push({ type: 'move', fx: x, fy: y, tx: to.x, ty: to.y, promote: false });
+                    });
+                }
+            }
+        }
+
+        // Drops
+        const hand = this.game.hands[this.myRole];
+        Object.keys(hand).forEach(k => {
+            const type = parseInt(k);
+            if (hand[type] > 0) {
+                for (let x = 0; x < 9; x++) {
+                    for (let y = 0; y < 9; y++) {
+                        if (this.game.canDrop(this.myRole, type, x, y)) {
+                            moves.push({ type: 'drop', piece: type, tx: x, ty: y });
+                        }
+                    }
+                }
+            }
+        });
+
+        if (moves.length > 0) {
+            const m = moves[Math.floor(Math.random() * moves.length)];
+            if (m.type === 'move') {
+                this.executeMove(m.fx, m.fy, m.tx, m.ty, m.promote);
+            } else {
+                if (this.game.drop(this.myRole, m.piece, m.tx, m.ty)) {
+                    if (this.mode === 'net') {
+                        this.network.send({ type: 'drop', piece: m.piece, to: { x: m.tx, y: m.ty } });
+                    }
+                    this.postTurn({ to: { x: m.tx, y: m.ty } });
+                }
+            }
+        } else {
+            this.game.winner = (this.myRole === SENTE ? GOTE : SENTE);
+            this.showResult(false, '指し手等により動かせないため敗北');
         }
     }
 
