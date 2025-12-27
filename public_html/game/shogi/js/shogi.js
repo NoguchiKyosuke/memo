@@ -337,7 +337,7 @@ class Shogi {
         if (this.getPiece(tx, ty)) return false; // Occupied
 
         // Check Rules
-        // 1. Two Pawns (Nifu)
+        // 1. Two Pawns (Nifu) - ALLOWED in Mikami Shogi, BANNED in Standard
         if (type === PIECE_Types.FU) {
             for (let y = 0; y < 9; y++) {
                 const p = this.getPiece(tx, y);

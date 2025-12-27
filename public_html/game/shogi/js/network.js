@@ -11,15 +11,17 @@ class ShogiNetwork {
     on(event, cb) { this.callbacks[event] = cb; }
     trigger(event, data) { if (this.callbacks[event]) this.callbacks[event](data); }
 
-    host() {
+    host(isRankMatch = false) {
         if (this.peer) this.peer.destroy();
         this.isHost = true;
+        this.isRankMatch = isRankMatch; // Flag to delay game start
         this.createRoom();
     }
 
     createRoom() {
         // 4 char random ID
         const code = Math.random().toString(36).substring(2, 6).toUpperCase();
+        this.roomCode = code; // Store for later
         const roomID = 'MEMO_SHOGI_' + code;
 
         this.peer = new Peer(roomID, {
@@ -29,8 +31,10 @@ class ShogiNetwork {
 
         this.peer.on('open', (id) => {
             console.log('Hosting room:', id);
-            // Display only the code part
-            this.trigger('onConnect', { roomID: code, role: SENTE });
+            // If Rank Match, we DON'T start game yet. We wait for connection.
+            if (!this.isRankMatch) {
+                this.trigger('onConnect', { roomID: code, role: SENTE });
+            }
         });
 
         this.peer.on('connection', (conn) => {
@@ -55,6 +59,7 @@ class ShogiNetwork {
     join(inputCode) {
         if (this.peer) this.peer.destroy();
         this.isHost = false;
+        this.isRankMatch = false; // Joiner is never the "Waiting Host" logic
 
         // Regenerate my ID
         const myID = 'MEMO_GUEST_' + Math.random().toString(36).substring(2, 8);
@@ -91,12 +96,24 @@ class ShogiNetwork {
     setupConnection() {
         this.conn.on('open', () => {
             console.log('Connected!');
-            // If Guest, we are Gote
-            const role = this.isHost ? SENTE : GOTE;
-            if (!this.isHost) this.trigger('onConnect', { roomID: this.conn.peer, role: GOTE });
 
-            // Send Hello?
-            this.send({ type: 'hello', from: this.id });
+            // Trigger Game Start
+            // 1. If Guest (!isHost) -> Always trigger (Role GOTE)
+            // 2. If Host AND RankMatch (Delay) -> Trigger now (Role SENTE)
+            if (!this.isHost) {
+                this.trigger('onConnect', { roomID: this.conn.peer, role: GOTE });
+            } else if (this.isHost && this.isRankMatch) {
+                this.trigger('onConnect', { roomID: this.roomCode, role: SENTE });
+            }
+
+            // Standard Host (Room Match) already triggered on 'open', so don't trigger again.
+
+            // Send Hello with Name
+            // Need to access game controller's name?
+            // Bad coupling. Better to expose a way or pass it in.
+            // Simplification: accessing global 'game' object if available, or just standard payload.
+            const name = window.game ? window.game.myPlayerName : 'Guest';
+            this.send({ type: 'hello', from: this.id, name: name });
         });
 
         this.conn.on('data', (data) => {

@@ -304,6 +304,16 @@ $keywords = 'game,3d,tetris,juggler,minecraft,space';
     </div>
 
     <div class="game-grid">
+        <!-- Swipe Rush Card -->
+        <a href="/game/swipe_rush/" class="game-card card-swiperush">
+            <div class="card-content">
+                <span class="game-icon">📱</span>
+                <h2 class="game-title">SWIPE RUSH</h2>
+                <p class="game-desc">ショート動画をスクロールしまくれ！</p>
+                <span class="play-btn">LAUNCH</span>
+            </div>
+        </a>
+
         <!-- Tetris Card -->
         <a href="/game/tetris/" class="game-card card-tetris">
             <div class="card-content">
