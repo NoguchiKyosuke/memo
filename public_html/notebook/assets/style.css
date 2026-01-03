@@ -69,33 +69,25 @@ body {
 /* Main Layout */
 #main-layout {
     display: flex;
-    flex: 1;
-    overflow: hidden;
+    height: 100vh;
 }
 
 /* Sidebar */
 #sidebar {
-    width: 300px;
-    /* Widened */
-    background: var(--sidebar-bg);
+    width: 280px;
+    background: var(--bg-sidebar);
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-#sidebar.collapsed {
-    width: 0;
-    padding: 0;
-    border: none;
-    opacity: 0;
+    transition: width 0.3s ease;
 }
 
 .sidebar-header {
-    margin-bottom: 20px;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .sidebar-header h2 {
@@ -117,30 +109,22 @@ body {
     color: var(--text-primary);
 }
 
-.search-box input {
-    width: 100%;
-    padding: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text-primary);
-}
-
-#file-tree {
+.tree-container {
     flex: 1;
     overflow-y: auto;
+    padding: 1rem;
 }
 
 /* Tree Items */
 .tree-item {
-    padding: 8px;
-    cursor: pointer;
-    border-radius: 4px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
     color: var(--text-secondary);
-    margin-bottom: 2px;
+    transition: background 0.2s;
+    user-select: none;
 }
 
 .tree-item:hover {
@@ -455,4 +439,54 @@ canvas {
 
 .delete-btn:hover {
     background: #ff6b81;
+}
+
+/* Sidebar Toggle */
+#sidebar.collapsed {
+    width: 60px;
+}
+
+#sidebar.collapsed .sidebar-header h2,
+#sidebar.collapsed .user-info span {
+    display: none;
+}
+
+#sidebar.collapsed .tree-item span {
+    display: none;
+}
+
+#sidebar.collapsed .sidebar-actions button {
+    display: none;
+}
+
+#sidebar.collapsed .sidebar-actions #btn-toggle-sidebar {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Context Menu */
+#context-menu {
+    position: fixed;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 0;
+    z-index: 2000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    min-width: 150px;
+}
+
+.ctx-item {
+    padding: 8px 15px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.ctx-item:hover {
+    background: var(--hover);
+    color: var(--text-primary);
 }

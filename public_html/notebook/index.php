@@ -51,6 +51,7 @@ session_start();
             <div class="sidebar-header">
                 <h2>Library</h2>
                 <div class="sidebar-actions">
+                    <button id="btn-toggle-sidebar" title="Toggle Sidebar"><i class="fas fa-bars"></i></button>
                     <button id="btn-add-folder" title="New Folder"><i class="fas fa-folder-plus"></i></button>
                     <button id="btn-add-note" title="New Note"><i class="fas fa-file-circle-plus"></i></button>
                     <button id="btn-logout" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
@@ -58,6 +59,11 @@ session_start();
             </div>
             <div id="file-tree" class="tree-container">
                 <!-- Tree items injected by JS -->
+            </div>
+            <!-- Context Menu -->
+            <div id="context-menu" class="hidden">
+                <div id="ctx-rename" class="ctx-item"><i class="fas fa-edit"></i> Rename</div>
+                <div id="ctx-delete" class="ctx-item"><i class="fas fa-trash"></i> Delete</div>
             </div>
             <div id="sidebar-footer">
                 <div class="user-info">
@@ -68,8 +74,8 @@ session_start();
         </aside>
 
         <!-- Editor Area -->
+        <main id="editor-area">
             <div id="toolbar">
-                <button id="btn-toggle-sidebar" class="tool-btn" title="Toggle Sidebar" style="margin-right:10px;"><i class="fas fa-bars"></i></button>
                 <div class="tool-group">
                     <button id="tool-hand" class="tool-btn" title="Hand Tool (Pan)"><i class="fas fa-hand-paper"></i></button>
                     <div class="separator" style="width:1px; height:24px; background:var(--border); margin:0 8px;"></div>
@@ -110,14 +116,7 @@ session_start();
     </div>
 </div>
 
-    <!-- Context Menu -->
-    <div id="context-menu" class="context-menu hidden">
-        <div class="menu-item" id="ctx-rename"><i class="fas fa-edit"></i> Rename</div>
-        <div class="menu-item" id="ctx-delete" style="color:var(--accent-red);"><i class="fas fa-trash"></i> Delete</div>
-    </div>
-
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="assets/app.js?v=<?php echo __bust('assets/app.js'); ?>"></script>
+<script src="assets/app.js?v=<?= $v ?>"></script>
 </body>
 </html>
-```
