@@ -8,7 +8,7 @@ const BLOCK_TYPES = {
     AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, WOOD: 4, LEAVES: 5,
     SAND: 6, COBBLESTONE: 7, PLANKS: 8, BRICK: 9, WATER: 10, BEDROCK: 11,
     COAL_ORE: 12, IRON_ORE: 13, GOLD_ORE: 14, DIAMOND_ORE: 15,
-    SNIPER: 99
+    SNIPER: 99, SHOTGUN: 98
 };
 
 const BLOCK_COLORS = {
@@ -20,7 +20,8 @@ const BLOCK_COLORS = {
     [BLOCK_TYPES.BEDROCK]: 0x1f1f1f, [BLOCK_TYPES.COAL_ORE]: 0x3f3f3f,
     [BLOCK_TYPES.IRON_ORE]: 0xd4a574, [BLOCK_TYPES.GOLD_ORE]: 0xffd700,
     [BLOCK_TYPES.DIAMOND_ORE]: 0x00ffff,
-    [BLOCK_TYPES.SNIPER]: 0x333333 // Dark grey for gun
+    [BLOCK_TYPES.SNIPER]: 0x333333, // Dark grey for gun
+    [BLOCK_TYPES.SHOTGUN]: 0x111111 // Black for shotgun
 };
 
 // Random skin colors for players
@@ -34,7 +35,7 @@ const SEA_LEVEL = 20;
 const GRAVITY = 28;
 const JUMP_FORCE = 10;
 const MOVE_SPEED = 5;
-const MOUSE_SENSITIVITY = 0.002;
+// const MOUSE_SENSITIVITY = 0.002; // Now dynamic
 const MIN_ANIMALS = 50;
 const PLAYER_HEIGHT = 1.8;
 const PLAYER_WIDTH = 0.6;
@@ -74,7 +75,7 @@ class MinecraftGame {
         this.isPointerLocked = false;
         this.selectedSlot = 0;
         this.hotbarBlocks = [
-            BLOCK_TYPES.WOOD, BLOCK_TYPES.COBBLESTONE, BLOCK_TYPES.PLANKS, BLOCK_TYPES.BRICK, BLOCK_TYPES.LEAVES, BLOCK_TYPES.SAND, 'BOW', 'ROCKET', BLOCK_TYPES.SNIPER
+            BLOCK_TYPES.SHOTGUN, BLOCK_TYPES.WOOD, BLOCK_TYPES.COBBLESTONE, BLOCK_TYPES.PLANKS, BLOCK_TYPES.BRICK, BLOCK_TYPES.LEAVES, BLOCK_TYPES.SAND, 'BOW', 'ROCKET', BLOCK_TYPES.SNIPER
         ];
 
         this.raycaster = new THREE.Raycaster();
@@ -125,6 +126,9 @@ class MinecraftGame {
         this.isScoped = false;
         this.defaultFOV = 75;
         this.scopeFOV = 30; // 30 is better than 15
+
+        // Settings
+        this.mouseSensitivity = parseFloat(localStorage.getItem('minecraft_sensitivity')) || 0.002;
 
         this.init();
     }
@@ -577,11 +581,25 @@ class MinecraftGame {
 
         document.addEventListener('mousemove', e => {
             if (this.isPointerLocked && !this.isDead) {
-                this.player.rotation.y -= e.movementX * MOUSE_SENSITIVITY;
-                this.player.rotation.x -= e.movementY * MOUSE_SENSITIVITY;
+                this.player.rotation.y -= e.movementX * this.mouseSensitivity;
+                this.player.rotation.x -= e.movementY * this.mouseSensitivity;
                 this.player.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.player.rotation.x));
             }
         });
+
+        // Sensitivity Slider
+        const sensSlider = document.getElementById('sensitivity-slider');
+        const sensVal = document.getElementById('sens-val');
+        if (sensSlider && sensVal) {
+            sensSlider.value = this.mouseSensitivity;
+            sensVal.textContent = this.mouseSensitivity.toFixed(4);
+
+            sensSlider.addEventListener('input', (e) => {
+                this.mouseSensitivity = parseFloat(e.target.value);
+                sensVal.textContent = this.mouseSensitivity.toFixed(4);
+                localStorage.setItem('minecraft_sensitivity', this.mouseSensitivity);
+            });
+        }
 
         this.canvas.addEventListener('mousedown', e => {
             if (!this.isPointerLocked) { this.canvas.requestPointerLock(); return; }
@@ -591,6 +609,8 @@ class MinecraftGame {
                 const item = this.hotbarBlocks[this.selectedSlot];
                 if (item === BLOCK_TYPES.SNIPER) {
                     this.shootSniper();
+                } else if (item === BLOCK_TYPES.SHOTGUN) {
+                    this.shootShotgun();
                 } else {
                     this.breakBlock(); // Keep mining
                     this.attackEntity(); // Try attacking
@@ -724,8 +744,18 @@ class MinecraftGame {
         btnAttack.addEventListener('touchstart', e => {
             e.preventDefault();
             this.mobileInput.attack = true;
-            this.attackEntity(); // Trigger immediate
-            this.breakBlock();
+
+            // Check weapon
+            const item = this.hotbarBlocks[this.selectedSlot];
+            if (item === BLOCK_TYPES.SNIPER) {
+                this.shootSniper();
+            } else if (item === BLOCK_TYPES.SHOTGUN) {
+                this.shootShotgun();
+            } else {
+                this.attackEntity(); // Try immediate
+                this.breakBlock();
+            }
+
             btnAttack.style.backgroundColor = 'rgba(239, 68, 68, 0.8)';
         }, { passive: false });
         btnAttack.addEventListener('touchend', e => {
@@ -742,6 +772,8 @@ class MinecraftGame {
                 this.shootArrow();
             } else if (item === 'ROCKET') {
                 this.shootRocket();
+            } else if (item === BLOCK_TYPES.SNIPER) {
+                this.toggleScope();
             } else {
                 this.placeBlock();
             }
@@ -1003,6 +1035,16 @@ class MinecraftGame {
                     icon.classList.add('sniper');
                     icon.style.background = '#333';
                     icon.style.border = '2px solid #555';
+                    icon.textContent = '🔭';
+                    icon.style.display = 'flex';
+                    icon.style.alignItems = 'center';
+                    icon.style.justifyContent = 'center';
+                    icon.style.fontSize = '20px';
+                }
+                else if (type === BLOCK_TYPES.SHOTGUN) {
+                    icon.classList.add('shotgun');
+                    icon.style.background = '#000';
+                    icon.style.border = '2px solid #333';
                     icon.textContent = '🔫';
                     icon.style.display = 'flex';
                     icon.style.alignItems = 'center';
@@ -1903,6 +1945,100 @@ class MinecraftGame {
             if (crosshair) crosshair.style.display = 'block';
         }
         this.camera.updateProjectionMatrix();
+    }
+
+    shootShotgun() {
+        if (Date.now() - this.lastFireTime < 800) return;
+        this.lastFireTime = Date.now();
+        console.log('[Game] Shotgun fired!');
+
+        // Pellets
+        const pelletCount = 8;
+        const spreadAmt = 0.08;
+        const range = 30;
+
+        for (let i = 0; i < pelletCount; i++) {
+            // Random spread vector
+            const spread = new THREE.Vector3(
+                (Math.random() - 0.5) * spreadAmt,
+                (Math.random() - 0.5) * spreadAmt,
+                (Math.random() - 0.5) * spreadAmt
+            );
+
+            // Raycaster setup
+            const raycaster = new THREE.Raycaster();
+            // Start from camera
+            raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera);
+
+            // Apply spread to ray direction
+            raycaster.ray.direction.add(spread).normalize();
+            raycaster.far = range;
+
+            // Targets
+            const meshes = [];
+            this.animals.forEach(a => { if (a.mesh) meshes.push(a.mesh); });
+            this.otherPlayers.forEach(p => { if (p.mesh) meshes.push(p.mesh); });
+
+            const intersects = raycaster.intersectObjects(meshes, true);
+
+            let endPoint;
+
+            if (intersects.length > 0) {
+                endPoint = intersects[0].point;
+                const hit = intersects[0];
+
+                // Find Entity
+                let hitAnimal = null;
+                for (const animal of this.animals.values()) {
+                    let current = hit.object;
+                    while (current) {
+                        if (current === animal.mesh) {
+                            hitAnimal = animal;
+                            break;
+                        }
+                        current = current.parent;
+                    }
+                    if (hitAnimal) break;
+                }
+
+                if (hitAnimal) {
+                    // console.log('[Game] Shotgun hit entity:', hitAnimal.id);
+                    // Damage per pellet
+                    const dmg = 4;
+                    if (this.network.isHost || !this.network.connected) {
+                        // Host
+                        hitAnimal.health -= dmg;
+                        hitAnimal.flashRed();
+                        if (this.network.connected) this.network.sendAnimalUpdate({ type: 'damage', id: hitAnimal.id, amount: dmg });
+                        if (hitAnimal.health <= 0) this.killAnimal(hitAnimal);
+                    } else {
+                        // Client
+                        if (this.network.connected) this.network.sendAnimalUpdate({ type: 'damage', id: hitAnimal.id, amount: dmg });
+                    }
+                }
+
+            } else {
+                // Miss point
+                endPoint = raycaster.ray.origin.clone().add(raycaster.ray.direction.multiplyScalar(range));
+            }
+
+            // Visual Tracer
+            const startPoint = this.player.position.clone().add(new THREE.Vector3(0, 1.3, 0));
+            // Slight offset right/down
+            const right = new THREE.Vector3(1, 0, 0).applyQuaternion(this.camera.quaternion);
+            startPoint.add(right.multiplyScalar(0.2));
+
+            const material = new THREE.LineBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0.6 });
+            const geometry = new THREE.BufferGeometry().setFromPoints([startPoint, endPoint]);
+            const line = new THREE.Line(geometry, material);
+            this.scene.add(line);
+
+            setTimeout(() => {
+                this.scene.remove(line);
+                geometry.dispose();
+                material.dispose();
+            }, 80);
+        }
     }
 
     shootSniper() {

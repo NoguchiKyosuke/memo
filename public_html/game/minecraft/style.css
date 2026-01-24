@@ -916,12 +916,14 @@ kbd {
     position: absolute;
     bottom: 50px;
     right: 50px;
-    display: flex;
-    gap: 20px;
-    pointer-events: auto;
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+    /* Let clicks pass through gaps */
 }
 
 .mobile-btn {
+    position: absolute;
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -937,6 +939,29 @@ kbd {
     align-items: center;
     justify-content: center;
     text-align: center;
+    pointer-events: auto;
+}
+
+#btn-jump {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(74, 222, 128, 0.5);
+    /* Greenish tint for Jump */
+}
+
+#btn-place {
+    bottom: 0;
+    left: 0;
+    background: rgba(59, 130, 246, 0.5);
+    /* Blue tint */
+}
+
+#btn-break {
+    bottom: 0;
+    right: 0;
+    background: rgba(239, 68, 68, 0.5);
+    /* Red tint */
 }
 
 .mobile-btn:active {
