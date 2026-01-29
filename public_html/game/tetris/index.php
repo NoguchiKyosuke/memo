@@ -219,6 +219,11 @@
             .game-container {
                 flex-direction: column;
                 align-items: center;
+                gap: 10px;
+            }
+
+            .game-board-wrapper {
+                padding: 10px;
             }
 
             #game-board {
@@ -230,16 +235,123 @@
                 width: 25px;
                 height: 25px;
             }
-
-            .mobile-controls {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: repeat(2, 1fr);
+            
+            .info-panel {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
             }
-
+            
+            .info-box {
+                min-width: auto;
+                padding: 5px 10px;
+                flex: 1;
+            }
+            
             .controls {
                 display: none;
             }
+
+            .mobile-controls {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                width: 100%;
+                max-width: 320px;
+                margin-top: 15px;
+            }
+            
+            /* Specific button positioning */
+            .mobile-btn {
+                width: auto;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+            
+            /* Layout:
+              Turn |  Up(Rotate)  | Turn | Pause
+              Left |  Down        | Right| Drop
+            */
+            
+            .btn-rotate { grid-column: 2; grid-row: 1; }
+            .btn-left { grid-column: 1; grid-row: 2; }
+            .btn-down { grid-column: 2; grid-row: 2; }
+            .btn-right { grid-column: 3; grid-row: 2; }
+            .btn-drop { grid-column: 4; grid-row: 2; background: rgba(255, 71, 87, 0.3) !important; border-color: #ff4757 !important; }
+            .btn-pause { grid-column: 4; grid-row: 1; font-size: 1rem; }
+            
+            .opponent-section {
+                 order: 3; /* Put opponent below main game if needed, or side by side if space permits */
+                 margin-top: 10px;
+            }
+            
+            .game-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Multiplayer Styles */
+        .opponent-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.8;
+            transform: scale(0.9);
+        }
+        
+        .opponent-board-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        #opponent-board {
+            display: grid;
+            grid-template-columns: repeat(10, 20px);
+            grid-template-rows: repeat(20, 20px);
+            gap: 1px;
+            background: #111;
+            border: 2px solid #555;
+            border-radius: 4px;
+        }
+
+        #opponent-board .cell {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .status-message {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #ffd700;
+            min-height: 1.5em;
+        }
+        
+        .mode-select {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .mode-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .mode-btn.active {
+            background: #00d4ff;
+            color: #000;
+            border-color: #00d4ff;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -248,6 +360,11 @@
     <div class="game-header">
         <h1>🧱 テトリス</h1>
         <p>矢印キーで操作 / スペースでハードドロップ</p>
+        <div class="mode-select">
+            <button class="mode-btn active" id="mode-single" onclick="switchMode('single')">シングルプレイ</button>
+            <button class="mode-btn" id="mode-multi" onclick="switchMode('multi')">オンライン対戦</button>
+        </div>
+        <div id="connection-status" class="status-message" style="display: none;">接続待機中...</div>
     </div>
 
     <div class="game-container">
@@ -290,16 +407,26 @@
                 <p><kbd>P</kbd> ポーズ</p>
             </div>
             <button class="btn" id="start-btn" onclick="startGame()">ゲーム開始</button>
+            <button class="btn" id="find-match-btn" onclick="findMatch()" style="display: none; background: linear-gradient(90deg, #ff416c, #ff4b2b);">対戦相手を探す</button>
+        </div>
+
+        <div class="opponent-section" id="opponent-section" style="display: none;">
+            <div class="game-header" style="margin-bottom: 10px;">
+                <p>対戦相手</p>
+            </div>
+            <div class="opponent-board-wrapper">
+                <div id="opponent-board"></div>
+            </div>
         </div>
     </div>
 
     <div class="mobile-controls">
-        <button class="mobile-btn" onclick="moveLeft()">←</button>
-        <button class="mobile-btn" onclick="rotate()">↻</button>
-        <button class="mobile-btn" onclick="moveRight()">→</button>
-        <button class="mobile-btn" onclick="moveDown()">↓</button>
-        <button class="mobile-btn" onclick="hardDrop()">⬇</button>
-        <button class="mobile-btn" onclick="togglePause()">⏸</button>
+        <button class="mobile-btn btn-left" onclick="moveLeft()">←</button>
+        <button class="mobile-btn btn-rotate" onclick="rotate()">↻</button>
+        <button class="mobile-btn btn-right" onclick="moveRight()">→</button>
+        <button class="mobile-btn btn-down" onclick="moveDown()">↓</button>
+        <button class="mobile-btn btn-drop" onclick="hardDrop()">⏬</button>
+        <button class="mobile-btn btn-pause" onclick="togglePause()">II</button>
     </div>
 
     <a href="/game/" class="back-link">← ゲームポータルに戻る</a>
@@ -377,6 +504,13 @@
         let isPaused = false;
         let isGameOver = false;
 
+        // Multiplayer variables
+        let ws = null;
+        let isMultiplayer = false;
+        let isOpponentConnected = false;
+        let opponentBoardDiv = null;
+
+
         function init() {
             const gameBoard = document.getElementById('game-board');
             gameBoard.innerHTML = '';
@@ -390,6 +524,19 @@
                     cell.className = 'cell';
                     cell.id = `cell-${r}-${c}`;
                     gameBoard.appendChild(cell);
+                }
+            }
+            
+            // Init opponent board if needed
+            const oppBoard = document.getElementById('opponent-board');
+            if (oppBoard.children.length === 0) {
+                 for (let r = 0; r < ROWS; r++) {
+                    for (let c = 0; c < COLS; c++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        cell.id = `opp-cell-${r}-${c}`;
+                        oppBoard.appendChild(cell);
+                    }
                 }
             }
 
@@ -511,6 +658,10 @@
             }
             clearLines();
             spawnPiece();
+            
+            if (isMultiplayer && isOpponentConnected) {
+                sendBoardUpdate();
+            }
         }
 
         function clearLines() {
@@ -533,6 +684,14 @@
                 lines += linesCleared;
                 level = Math.floor(lines / 10) + 1;
                 updateDisplay();
+                
+                // Attack opponent in multiplayer
+                if (isMultiplayer && isOpponentConnected && linesCleared > 1) {
+                    // 2 lines -> 1 garbage, 3 -> 2, 4 -> 4 (bonus)
+                    let garbage = linesCleared - 1;
+                    if (linesCleared === 4) garbage = 4;
+                    sendAttack(garbage);
+                }
             }
         }
 
@@ -622,6 +781,12 @@
             clearInterval(gameLoop);
             document.getElementById('final-score').textContent = score;
             document.getElementById('game-over').classList.add('show');
+            
+            if (isMultiplayer && isOpponentConnected) {
+                ws.send(JSON.stringify({ type: 'game_over' }));
+                document.getElementById('connection-status').textContent = "敗北...";
+                document.getElementById('connection-status').style.color = "#ff4757";
+            }
         }
 
         function loadMoney() {
@@ -694,6 +859,265 @@
                     break;
             }
         });
+
+        
+        
+        // --- Multiplayer Logic ---
+        
+        function switchMode(mode) {
+            isMultiplayer = (mode === 'multi');
+            document.getElementById('mode-single').classList.toggle('active', !isMultiplayer);
+            document.getElementById('mode-multi').classList.toggle('active', isMultiplayer);
+            
+            document.getElementById('start-btn').style.display = isMultiplayer ? 'none' : 'block';
+            document.getElementById('find-match-btn').style.display = isMultiplayer ? 'block' : 'none';
+            document.getElementById('opponent-section').style.display = isMultiplayer ? 'flex' : 'none';
+            document.getElementById('connection-status').style.display = isMultiplayer ? 'block' : 'none';
+            
+            resetGame();
+            if (isMultiplayer) {
+                document.getElementById('connection-status').textContent = "「対戦相手を探す」を押してください";
+                document.getElementById('connection-status').style.color = "#ffd700";
+            }
+        }
+
+        // Network / Polling Variables
+        let clientId = localStorage.getItem('tetris_client_id') || 'player_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('tetris_client_id', clientId);
+        
+        let gameId = null;
+        let opponentId = null;
+        let myRole = null; // 'p1' or 'p2'
+        
+        let pollInterval = null;
+        let lastSyncTime = 0;
+        let isWaiting = false;
+
+        async function findMatch() {
+            // Reset state
+            gameId = null;
+            opponentId = null;
+            isOpponentConnected = false;
+            
+            const statusEl = document.getElementById('connection-status');
+            const btn = document.getElementById('find-match-btn');
+            
+            statusEl.textContent = "対戦相手を探しています...";
+            statusEl.style.display = 'block';
+            statusEl.style.color = '#ffd700';
+            btn.disabled = true;
+            isWaiting = true;
+            
+            try {
+                // Initial request to join queue
+                const res = await fetch(`api/tetris.php?action=find_match&client_id=${clientId}`);
+                const data = await res.json();
+                
+                if (data.status === 'matched') {
+                    handleMatchFound(data);
+                } else if (data.status === 'waiting') {
+                    // Start polling for status
+                    statusEl.textContent = "マッチング中... (待機中)";
+                    pollForMatch();
+                } else {
+                    throw new Error(data.message || "Unknown error");
+                }
+            } catch (e) {
+                console.error("Matchmaking error:", e);
+                statusEl.textContent = "接続エラー: " + e.message;
+                statusEl.style.color = "#ff4757";
+                btn.disabled = false;
+                isWaiting = false;
+            }
+        }
+        
+        function pollForMatch() {
+            if (!isWaiting) return;
+            
+            pollInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`api/tetris.php?action=check_status&client_id=${clientId}`);
+                    const data = await res.json();
+                    
+                    if (data.status === 'matched') {
+                        clearInterval(pollInterval);
+                        handleMatchFound(data);
+                    }
+                } catch (e) {
+                    console.error("Polling error:", e);
+                }
+            }, 1000); // Poll every 1s
+        }
+        
+        function handleMatchFound(data) {
+            isWaiting = false;
+            gameId = data.game_id;
+            opponentId = data.opponent_id;
+            myRole = data.role;
+            isOpponentConnected = true;
+            
+            const statusEl = document.getElementById('connection-status');
+            statusEl.textContent = "対戦開始！";
+            statusEl.style.color = "#00d4ff";
+            
+            // Start Game Loop Polling
+            startGame();
+            startSyncLoop();
+        }
+        
+        function startSyncLoop() {
+            if (pollInterval) clearInterval(pollInterval);
+            
+            pollInterval = setInterval(async () => {
+                if (!isMultiplayer || !isOpponentConnected || !gameId) {
+                    clearInterval(pollInterval);
+                    return;
+                }
+                
+                await syncGameState();
+            }, 500); // Sync every 500ms
+        }
+        
+        async function syncGameState() {
+            try {
+                // Prepare outgoing data
+                // We only send updates if something changed? Or always heartbeat?
+                // Simplest: Always send current board/score.
+                // Attacks are tricky - we need to make sure we don't send the same attack twice.
+                // We'll use a queue for outgoing attacks.
+                
+                const payload = {
+                    board: board,
+                    score: score,
+                    attacks_out: outgoingAttacks.length > 0 ? outgoingAttacks.shift() : null,
+                    game_over: isGameOver
+                };
+                
+                const res = await fetch(`api/tetris.php?action=sync&game_id=${gameId}&client_id=${clientId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await res.json();
+                
+                if (data.status === 'active' || data.status === 'finished') {
+                    // Update Opponent View
+                    if (data.opponent_state && data.opponent_state.board) {
+                        drawOpponentBoard(data.opponent_state.board);
+                    }
+                    
+                    // Handle received attacks
+                    if (data.attacks_received && data.attacks_received.length > 0) {
+                        data.attacks_received.forEach(lines => {
+                            receiveAttack(lines);
+                        });
+                    }
+                    
+                    // Handle Game Over
+                    if (data.game_status === 'finished') {
+                        if (data.winner && data.winner !== clientId) {
+                            // I lost (or opponent won)
+                            if (!isGameOver) {
+                                gameOver();
+                                document.getElementById('connection-status').textContent = "敗北...";
+                                document.getElementById('connection-status').style.color = "#ff4757";
+                            }
+                        } else if (data.winner === clientId) {
+                             // I won
+                             if (isGameOver) { // Wait until I see I'm waiting? No, if game is finished and I'm winner
+                                 document.getElementById('connection-status').textContent = "勝利！";
+                                 document.getElementById('game-over').querySelector('h2').textContent = "勝利！";
+                                 document.getElementById('game-over').classList.add('show');
+                             } else {
+                                 // Opponent died first
+                                 gameOver(); 
+                                 document.getElementById('connection-status').textContent = "勝利！";
+                                 document.getElementById('game-over').querySelector('h2').textContent = "勝利！";
+                                 document.getElementById('game-over').classList.add('show');
+                             }
+                        }
+                    }
+                }
+                
+            } catch (e) {
+                console.error("Sync error:", e);
+            }
+        }
+        
+        // Outgoing attack queue
+        let outgoingAttacks = [];
+
+        function sendBoardUpdate() {
+            // No-op, handled by sync loop
+        }
+
+        function sendAttack(lines) {
+             outgoingAttacks.push(lines);
+             
+             // Visual feedback
+             const msg = document.createElement('div');
+             msg.textContent = `${lines}ライン攻撃！`;
+             msg.style.position = 'absolute';
+             msg.style.top = '50%';
+             msg.style.left = '50%';
+             msg.style.color = 'red';
+             msg.style.fontWeight = 'bold';
+             msg.style.fontSize = '2rem';
+             msg.style.transform = 'translate(-50%, -50%)';
+             msg.style.pointerEvents = 'none';
+             document.body.appendChild(msg);
+             setTimeout(() => msg.remove(), 1000);
+        }
+
+        function receiveAttack(numLines) {
+            console.log(`Received attack: ${numLines} lines`);
+            // Add garbage lines at bottom
+            for (let i = 0; i < numLines; i++) {
+                // Remove top line (check for game over if it was filled)
+                if (board[0].some(c => c !== 0)) {
+                    gameOver();
+                    return;
+                }
+                board.shift();
+                
+                // Add garbage line with one random hole
+                const arr = Array(COLS).fill('#555'); // Grey garbage
+                const hole = Math.floor(Math.random() * COLS);
+                arr[hole] = 0;
+                board.push(arr);
+            }
+            render();
+            
+             const msg = document.createElement('div');
+             msg.textContent = `邪魔ブロック接近！`;
+             msg.style.position = 'absolute';
+             msg.style.top = '40%';
+             msg.style.left = '50%';
+             msg.style.color = 'yellow';
+             msg.style.transform = 'translate(-50%, -50%)'; 
+             document.body.appendChild(msg);
+             setTimeout(() => msg.remove(), 1000);
+        }
+
+        function drawOpponentBoard(oppBoardData) {
+            if (!oppBoardData || !Array.isArray(oppBoardData)) return;
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    const cell = document.getElementById(`opp-cell-${r}-${c}`);
+                    if (!cell) continue;
+                    
+                    if (oppBoardData[r] && oppBoardData[r][c]) {
+                         const val = oppBoardData[r][c];
+                         cell.style.background = val === 1 ? '#fff' : val; 
+                         cell.classList.add('filled');
+                    } else {
+                        cell.style.background = '#111';
+                         cell.classList.remove('filled');
+                    }
+                }
+            }
+        }
 
         init();
         loadMoney();
