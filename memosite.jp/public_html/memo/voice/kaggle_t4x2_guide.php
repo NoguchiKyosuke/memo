@@ -1,8 +1,8 @@
 <?php
-require_once '../includes/head.php';
-require_once '../includes/common.php';
-require_once '../includes/ad-a8.php';
-require_once '../includes/image-helper.php';
+require_once '../../includes/head.php';
+require_once '../../includes/common.php';
+require_once '../../includes/ad-a8.php';
+require_once '../../includes/image-helper.php';
 
 $title = 'Kaggle で GPU T4×2 を使いこなす手順ガイド';
 $description = 'Kaggle Notebooks で GPU T4×2 アクセラレータを有効化し、運用するための設定手順をまとめた。';
@@ -12,9 +12,9 @@ $canonical = 'https://memosite.jp/voice/kaggle_t4x2_guide.php';
 renderHead($title, $description, $keywords, $canonical);
 ?>
 <body>
-<?php renderNavigation('voice'); ?>
+<?php renderNavigation('memo'); ?>
 
-<main class="container fade-in" style="max-width:880px;margin:0 auto;padding:2.2rem 0 3rem;">
+<main class="container fade-in page-content">
   <article>
     <header>
       <h1>Kaggle で GPU T4×2 を使いこなす手順ガイド <span class="update-info"><?php echo date('Y年m月d日更新', filemtime(__FILE__)); ?></span></h1>
@@ -227,13 +227,13 @@ import multiprocess as mp
       "@type": "ListItem",
       "position": 2,
       "name": "音声研究メモ",
-  "item": "https://memosite.jp/voice/"
+  "item": "https://memosite.jp/memo/voice/"
     },
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Kaggle GPU T4×2 ガイド",
-  "item": "https://memosite.jp/voice/kaggle_t4x2_guide.php"
+      "name": "Kaggle GPU T4ÁE ガイチE,
+  "item": "https://memosite.jp/memo/voice/kaggle_t4x2_guide.php"
     }
   ]
 }

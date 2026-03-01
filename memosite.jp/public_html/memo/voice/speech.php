@@ -1,16 +1,17 @@
 <?php
-require_once '../includes/head.php';
-require_once '../includes/common.php';
-require_once '../includes/ad-a8.php';
+require_once '../../includes/head.php';
+require_once '../../includes/common.php';
+require_once '../../includes/ad-a8.php';
 
 $title = '音声解析と機械学習の研究メモ - メモ帳';
 $description = '音声解析と機械学習に関する技術メモ。MFCCやDTW、z-score、Pythonライブラリの使い方など、音声処理技術について詳しく解説します。';
 $keywords = '音声解析,機械学習,MFCC,DTW,z-score,Python,librosa,音声処理,アイヌ語,研究メモ';
+$canonical = 'https://memosite.jp/memo/voice/speech.php';
 
-renderHead($title, $description, $keywords);
+renderHead($title, $description, $keywords, $canonical);
 ?>
 <body>
-<?php renderNavigation('speech'); ?>
+<?php renderNavigation('memo'); ?>
 
 <!-- MathJax for mathematical expressions -->
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -97,7 +98,7 @@ div[style*="position: relative"] {
 
 </style>
 
-<main class="container fade-in" style="max-width:880px;margin:0 auto;padding:2.2rem 0 3rem;">
+<main class="container fade-in page-content">
   <article>
     <header>
       <h1>音声解析と機械学習の研究メモ <span class="update-info">(<?php echo date('Y年m月d日更新', filemtime(__FILE__)); ?>)</span></h1>

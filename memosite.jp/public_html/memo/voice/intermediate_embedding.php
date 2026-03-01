@@ -1,21 +1,21 @@
 <?php
-require_once '../includes/head.php';
-require_once '../includes/common.php';
-require_once '../includes/ad-a8.php';
-require_once '../includes/image-helper.php';
-require_once __DIR__ . '/../includes/comment-section.php';
+require_once '../../includes/head.php';
+require_once '../../includes/common.php';
+require_once '../../includes/ad-a8.php';
+require_once '../../includes/image-helper.php';
+require_once __DIR__ . '/../../includes/comment-section.php';
 
 $title = 'GNNにおける中間埋め込みについて';
 $description = 'GNNにおける中間埋め込みについてわからなかった点を調査した．';
 $keywords = 'GNN,中間埋め込み,調査';
-$canonical = 'https://memosite.jp/voice/intermediate_embedding.php';
+$canonical = 'https://memosite.jp/memo/voice/intermediate_embedding.php';
 
 renderHead($title, $description, $keywords, $canonical);
 ?>
 <body>
-<?php renderNavigation('voice'); ?>
+<?php renderNavigation('memo'); ?>
 
-<main class="container fade-in" style="max-width:880px;margin:0 auto;padding:2.2rem 0 3rem;">
+<main class="container fade-in page-content">
   <article>
     <header>
       <h1>GNNにおける中間埋め込みについて <span class="update-info"><?php echo date('Y年m月d日更新', filemtime(__FILE__)); ?></span></h1>

@@ -1,19 +1,19 @@
 <?php
-require_once '../includes/head.php';
-require_once '../includes/common.php';
-require_once '../includes/ad-a8.php';
+require_once '../../includes/head.php';
+require_once '../../includes/common.php';
+require_once '../../includes/ad-a8.php';
 
 $title = 'SEANet: 音声符号化のための畳み込みニューラルネットワーク';
 $description = 'SEANet（Simple and Efficient Audio Neural Network）の基本構造、エンコーダ・デコーダの設計原理、音声圧縮への応用、実装のポイントを詳しく解説します。';
 $keywords = 'SEANet,音声符号化,音声圧縮,畳み込みニューラルネットワーク,エンコーダ,デコーダ,深層学習,PyTorch';
-$canonical = 'https://memosite.jp/voice/seanet_overview.php';
+$canonical = 'https://memosite.jp/memo/voice/seanet_overview.php';
 
 renderHead($title, $description, $keywords, $canonical);
 ?>
 <body>
-<?php renderNavigation('voice'); ?>
+<?php renderNavigation('memo'); ?>
 
-<main class="container fade-in" style="max-width:880px;margin:0 auto;padding:2.2rem 0 3rem;">
+<main class="container fade-in page-content">
   <article>
     <header>
       <h1>SEANet: 音声符号化のための畳み込みニューラルネットワーク <span class="update-info"><?php echo date('Y年m月d日更新', filemtime(__FILE__)); ?></span></h1>
@@ -255,13 +255,13 @@ renderHead($title, $description, $keywords, $canonical);
       "@type": "ListItem",
       "position": 2,
       "name": "音声研究メモ",
-      "item": "https://memosite.jp/voice/"
+      "item": "https://memosite.jp/memo/voice/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "SEANet 技術解説",
-      "item": "https://memosite.jp/voice/seanet_overview.php"
+      "item": "https://memosite.jp/memo/voice/seanet_overview.php"
     }
   ]
 }

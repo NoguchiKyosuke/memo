@@ -1,9 +1,9 @@
 <?php
-require_once '../includes/head.php';
-require_once '../includes/common.php';
-require_once '../includes/ad-a8.php';
-require_once '../includes/image-helper.php';
-require_once __DIR__ . '/../includes/comment-section.php';
+require_once '../../includes/head.php';
+require_once '../../includes/common.php';
+require_once '../../includes/ad-a8.php';
+require_once '../../includes/image-helper.php';
+require_once __DIR__ . '/../../includes/comment-section.php';
 
 $title = 'SafeEar: 実験レポート';
 $description = 'SafeEarをASVspoof2019やJ-SpAWで学習、評価した実験の記録。仮説、実験方法、結果（添付ファイル一覧）、考察を整理。';
@@ -13,9 +13,9 @@ $canonical = 'https://memosite.jp/voice/safear_results.php';
 renderHead($title, $description, $keywords, $canonical);
 ?>
 <body>
-<?php renderNavigation('voice'); ?>
+<?php renderNavigation('memo'); ?>
 
-<main class="container fade-in" style="max-width:880px;margin:0 auto;padding:2.2rem 0 3rem;">
+<main class="container fade-in page-content">
   <article>
     <header>
       <h1>SafeEar: 実験レポート <span class="update-info"><?php echo date('Y年m月d日更新', filemtime(__FILE__)); ?></span></h1>

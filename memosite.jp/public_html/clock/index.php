@@ -1,7 +1,7 @@
 <?php
-require_once 'includes/head.php';
-require_once 'includes/common.php';
-require_once 'includes/ad-a8.php';
+require_once '../includes/head.php';
+require_once '../includes/common.php';
+require_once '../includes/ad-a8.php';
 
 $title = 'タイムマネージャ - ローカル時計とアラーム';
 $description = 'ユーザーの現在地に基づき正確な現在時刻を表示し、最大5件のアラームを設定・保存できるタイムマネージャ。カウントダウンと派手なアラート演出で時間を見逃しません。';
@@ -421,7 +421,7 @@ renderHead($title, $description, $keywords, $canonical);
 </style>
 
 <body data-server-utc="<?php echo $serverUtcMs; ?>" data-server-offset="<?php echo $serverOffsetSeconds; ?>" data-server-tz="<?php echo htmlspecialchars($serverTimezone, ENT_QUOTES, 'UTF-8'); ?>">
-<?php renderNavigation('timekeeper'); ?>
+<?php renderNavigation('clock'); ?>
 
 <main class="tk-container fade-in">
   <!-- Clock Section -->

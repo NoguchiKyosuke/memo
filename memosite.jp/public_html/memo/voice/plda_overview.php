@@ -1,8 +1,8 @@
 <?php
-require_once '../includes/head.php';
-require_once '../includes/common.php';
-require_once '../includes/ad-a8.php';
-require_once '../includes/image-helper.php';
+require_once '../../includes/head.php';
+require_once '../../includes/common.php';
+require_once '../../includes/ad-a8.php';
+require_once '../../includes/image-helper.php';
 
 $title = 'PLDA (Probabilistic Linear Discriminant Analysis) の基礎と応用';
 $description = 'PLDA の理論背景、ASV への応用、学習フロー、ハイパーパラメータ設計、実装のコツをまとめた技術解説。';
@@ -12,9 +12,9 @@ $canonical = 'https://memosite.jp/voice/plda_overview.php';
 renderHead($title, $description, $keywords, $canonical);
 ?>
 <body>
-<?php renderNavigation('voice'); ?>
+<?php renderNavigation('memo'); ?>
 
-<main class="container fade-in" style="max-width:880px;margin:0 auto;padding:2.2rem 0 3rem;">
+<main class="container fade-in page-content">
   <article>
     <header>
       <h1>PLDA (Probabilistic Linear Discriminant Analysis) の基礎と応用 <span class="update-info"><?php echo date('Y年m月d日更新', filemtime(__FILE__)); ?></span></h1>
@@ -247,13 +247,13 @@ class PLDA:
       "@type": "ListItem",
       "position": 2,
       "name": "音声研究メモ",
-  "item": "https://memosite.jp/voice/"
+  "item": "https://memosite.jp/memo/voice/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "PLDA の技術解説",
-  "item": "https://memosite.jp/voice/plda_overview.php"
+  "item": "https://memosite.jp/memo/voice/plda_overview.php"
     }
   ]
 }

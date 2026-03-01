@@ -1,17 +1,18 @@
 <?php
-require_once '../includes/head.php';
-require_once '../includes/common.php';
-require_once '../includes/ad-a8.php';
+require_once '../../includes/head.php';
+require_once '../../includes/common.php';
+require_once '../../includes/ad-a8.php';
 
 $title = '音声コーパスJ-SpAWに関する文献調査';
 $description = 'J-SpAW: 話者照合となりすまし音声検出のための
 日本語音声コーパスについて詳しく解説します。';
 $keywords = '音声言語処理,J-SpAW,音声処理,機械学習,研究論文,SLP,音声認識,言語処理,2024';
+$canonical = 'https://memosite.jp/memo/voice/jspaw.php';
 
-renderHead($title, $description, $keywords);
+renderHead($title, $description, $keywords, $canonical);
 ?>
 <body>
-<?php renderNavigation('jspaw'); ?>
+<?php renderNavigation('memo'); ?>
 
 <!-- MathJax for mathematical expressions -->
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>

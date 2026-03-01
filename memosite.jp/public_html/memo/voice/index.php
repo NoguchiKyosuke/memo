@@ -1,20 +1,28 @@
 <?php
-require_once '../includes/head.php';
-require_once '../includes/common.php';
-require_once '../includes/ad-a8.php';
-require_once '../includes/voice-articles.php';
+require_once '../../includes/head.php';
+require_once '../../includes/common.php';
+require_once '../../includes/ad-a8.php';
+require_once '../../includes/voice-articles.php';
+require_once '../../includes/article-helper.php';
 
 $title = '音声研究メモ - メモ帳';
 $description = '音声解析と音声言語処理に関する研究メモの一覧。MFCC、DTW、機械学習、最新の研究論文など、音声処理技術について学べます。';
 $keywords = '音声研究,音声解析,音声処理,機械学習,研究メモ,MFCC,DTW,J-SPAW';
-$canonical = 'https://memosite.jp/voice/';
+$canonical = 'https://memosite.jp/memo/voice/';
 
 renderHead($title, $description, $keywords, $canonical);
 ?>
 <body>
-<?php renderNavigation('voice'); ?>
+<?php renderNavigation('memo'); ?>
 
 <main class="container fade-in">
+  <?php
+  renderBreadcrumb([
+      ['label' => 'ホーム', 'url' => '/'],
+      ['label' => 'メモ', 'url' => '/memo/'],
+      ['label' => '音声研究メモ'],
+  ]);
+  ?>
   <section class="hero">
     <h1>音声研究メモ</h1>
     <p class="lead">音声解析と音声言語処理に関する技術メモと研究文献のコレクション。基礎技術から最新研究まで幅広くカバーします。</p>
@@ -44,9 +52,7 @@ renderHead($title, $description, $keywords, $canonical);
           <?php endforeach; ?>
         </div>
         
-        <div class="article-meta">
-          <span class="date"> <?php echo htmlspecialchars($article['date'], ENT_QUOTES, 'UTF-8'); ?></span>
-        </div>
+        <div class="article-date"><?php echo htmlspecialchars($article['date'], ENT_QUOTES, 'UTF-8'); ?></div>
       </a>
       <?php endforeach; ?>
     </div>
@@ -70,27 +76,13 @@ renderHead($title, $description, $keywords, $canonical);
 
 <?php renderFooter(); ?>
 
-<!-- 構造化データ（パンくずリスト） -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "ホーム",
-  "item": "https://memosite.jp/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "音声研究メモ",
-  "item": "https://memosite.jp/voice/"
-    }
-  ]
-}
-</script>
+<?php
+renderBreadcrumbJsonLd([
+    ['label' => 'ホーム', 'url' => '/'],
+    ['label' => 'メモ', 'url' => '/memo/'],
+    ['label' => '音声研究メモ', 'url' => '/memo/voice/'],
+]);
+?>
 
 <!-- 構造化データ（コレクション） -->
 <script type="application/ld+json">
@@ -99,55 +91,13 @@ renderHead($title, $description, $keywords, $canonical);
   "@type": "CollectionPage",
   "name": "音声研究メモ",
   "description": "音声解析と音声言語処理に関する研究メモの一覧",
-  "url": "https://memosite.jp/voice/",
+  "url": "https://memosite.jp/memo/voice/",
   "about": {
     "@type": "Thing",
     "name": "音声処理技術"
   }
 }
 </script>
-
-<style>
-.article-card {
-  transition: all 0.3s var(--ease);
-}
-
-.article-card .card-head {
-  display: flex;
-  align-items: center;
-}
-
-.article-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .5rem;
-  margin-top: .5rem;
-}
-
-.tag {
-  font-size: .7rem;
-  padding: .25rem .6rem;
-  background: var(--bg-alt);
-  border: 1px solid var(--border);
-  border-radius: .35rem;
-  color: var(--text-dim);
-  font-weight: 500;
-}
-
-.article-meta {
-  margin-top: .8rem;
-  padding-top: .8rem;
-  border-top: 1px solid var(--border);
-  font-size: .75rem;
-  color: var(--text-dim);
-}
-
-.date {
-  display: inline-flex;
-  align-items: center;
-  gap: .3rem;
-}
-</style>
 
 </body>
 </html>
