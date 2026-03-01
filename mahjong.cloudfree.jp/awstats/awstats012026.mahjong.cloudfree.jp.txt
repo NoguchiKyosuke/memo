@@ -1,0 +1,368 @@
+AWSTATS DATA FILE 7.9 (build 20230108)
+# If you remove this file, all statistics for date 202601 will be lost/reset.
+# Last config file used to build this data file was /home/mahjong/mahjong.cloudfree.jp/awstats/awstats.mahjong.cloudfree.jp.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2067                
+POS_TIME 2740                
+POS_VISITOR 7332                
+POS_DAY 8687                
+POS_DOMAIN 3373                
+POS_LOGIN 3712                
+POS_ROBOT 3867                
+POS_WORMS 4219                
+POS_EMAILSENDER 4350                
+POS_EMAILRECEIVER 4493                
+POS_SESSION 9053                
+POS_FILESIZE 9809                
+POS_SIDER 9210                
+POS_FILETYPES 4628                
+POS_DOWNLOADS 4833                
+POS_OS 4881                
+POS_BROWSER 5033                
+POS_SCREENSIZE 5512                
+POS_UNKNOWNREFERER 5586                
+POS_UNKNOWNREFERERBROWSER 5860                
+POS_ORIGIN 5942                
+POS_SEREFERRALS 6077                
+POS_PAGEREFS 6221                
+POS_SEARCHWORDS 6395                
+POS_KEYWORDS 6547                
+POS_MISC 2403                
+POS_ERRORS 6606                
+POS_CLUSTER 3568                
+POS_SIDER_404 6725                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20260202092041 1 0 12994432924717
+FirstTime 20260101211115
+LastTime 20260129203019
+LastUpdate 20260202140021 1 0 0 0 0
+TotalVisits 30                  
+TotalUnique 29                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 34                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+FlashSupport 0 0 0
+TotalMisc 0 0 0
+AddToFavourites 0 13 0
+JavascriptDisabled 0 0 0
+RealPlayerSupport 0 0 0
+DirectorSupport 0 0 0
+PDFSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+QuickTimeSupport 0 0 0
+JavaEnabled 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 0 0 0 2 4 118
+1 0 0 0 0 0 0
+2 0 0 0 0 0 0
+3 1 1 35970 13 13 349280
+4 0 0 0 0 0 0
+5 1 2 40108 1 2 0
+6 2 3 76059 4 6 31721
+7 1 1 31742 3 6 34799
+8 2 2 4775 8 12 96273
+9 0 0 0 2 3 31801
+10 6 7 239443 6 7 299982
+11 1 3 38546 8 8 1474705
+12 1 2 40089 1 2 0
+13 0 0 0 6 8 227216
+14 3 4 112067 4 8 31801
+15 6 6 215804 7 7 158326
+16 0 0 0 1 2 59
+17 12 42 609354 31 35 509060
+18 0 0 0 7 8 158396
+19 105 107 422655 8 12 34703
+20 104 104 378428 5 5 2843
+21 1 2 40089 1 2 0
+22 8 29 399265 10 13 190616
+23 0 0 0 0 0 0
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 9
+us 226 264 1632193
+jp 6 27 327306
+bd 6 6 215804
+se 4 4 163365
+gb 4 6 129302
+in 3 3 107948
+nl 2 2 71959
+sg 2 2 4775
+mx 1 1 31742
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 6
+wordpress 70 697117 20260130133836 0
+robot 16 896 20260130133836 16
+bot[\s_+:,\.\;\/\\-] 10 286607 20260130133836 0
+^mozilla\/5\.0$ 3 11533 20260113175400 0
+netcraft 2 463596 20260109135817 0
+python 1 0 20260107105724 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 8
+css 25 208557 0 0
+woff 3 33614 0 0
+jpg 1 61908 0 0
+js 19 30933 0 0
+woff2 3 231583 0 0
+html 43 1989619 0 0
+php 205 88201 0 0
+png 16 39979 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 7
+win10 257 223
+ios_iphone 5 5
+macosx15 4 4
+Unknown 19 9
+macosx 2 2
+linux 23 10
+win7 5 1
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 23
+chrome139.0.0.0 2 2
+chrome91.0.4472.124 1 1
+chrome125.0.0.0 16 3
+chrome143.0.0.0 29 8
+safari18.4 1 1
+netscape5.0 3 3
+firefox91.0 1 1
+chrome60.0.3112.113 1 1
+safari14.0.3 1 1
+chrome78.0.3904.108 206 206
+safari 4 4
+safari17.2 1 1
+firefox116.0 1 1
+chrome124.0.0.0 1 1
+safari26.0 1 1
+chrome117.0.5938.132 16 3
+mozilla 19 9
+chrome142.0.0.0 2 2
+safari19.1 1 1
+chrome83.0.4103.61 5 1
+firefox121.0 1 1
+firefox119.0 1 1
+firefox134.0 1 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 2
+Mozilla/5.0_(compatible;_CensysInspect/1.1;__https://about.censys.io/) 20260129194026
+Mozilla/5.0_(compatible;_InternetMeasurement/1.0;__https://internet-measurement.com/) 20260110113349
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 243 245
+From1 1 1
+From2 0 0
+From3 1 1
+From4 9 68
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 0
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 1
+https://wordpress.org 1 1
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 4
+403 13 5686
+302 6 0
+404 26 2166264
+301 3 0
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 19
+/var/log/system.log 2 -
+/phpinfo.php 1 -
+/wp-admin/debug.log 2 -
+/phpmyinfo 1 -
+/home 2 -
+/info.php 2 -
+/.svn 1 -
+/_profiler/phpinfo 2 -
+/pinfo.php 1 -
+/info 1 -
+/php_version.php 1 -
+/debug 2 -
+/pi.php 1 -
+/php.php 1 -
+/test.php 1 -
+/phpinfo 1 -
+/phpmyadmin/ 2 -
+/i.php 1 -
+/admin/phpinfo.php 1 -
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 34
+34.138.206.150 103 103 342458 20260109203639
+35.186.164.39 103 103 342458 20260109194503
+103.105.86.10 6 6 215804 20260103152205
+126.131.73.198 6 27 327306 20260118220344
+91.224.92.188 4 4 126726 20260121170153
+34.122.147.229 3 8 129582 20260111175900
+205.169.39.58 3 16 204342 20260111175859
+161.35.83.34 2 2 71959 20260107145806
+140.245.99.19 2 2 4775 20260122081343
+167.94.138.178 2 4 80216 20260122143407
+162.142.125.34 1 2 40108 20260129192706
+162.142.125.217 1 2 40089 20260129194023
+104.197.69.115 0 3 4171 
+34.72.176.129 0 1 58527 
+194.195.112.23 1 1 35989 20260107105723
+87.236.176.228 0 1 1288 
+87.236.176.91 0 1 1288 
+129.21.30.8 1 1 35989 20260103171412
+167.94.138.119 1 2 40089 20260122122040
+199.45.154.132 1 2 40089 20260115062820
+167.94.146.57 1 2 40089 20260101211115
+34.123.170.104 0 4 12054 
+205.169.39.143 1 5 37963 20260111175904
+93.158.91.241 1 1 40946 20260102101000
+189.140.143.27 1 1 31742 20260105075734
+167.94.138.62 1 2 40089 20260109104544
+93.158.91.251 1 1 45475 20260102100959
+162.243.116.182 1 1 35970 20260110113347
+93.158.91.239 1 1 35970 20260102100958
+157.245.96.140 2 2 71959 20260121222618
+104.168.28.15 1 1 35970 20260129203019
+93.158.91.242 1 1 40974 20260102100959
+45.8.19.244 1 1 35970 20260122035023
+18.213.106.41 1 1 35970 20260123062207
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 14
+20260101 1 2 40089 1
+20260102 4 4 163365 4
+20260103 7 7 251793 2
+20260105 1 1 31742 1
+20260107 3 3 107948 2
+20260109 207 208 725005 3
+20260110 1 3 38546 1
+20260111 7 37 446639 3
+20260115 2 4 80197 2
+20260118 6 27 327306 1
+20260121 6 6 198685 2
+20260122 5 7 120942 4
+20260123 1 1 35970 1
+20260129 3 5 116167 3
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 2
+30s-2mn 1
+0s-30s 29
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 10
+/xmlrpc.php 202 83426 0 2
+/ 37 1824869 26 22
+/wp-content/themes/cocoon-master/webfonts/icomoon/fonts/icomoon.woff 3 33614 0 0
+/wp-content/themes/cocoon-master/webfonts/fontawesome/fonts/fontawesome-webfont.woff2 3 231583 0 2
+/2025/02/13/hello-world/ 2 76829 1 1
+/wp-login.php 2 4775 1 1
+/wp-json/wp/v2/users/ 2 1472 0 0
+/wp-content/themes/cocoon-master/lib/analytics/access.php 1 0 0 0
+/2025/02/16/%e9%9f%b3%e6%b3%a2%e3%81%a8%e3%81%af/ 1 45475 1 1
+/2025/02/13/%e6%9c%ac%e3%83%96%e3%83%ad%e3%82%b0%e3%81%ae%e7%9b%ae%e7%9a%84/ 1 40974 1 1
+END_SIDER
+
+# Payload Range - Payload Frequency
+BEGIN_FILESIZE 7
+44-100 16
+100-500 213
+2K-5K 27
+500-1K 20
+5K+ 113
+0-44 84
+1K-2K 5
+END_FILESIZE

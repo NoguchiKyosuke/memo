@@ -1,0 +1,707 @@
+AWSTATS DATA FILE 7.9 (build 20230108)
+# If you remove this file, all statistics for date 202510 will be lost/reset.
+# Last config file used to build this data file was /home/mahjong/mahjong.cloudfree.jp/awstats/awstats.mahjong.cloudfree.jp.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2067                
+POS_TIME 2748                
+POS_VISITOR 15541               
+POS_DAY 18203               
+POS_DOMAIN 3487                
+POS_LOGIN 3857                
+POS_ROBOT 4012                
+POS_WORMS 4645                
+POS_EMAILSENDER 4776                
+POS_EMAILRECEIVER 4919                
+POS_SESSION 18774               
+POS_FILESIZE 20174               
+POS_SIDER 18952               
+POS_FILETYPES 5054                
+POS_DOWNLOADS 5284                
+POS_OS 5332                
+POS_BROWSER 5732                
+POS_SCREENSIZE 7503                
+POS_UNKNOWNREFERER 7577                
+POS_UNKNOWNREFERERBROWSER 8047                
+POS_ORIGIN 8129                
+POS_SEREFERRALS 8266                
+POS_PAGEREFS 8429                
+POS_SEARCHWORDS 8577                
+POS_KEYWORDS 8729                
+POS_MISC 2411                
+POS_ERRORS 8788                
+POS_CLUSTER 3713                
+POS_SIDER_404 8944                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20251101004601 337 58975 13070840131470
+FirstTime 20251002153344
+LastTime 20251031224135
+LastUpdate 20251101020021 68 0 67 0 0
+TotalVisits 68                  
+TotalUnique 63                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 66                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+TotalMisc 0 0 0
+JavascriptDisabled 0 0 0
+AddToFavourites 0 18 0
+WindowsMediaPlayerSupport 0 0 0
+QuickTimeSupport 0 0 0
+JavaEnabled 0 0 0
+FlashSupport 0 0 0
+DirectorSupport 0 0 0
+PDFSupport 0 0 0
+RealPlayerSupport 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 126 126 824218 269 269 1997064
+1 4 4 379994 66 75 927135
+2 6 8 766954 19 21 483562
+3 0 0 0 0 0 0
+4 5 8 906101 6 7 56190
+5 0 0 0 0 0 0
+6 3 3 87282 278 278 3074846
+7 5 5 438069 4 4 288472
+8 59 59 166997 63 63 92534
+9 0 0 0 3 3 12743
+10 2 3 323094 2 2 0
+11 1 1 163586 30 30 743925
+12 11 11 969606 397 398 7062935
+13 4 4 191753 1 1 0
+14 3 3 583704 79 88 2663900
+15 76 109 1535826 113 116 1222686
+16 1 1 29229 1 1 0
+17 3 3 599221 61 61 1964554
+18 65 65 347754 4 4 0
+19 95 97 124900 13 13 150165
+20 7 7 1561 416 416 714103
+21 66 66 446884 7 11 33280
+22 130 133 839458 19 24 467679
+23 257 298 1925778 177 211 2988714
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 10
+us 500 550 5984510
+sg 225 225 1044553
+jp 107 138 512603
+de 63 63 555420
+ca 12 12 378700
+nl 6 6 1579008
+gb 6 9 803227
+se 5 6 182966
+fr 3 3 577702
+cz 2 2 33280
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 14
+wordpress 95 613846 20251031224124 0
+no_user_agent 10 1799104 20251031003302 0
+Go\-http\-client/ 8 2675 20251031003343 0
+checker 5 166432 20251031215203 0
+ning 4 589349 20251003091317 0
+netcraft 4 903703 20251014171939 0
+PhantomJS 1 223 20251019195937 0
+bot[\s_+:,\.\;\/\\-] 1 70 20251021020650 1
+unknown 1 81 20251019231826 1
+Google[\x20]Web[\x20]Preview 1 223 20251019195255 0
+nbot 1 223 20251019200033 0
+curl 1 0 20251002153332 0
+scrapy 1 33342 20251031152103 0
+MSIE[\x20]6 1 415 20251019195851 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 9
+webp 6 215964 0 0
+html 119 8696185 0 0
+woff2 2 154374 0 0
+js 27 1648129 0 0
+Unknown 7 8509 0 0
+png 14 33943 0 0
+css 38 358098 0 0
+php 799 514395 0 0
+woff 2 22372 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 24
+win8.1 7 7
+win7 27 27
+macosx9 4 4
+macosx10 11 11
+linux 64 33
+ios_iphone 10 10
+androidjellybean 1 1
+unix 1 1
+macos11 70 30
+win2003 1 1
+winxp 9 9
+win8 1 1
+android 2 2
+linuxubuntu 7 7
+macosx6 2 2
+ios_ipad 27 27
+androidlollipop 3 3
+macosx15 34 30
+win10 697 696
+winlong 2 2
+androidmarshmallow 8 8
+androidkitkat 5 5
+winnt 1 1
+Unknown 20 11
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 87
+chrome46.0.2490.13 1 1
+chrome40.0.2214.115 1 1
+chrome91.0.4472.124 4 4
+firefox29.0 1 1
+chrome43.0.2357.134 3 3
+chrome122.0.0.0 1 1
+firefox139.0 6 6
+chrome135.0.0.0 12 8
+chrome69.0.3497.100 1 1
+chrome35.0.1916.153 1 1
+safari7.0.2 1 1
+safari7.0.6 1 1
+chrome34.0.1847.76 2 2
+chrome38.0.2125.101 1 1
+msie9.0 1 1
+chrome45.0.2454.84 4 4
+chrome88.0.4240.193 224 224
+chrome137.0.0.0 2 1
+safari6.0 3 3
+safari7.1.6 1 1
+chrome39.0.2171.95 1 1
+safari7.1.8 1 1
+safari17.0 2 2
+chrome8.0.1820.68 3 3
+safari14.1 18 18
+msie7.0 4 4
+msie11.0 7 7
+chrome120.0.6099.130 2 2
+firefox33.0 1 1
+firefox28.0 1 1
+chrome119.0.6045.159 11 11
+firefox40.0 3 3
+firefox121.0 2 2
+iphone 2 2
+firefox119.0.1 5 5
+chrome42.0.2311.152 1 1
+firefox134.0 3 3
+chrome91.0 1 1
+chrome34.0.1847.116 1 1
+firefox118.0.2 2 2
+chrome139.0.0.0 4 4
+chrome38.0.2125.111 1 1
+firefox120.0 4 4
+chrome8.0.438.82 2 2
+chrome104.0.0.0 1 1
+firefox34.0 2 2
+safari7.0 3 3
+chrome56.0.2924.87 1 1
+chrome38.0.2125.122 1 1
+firefox35.0 2 2
+chrome134.0.0.0 3 3
+firefox31.9 2 2
+firefox30.0 1 1
+firefox38.0 3 3
+chrome44.0.2403.157 1 1
+chrome41.0.2227.1 1 1
+mozilla 25 16
+firefox37.0 1 1
+chrome37.0.2062.124 1 1
+chrome87.0.4280.88 70 30
+chrome42.0.2311.135 2 2
+chrome44.0.2403.125 1 1
+chrome117.0.0.0 6 6
+chrome37.0.2062.94 1 1
+chrome140.0.0.0 38 7
+firefox32.0 1 1
+safari17.2 2 2
+safari 7 7
+firefox36.0 1 1
+chrome78.0.3904.108 438 438
+sonyericsson 1 1
+chrome58.0.3029.110 1 1
+chrome52.0.1434.98 8 8
+chrome44.0.2403.89 2 2
+chrome118.0.5993.88 7 7
+safari16.6 6 6
+chrome39.0.2171.93 2 2
+edge12 1 1
+chrome44.0.2403.155 3 3
+chrome42.0.2311.90 2 2
+chrome30.0.1599.114 1 1
+chrome34.0.1847.114 1 1
+chrome45.0.2454.85 4 4
+chrome31.0.1650.63 1 1
+chrome33.0.1750.154 1 1
+safari8.0 4 4
+chrome47.0.2505.0 1 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 4
+Mozilla/5.0_(compatible;_CensysInspect/1.1;__https://about.censys.io/) 20251023041423
+Mozilla/5.0_(compatible;_UGAResearchAgent/1.0;_Please_visit:_NISLabUGA.github.io) 20251023232914
+SonyEricssonW580i/R6BC_Browser/NetFront/3.3_Profile/MIDP-2.0_Configuration/CLDC-1.1 20251019231722
+Mozilla/5.0_(compatible;_InternetMeasurement/1.0;__https://internet-measurement.com/) 20251031193716
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 860 908
+From1 0 0
+From2 5 5
+From3 0 0
+From4 64 101
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 1
+www_google_com 5 5
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 0
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 7
+404 621 20215033
+403 1228 616703
+301 23 0
+302 68 0
+429 1 3001
+405 2 53
+400 1 11
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 203
+/php_info.php.tmp 3 -
+/swagger/v1/swagger.json 7 -
+/cgi-bin/info.php 3 -
+/tmp/phpinfo.php.save 3 -
+//www/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/v3/api-docs 6 -
+/config.bak.js 1 -
+//panel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/test.php.tmp 3 -
+/%5C/mahjong.cloudfree.jp%5C/wp-admin%5C/authorize-application.php 1 -
+/info.php.backup 3 -
+//vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/tmp/info.php 3 -
+/_all_dbs 8 -
+//laravel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/app.js.bak 1 -
+/urls.bak 1 -
+/test/phpinfo.php.save 3 -
+/wsgi.py 1 -
+/graphql/api 5 -
+/urls.py 1 -
+/actuator/env 8 -
+/test/phpinfo.php 5 -
+/manage.py.bak 1 -
+/pi.php 3 -
+/api 5 -
+/php_info.php.save 3 -
+/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 2 -
+/app/ 4 -
+/swagger/index.html 7 -
+/main.config.js 1 -
+/s/0313e2239313e2133313e25383/_/ 8 -
+/_profiler/phpinfo 1 -
+//wp-content/plugins/dzs-videogallery/class_parts/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/www/phpinfo.php.save 3 -
+/test/phpinfo 1 -
+/debug/default/view 8 -
+/scripts/phpinfo.php 3 -
+/info.php.bak 5 -
+//lib/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+//phpunit/phpunit/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/.local 1 https://www.google.com/
+/settings.py 1 -
+/test.php.save 3 -
+/api/graphql 5 -
+/webjars/swagger-ui/index.html 7 -
+/server.php 3 -
+/public/config.js 1 -
+/cgi-bin/phpinfo.php.save 3 -
+//wp-content/plugins/mm-plugin/inc/vendors/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/php_info.php 5 -
+//phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/login.action 8 -
+/php_version.php 3 -
+//lib/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/web/info.php.save 3 -
+//blog/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/api-docs/swagger.json 4 -
+//phpunit/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/test/info.php.save 3 -
+/test.php.orig 3 -
+/swagger.json 7 -
+/phpinfo.php.bak 5 -
+//api/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/cgi-bin/info.php.save 3 -
+/info.php~ 3 -
+/dev/phpinfo.php.save 3 -
+/info1.php 3 -
+/env.config.js 1 -
+//phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/admin/info 1 -
+/%5C/mahjong.cloudfree.jp%5C/wp-includes%5C/js%5C/zxcvbn.min.js 10 -
+/php_info.php.old 3 -
+/php_info.php.swp 3 -
+/php_info 1 -
+/phpunit/phpunit/src/Util/PHP/eval-stdin.php 4 -
+/tmp/phpinfo 1 -
+/test.php.swp 3 -
+/www/info.php.save 3 -
+/phpinfo.php 5 -
+/phptest.php 3 -
+/php_info.php.backup 3 -
+/www/phpinfo.php 3 -
+/phpinfo 5 -
+/settings.js 1 -
+//sites/all/libraries/mailchimp/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/site/phpinfo.php.save 3 -
+/dev/phpinfo.php 3 -
+/server 8 -
+/env.js 1 -
+/tmp/phpinfo.php 5 -
+/admin/info.php.save 3 -
+/scripts/info.php 3 -
+/settings_prod.py 1 -
+/serverinfo.php 3 -
+/includes/phpinfo.php 3 -
+//vendor/phpunit/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/test/info.php 3 -
+/info.php.old 5 -
+/cloudsecurewp_404 1 -
+/.production 1 https://www.google.com/
+//new/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/info 2 -
+/main.js.old 1 -
+/admin/phpinfo.php 5 -
+/public/info 1 -
+/phpinfo.php.swp 3 -
+/site/info.php.save 3 -
+//vendor/phpunit/phpunit/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/phpinfo.php.backup 3 -
+/.remote 1 https://www.google.com/
+/ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application 8 -
+/web/phpinfo.php.save 3 -
+/scripts/info.php.save 3 -
+/v2/api-docs 7 -
+/main.js 1 -
+/scripts/phpinfo.php.save 3 -
+/php_info.php~ 3 -
+/admin/phpinfo 1 -
+//backup/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/info.php 13 -
+//lib/phpunit/phpunit/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/tmp/info.php.save 3 -
+/wp-config.old 1 -
+/includes/info.php 3 -
+/wp-includes/wlwmanifest.xml 1 -
+//wp-content/plugins/cloudflare/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/info.php.save 3 -
+/public/info.php 5 -
+//admin/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/info.php.swp 3 -
+/config.json 9 -
+/phpinfo.php.save 3 -
+/wp-config.sample.php 1 -
+/public/phpinfo.php.save 3 -
+/wp-content/plugins/wp-quicklatex/css/imageURL 1 -
+/cgi-bin/phpinfo.php 3 -
+/test.php.old 3 -
+/php.php 3 -
+/diagnostic.php 3 -
+/settings.json 1 -
+/test 1 -
+/api/gql 5 -
+/api/swagger.json 1 -
+/dev/info.php.save 3 -
+/php_info.php.orig 3 -
+/admin/info.php 5 -
+/web/info.php 3 -
+/info2.php 3 -
+/info.php.orig 3 -
+//demo/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/www/info.php 3 -
+/asgi.py 1 -
+/.DS_Store 8 -
+/app.js 1 -
+/includes/phpinfo.php.save 3 -
+/phpinfo.php.tmp 3 -
+/php_info.php.bak 3 -
+//cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/swagger/swagger-ui.html 7 -
+/test.php.backup 3 -
+//old/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/public/info.php.save 3 -
+/manage.py 1 -
+//dev/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/settings_local.py 1 -
+/dev/info.php 5 -
+/settings_dev.py 1 -
+/public/phpinfo.php 3 -
+/about 8 -
+/phpinfo.php.old 5 -
+//protected/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/test.php~ 3 -
+/%5C/cdn.jsdelivr.net%5C/npm%5C/chart.js 10 -
+//lib/phpunit/Util/PHP/eval-stdin.php 1 https://www.google.com/
+//wp-content/plugins/jekyll-exporter/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/site/info.php 3 -
+/phpversion.php 3 -
+/includes/info.php.save 3 -
+/wp-config.bak 1 -
+/debug 1 -
+/check.php 3 -
+/swagger-ui.html 7 -
+/site/phpinfo.php 3 -
+/i.php 3 -
+//vendor/phpunit/src/Util/PHP/eval-stdin.php 1 https://www.google.com/
+/phpinfo.php.orig 3 -
+/app.config.js 1 -
+/telescope/requests 8 -
+/@vite/env 8 -
+/admin/phpinfo.php.save 3 -
+/wp-sitemap.xml 2 -
+/phpinfo.php~ 3 -
+/web/phpinfo.php 3 -
+/test.php.bak 3 -
+/test.php 5 -
+/config.js 1 -
+/info.php.tmp 3 -
+/v2/_catalog 8 -
+/graphql 5 -
+/files.php 2 www.google.com
+/dev/info 1 -
+/debug.php 5 -
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 66
+206.189.33.17 115 115 409927 20251002233124
+165.22.254.179 109 109 601292 20251007022250
+138.199.21.210 100 100 58212 20251019200029
+143.198.56.91 64 64 314467 20251031152434
+146.190.125.193 64 64 314474 20251016182709
+185.193.156.145 62 62 313650 20251017002330
+34.82.108.182 62 62 313640 20251031224135
+34.26.115.19 62 62 313657 20251015225920
+34.182.18.95 62 62 313640 20251016211852
+34.26.163.51 62 62 313648 20251017001432
+167.94.146.48 1 2 37453 20251023041417
+64.227.70.2 2 2 451710 20251022171301
+54.255.134.223 1 1 33334 20251020123122
+3.141.36.0 31 71 1039023 20251019231829
+34.1.21.144 2 3 434324 20251023021425
+167.94.138.57 1 2 37461 20251004223032
+167.94.146.55 1 2 37407 20251023024959
+45.131.155.100 1 1 33321 20251030192335
+34.1.20.24 2 3 434324 20251023045332
+35.183.78.97 1 1 33334 20251022233536
+87.236.176.222 0 1 1288 
+91.231.89.33 1 1 288124 20251015123836
+91.231.89.23 1 1 104003 20251015131203
+128.192.12.104 1 1 33342 20251023232914
+185.209.199.79 1 2 33369 20251015154243
+93.158.90.162 1 1 37863 20251020071611
+44.242.136.200 1 1 33342 20251017014742
+159.65.120.67 2 2 66630 20251029214211
+159.203.62.76 2 2 66614 20251015214607
+104.131.24.94 2 2 66614 20251017223528
+204.76.203.25 3 3 865408 20251024071800
+138.197.159.249 2 2 66614 20251015154004
+162.142.125.36 1 2 37407 20251004224541
+15.223.35.146 1 1 33334 20251031124900
+87.236.176.218 0 1 352 
+104.164.126.121 1 1 29250 20251015133024
+167.94.138.121 1 2 37399 20251010220943
+34.1.18.31 2 3 434324 20251023150608
+18.208.206.243 1 1 33280 20251016222903
+77.237.247.207 59 59 166997 20251004085818
+154.28.229.108 2 2 58500 20251015121154
+34.216.86.141 1 1 33342 20251031142132
+154.28.229.99 1 1 29250 20251015121147
+185.247.137.171 0 1 1288 
+210.191.216.146 7 38 454391 20251002161224
+195.123.244.84 2 2 33280 20251015121145
+3.96.157.72 3 3 87282 20251026060452
+146.190.119.151 2 2 66622 20251019231323
+159.89.12.166 1 1 288472 20251024143751
+64.227.32.66 2 2 438453 20251031003304
+206.189.225.181 1 1 277763 20251008173421
+128.192.12.126 1 1 33342 20251015121251
+3.96.50.25 1 1 33334 20251031172907
+44.199.250.218 1 1 33280 20251022182959
+167.94.146.63 1 2 37461 20251014235426
+185.247.137.106 1 1 33288 20251031193714
+3.96.138.222 2 2 58188 20251003015902
+206.189.2.13 1 1 261890 20251022154629
+93.158.90.137 1 1 37861 20251020071610
+209.97.180.8 1 1 261890 20251026142720
+93.158.90.155 2 2 73873 20251020071611
+91.231.89.18 1 1 185575 20251015125405
+103.196.9.76 2 2 58500 20251015133029
+13.40.98.242 1 1 33334 20251024001707
+185.247.137.38 1 1 33334 20251013105726
+34.1.28.157 2 3 434324 20251024040012
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 22
+20251002 122 153 864318 2
+20251003 2 2 58188 1
+20251004 61 63 241865 3
+20251006 106 106 306069 1
+20251007 3 3 295223 1
+20251008 1 1 277763 1
+20251010 1 2 37399 1
+20251013 1 2 34622 1
+20251014 2 3 201047 2
+20251015 80 81 1574945 14
+20251016 127 127 661394 3
+20251017 127 127 727254 4
+20251019 133 173 1163857 3
+20251020 5 5 182931 4
+20251021 1 1 288472 1
+20251022 4 4 616628 4
+20251023 10 15 1699638 7
+20251024 5 6 1044602 4
+20251026 4 4 349172 2
+20251029 2 2 66630 1
+20251030 1 1 33321 1
+20251031 131 133 926631 7
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 4
+30mn-1h 1
+0s-30s 62
+30s-2mn 4
+5mn-15mn 1
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 27
+/xmlrpc.php 724 281081 0 9
+/ 82 7912119 64 47
+/wp-login.php 72 233314 1 6
+/wp-json/wp/v2/users/ 13 8365 0 1
+/2025/02/13/hello-world/ 4 151571 1 1
+/wp-content/themes/cocoon-master/lib/analytics/access.php 3 0 0 0
+/2025/02/13/%e6%9c%ac%e3%83%96%e3%83%ad%e3%82%b0%e3%81%ae%e7%9b%ae%e7%9a%84/ 3 113597 1 1
+/2025/02/16/%e9%9f%b3%e6%b3%a2%e3%81%a8%e3%81%af/ 3 121803 0 2
+/wp-json/wp/v2/users 3 1004 0 0
+/wp-content/themes/cocoon-master/webfonts/icomoon/fonts/icomoon.woff 2 22372 0 0
+/2025/02/ 1 33392 0 0
+/wp-json/wp/v2/posts/1 1 824 0 0
+/wp-content/themes/cocoon-master/webfonts/fontawesome/fonts/fontawesome-webfont.woff2 2 154374 0 0
+/comments/feed/ 1 913 0 0
+/category/uncategorized/feed/ 1 4963 0 0
+/wp-json/wp/v2/posts/6 1 1418 0 0
+/category/uncategorized/ 1 33821 0 0
+/wp-json/wp/v2/posts/11 1 4929 0 0
+/feed/ 2 9906 0 0
+/2025/02/16/%e9%9f%b3%e6%b3%a2%e3%81%a8%e3%81%af/feed/ 1 473 0 0
+/author/gobukun/ 1 33405 0 0
+/2025/02/16/ 1 32898 0 0
+/wp-json/wp/v2/categories/1 1 334 0 0
+/wp-json/ 2 204510 1 1
+/2025/02/13/hello-world/feed/ 1 882 0 0
+/2025/02/13/%e6%9c%ac%e3%83%96%e3%83%ad%e3%82%b0%e3%81%ae%e7%9b%ae%e7%9a%84/feed/ 1 496 0 0
+/2025/02/13/ 1 33071 0 0
+END_SIDER
+
+# Payload Range - Payload Frequency
+BEGIN_FILESIZE 7
+2K-5K 92
+100-500 759
+0-44 972
+44-100 6
+5K+ 801
+1K-2K 448
+500-1K 32
+END_FILESIZE

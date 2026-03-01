@@ -1,2 +1,101 @@
-public_html/voice/models/
-*safeBackup*
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+.editorconfig
+
+# FTP credentials
+.ftpaccess
+
+# SSH keys
+.ssh/
+
+# Session files
+memosite.jp/xserver_php/session/
+mahjong.cloudfree.jp/xserver_php/session/
+*/xserver_php/session/
+
+# Environment and configuration
+.env
+.env.local
+.env.*.local
+
+# Logs and temporary files
+*.log
+*.tmp
+*.tmp.*
+*.bak
+*.swp
+*.swo
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+*.class
+
+# WordPress
+*/public_html/wp-content/uploads/
+*/public_html/wp-content/backup-*
+*/public_html/wp-content/cache/
+*/public_html/wp-content/plugins/
+wp-content/languages/
+
+# Mail and logs
+mail/
+log/
+logs/
+*/log/
+
+# AWStats data
+awstats/*.txt
+awstats/*.tmp.*
+
+# Database files
+*.sql
+*.sqlite
+*.db
+*.database
+
+# Archive and backup files
+*.zip
+*.gz
+*.rar
+*.7z
+*.tar
+backup/
+backups/
+*.backup
+
+# Composer
+composer.lock
+vendor/
+
+# Build and node
+node_modules/
+bower_components/
+dist/
+build/
+
+# Development/testing
+.phpunit.result.cache
+tests/coverage
+
+# Application specific
+PDF\ compressor/
+pdf_compressor/output/
+**/ocr_app/uploads/
+**/ocr_app/cache/
+
+# Sensitive files that shouldn't be in version control
+*/public_html/wp-config.php
+htpasswd/
+.htpasswd
+
+# Cache files
+*.cache
+.cache/

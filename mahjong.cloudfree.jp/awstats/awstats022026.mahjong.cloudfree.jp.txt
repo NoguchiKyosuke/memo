@@ -1,0 +1,455 @@
+AWSTATS DATA FILE 7.9 (build 20230108)
+# If you remove this file, all statistics for date 202602 will be lost/reset.
+# Last config file used to build this data file was /home/mahjong/mahjong.cloudfree.jp/awstats/awstats.mahjong.cloudfree.jp.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2067                
+POS_TIME 2727                
+POS_VISITOR 9900                
+POS_DAY 11981               
+POS_DOMAIN 3426                
+POS_LOGIN 3750                
+POS_ROBOT 3905                
+POS_WORMS 4329                
+POS_EMAILSENDER 4460                
+POS_EMAILRECEIVER 4603                
+POS_SESSION 12505               
+POS_FILESIZE 13044               
+POS_SIDER 12652               
+POS_FILETYPES 4738                
+POS_DOWNLOADS 4928                
+POS_OS 4976                
+POS_BROWSER 5144                
+POS_SCREENSIZE 5692                
+POS_UNKNOWNREFERER 5766                
+POS_UNKNOWNREFERERBROWSER 6040                
+POS_ORIGIN 6122                
+POS_SEREFERRALS 6257                
+POS_PAGEREFS 6401                
+POS_SEARCHWORDS 6549                
+POS_KEYWORDS 6701                
+POS_MISC 2390                
+POS_ERRORS 6760                
+POS_CLUSTER 3606                
+POS_SIDER_404 6901                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20260301150925 1 0 12944637077661
+FirstTime 0
+LastTime 20260228163716
+LastUpdate 20260301200021 1 0 0 0 0
+TotalVisits 46                  
+TotalUnique 46                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 53                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+TotalMisc 0 0 0
+JavaEnabled 0 0 0
+PDFSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+JavascriptDisabled 0 0 0
+FlashSupport 0 0 0
+DirectorSupport 0 0 0
+RealPlayerSupport 0 0 0
+QuickTimeSupport 0 0 0
+AddToFavourites 0 18 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 0 0 0 6 7 342621
+1 64 64 397507 8 9 70977
+2 1 2 40113 9 35 1494062
+3 62 62 325556 8 9 6629
+4 1 2 40113 7 9 600445
+5 2 3 76065 4 7 300440
+6 0 0 0 2 4 118
+7 1 1 35973 5 6 301101
+8 1 1 35994 4 5 300440
+9 2 2 71967 13 14 759624
+10 1 1 35973 1 2 0
+11 0 0 0 34 52 1231445
+12 3 3 372285 3 6 59
+13 1 2 40105 1 2 0
+14 1 1 35989 2 3 295243
+15 14 30 470444 22 25 431245
+16 7 14 514082 10 11 157971
+17 5 18 276291 11 21 189768
+18 1 1 31593 3 3 163614
+19 1 1 2389 8 10 130161
+20 165 165 668029 15 15 461175
+21 3 3 107932 4 9 118
+22 5 5 143934 60 67 1555387
+23 67 84 603840 7 7 35973
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 8
+us 395 446 3392466
+de 4 4 110321
+gb 3 9 379412
+ru 2 2 35994
+nl 1 1 35994
+sg 1 1 35965
+mk 1 1 35973
+fr 1 1 300049
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 8
+wordpress 114 885718 20260228212508 0
+bot[\s_+:,\.\;\/\\-] 45 1259640 20260217190945 0
+robot 22 1309 20260228212508 22
+ning 12 3016541 20260225021601 0
+checker 4 143892 20260219231930 0
+Go\-http\-client/ 2 0 20260226221603 0
+netcraft 2 463619 20260213185533 0
+scrapy 1 35986 20260213011653 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 7
+php 342 143222 0 0
+woff2 3 231627 0 0
+html 60 3639717 0 0
+png 14 29931 0 0
+css 24 217947 0 0
+js 19 30004 0 0
+woff 3 33726 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 8
+Unknown 21 10
+androidpie 1 1
+macosx15 10 7
+win10 395 369
+win8 1 1
+linux 31 18
+win7 5 1
+linuxubuntu 1 1
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 25
+chrome136.0.0.0 1 1
+chrome142.0.0.0 7 7
+chrome108.0.0.0 2 2
+chrome58.0.3029.110 2 2
+chrome116.0.0.0 10 7
+mozilla 21 10
+chrome117.0.5938.132 16 3
+netscape5.0 1 1
+chrome120.0 1 1
+firefox140.0 1 1
+chrome78.0.3904.108 351 351
+chrome125.0.0.0 16 3
+chrome131.0.0.0 1 1
+edge12 1 1
+chrome117.0.0.0 3 3
+chrome122.0.0.0 2 2
+chrome76.0.3809.89 1 1
+firefox142.0 2 2
+chrome134.0.0.0 1 1
+chrome135.0.0.0 1 1
+chrome83.0.4103.61 5 1
+firefox134.0 1 1
+chrome137.0.0.0 1 1
+chrome79.0.3945.79 16 3
+firefox119.0.1 1 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 2
+Mozilla/5.0_(compatible;_InternetMeasurement/1.0;__https://internet-measurement.com/) 20260228163726
+Mozilla/5.0_(compatible;_CensysInspect/1.1;__https://about.censys.io/) 20260227162430
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 402 411
+From1 0 0
+From2 0 0
+From3 0 0
+From4 6 54
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 0
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 0
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 6
+302 10 0
+403 7 5839
+404 80 3010489
+400 2 661
+301 18 0
+503 1 2461
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 80
+/key.zip 1 -
+/administrator/ 1 -
+/txets.php 1 -
+/lufix1.php 1 -
+/flower.php 1 -
+/nuxt.config.js 1 -
+/files.php 1 -
+/https%3A/mahjong.cloudfree.jp/wp-content/themes/cocoon-master/webfonts/fontawesome/fonts/fontawesome-webfont.woff2%3Fv%3D4.7.0 1 -
+/wordpress.zip 1 -
+/postnews.php 1 -
+/zwso.php 1 http://mahjong.cloudfree.jp//zwso.php
+/https%3A/mahjong.cloudfree.jp/wp-content/themes/cocoon-master/skins/skin-tecurio-lime/style.css%3Fver%3D6.9.1%26fver%3D20250213124911 1 -
+/shlo.php 1 -
+/htdocs.zip 1 -
+/env.zip 1 -
+/next.config.js 1 -
+/wp-admin/postnews.php 1 -
+/abcd.php 1 -
+/akcc.php 1 -
+/php8.php 1 -
+/wp-admin/style.php 1 -
+/https%3A/mahjong.cloudfree.jp/wp-content/themes/cocoon-master/style.css%3Fver%3D6.9.1%26fver%3D20250213124911 1 -
+/https%3A/mahjong.cloudfree.jp/wp-content/themes/cocoon-master/webfonts/icomoon/style.css%3Fv%3D2.7.0.2%26ver%3D6.9.1%26fver%3D20250213124911 1 -
+/wp.zip 1 -
+/bless.php 1 -
+/backup.tar.gz 1 -
+/smtp.zip 1 -
+/file2.php 1 -
+/wp-content/postnews.php 1 -
+/class-t.api.php 1 -
+/wp-admin/txets.php 1 -
+/bolt.php 1 -
+/public_html.zip 1 -
+/wordpress/ 1 -
+/https%3A/ja.wordpress.org/ 1 -
+/https%3A/mahjong.cloudfree.jp/wp-content/themes/cocoon-child-master/style.css%3Fver%3D6.9.1%26fver%3D20250213124913 1 -
+/https%3A/mahjong.cloudfree.jp/wp-content/themes/cocoon-child-master/keyframes.css%3Fver%3D6.9.1%26fver%3D20250213124913 1 -
+/https%3A/mahjong.cloudfree.jp/wp-content/themes/cocoon-master/keyframes.css%3Fver%3D6.9.1%26fver%3D20250213124911 1 -
+/backup.7z 1 -
+/chosen.php 1 http://mahjong.cloudfree.jp/chosen.php
+/.well-known/security.txt 1 -
+/s3.zip 1 -
+/shelp.php 1 -
+/blurbs.php 1 -
+/config.js 1 -
+/public.zip 1 -
+/133.php 1 -
+/222.php 1 -
+/web.zip 1 -
+/www.zip 1 -
+/wp-content/themes/style.php 1 -
+/https%3A/mahjong.cloudfree.jp/2025/02/ 1 -
+/ioxi-o.php 1 -
+/wp-includes/style.php 1 -
+/https%3A/mahjong.cloudfree.jp 1 -
+/aws.zip 1 -
+/file.php 1 -
+/https%3A/mahjong.cloudfree.jp/wp-content/themes/cocoon-master/webfonts/fontawesome/css/font-awesome.min.css%3Fver%3D6.9.1%26fver%3D20250213124911 1 -
+/backup.rar 1 -
+/https%3A/mahjong.cloudfree.jp/wp-content/plugins/wp-quicklatex/css/quicklatex-format.css%3Fver%3D6.9.1%26fver%3D20250216084812 1 -
+/wp-editor.php 1 -
+/https%3A/mahjong.cloudfree.jp/wp-content/themes/cocoon-master/webfonts/icomoon/fonts/icomoon.woff%3Fv%3D2.7.0.2 1 -
+/backup.zip 1 -
+/cord.php 1 -
+/gifclass.php 1 -
+/wwwroot.zip 1 -
+/witmm.php 1 -
+/wp-content/txets.php 1 -
+/https%3A/mahjong.cloudfree.jp/ 1 -
+/dex.php 1 -
+/.svn/wc.db 1 -
+/credentials.zip 1 -
+/html.zip 1 -
+/wp-content/plugins/hellopress/wp_mna.php 1 -
+/ahax.php 1 -
+/db_backup.zip 1 -
+/wp-content/style.php 1 -
+/style.php 1 -
+/wp-admin/zwso.php 1 -
+/env.js 1 -
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 53
+35.237.144.103 103 103 342481 20260221202701
+34.172.163.119 62 62 325556 20260213034138
+34.134.203.140 62 62 325565 20260219235041
+136.116.57.13 62 62 325548 20260214011154
+34.74.86.23 62 62 325548 20260213201033
+205.169.39.165 4 21 242289 20260215232035
+205.169.39.45 3 16 204345 20260212171605
+103.4.250.101 3 6 67684 20260212155700
+167.71.89.168 2 2 71959 20260204152444
+195.211.77.141 2 2 35994 20260226220059
+185.247.137.92 0 1 352 
+91.231.89.37 1 1 300049 20260212160728
+185.195.232.167 1 1 300326 20260210125159
+87.236.176.207 1 1 35973 20260228163716
+103.4.250.220 2 2 63228 20260212153151
+176.65.132.19 1 1 2389 20260220190046
+35.247.187.167 1 1 35965 20260213010523
+167.94.138.205 1 1 35973 20260205210546
+146.70.185.32 2 2 0 20260212153653
+162.142.125.221 1 2 40105 20260220133640
+162.142.125.222 1 2 40113 20260206021015
+185.225.28.8 1 1 35973 20260213070255
+162.142.125.114 1 2 40092 20260226051534
+87.236.176.201 0 1 1615 
+103.4.250.23 1 1 31614 20260212164548
+129.21.30.8 1 1 35986 20260204231906
+162.142.125.116 1 2 40113 20260213044644
+107.21.11.47 1 1 35994 20260225010457
+167.94.138.163 1 1 35973 20260213050007
+104.197.69.115 2 6 53949 20260212153325
+142.93.171.105 2 2 71959 20260212211638
+45.55.254.9 1 1 31593 20260215184252
+45.55.216.120 2 2 71959 20260218123432
+74.50.70.222 1 1 35973 20260219175643
+104.164.173.175 2 2 63228 20260212164603
+104.164.126.150 1 1 31614 20260212153147
+46.101.239.195 1 1 35973 20260216222346
+34.122.147.229 1 5 82464 20260212153325
+23.180.120.131 1 1 35989 20260203145025
+185.247.137.237 0 1 1288 
+45.148.10.79 1 1 35994 20260218094321
+34.72.176.129 0 5 67932 
+167.94.138.189 1 2 40105 20260227162426
+185.247.137.33 0 1 1288 
+16.144.17.106 1 1 35973 20260207171838
+87.236.176.52 0 1 1288 
+3.220.145.217 1 1 35994 20260217085757
+174.138.84.124 2 2 71967 20260214225131
+167.94.138.55 1 1 35973 20260220100034
+54.236.168.139 1 1 35973 20260227092147
+104.252.191.198 1 1 31614 20260212155633
+87.236.176.249 1 1 35994 20260209164206
+87.236.176.199 0 1 1288 
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 21
+20260203 1 1 35989 1
+20260204 3 3 107945 2
+20260205 1 1 35973 1
+20260206 1 2 40113 1
+20260207 1 1 35973 1
+20260209 1 3 38570 1
+20260210 1 1 300326 1
+20260212 21 50 1069680 12
+20260213 128 129 799128 6
+20260214 64 64 397515 2
+20260215 5 22 273882 2
+20260216 1 1 35973 1
+20260217 1 1 35994 1
+20260218 3 3 107953 2
+20260219 63 63 361538 2
+20260220 3 4 78467 3
+20260221 103 103 342481 1
+20260225 1 1 35994 1
+20260226 3 4 76086 2
+20260227 2 3 76078 2
+20260228 1 5 40516 1
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 1
+0s-30s 46
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 7
+/xmlrpc.php 341 140833 0 5
+/ 54 3635623 44 35
+/wp-json/wp/v2/users/ 5 3680 0 0
+/wp-content/themes/cocoon-master/webfonts/fontawesome/fonts/fontawesome-webfont.woff2 3 231627 1 3
+/wp-content/themes/cocoon-master/webfonts/icomoon/fonts/icomoon.woff 3 33726 0 1
+/https%3A/mahjong.cloudfree.jp/feed/ 1 414 0 1
+/wp-login.php 1 2389 1 1
+END_SIDER
+
+# Payload Range - Payload Frequency
+BEGIN_FILESIZE 7
+44-100 23
+500-1K 29
+100-500 359
+1K-2K 9
+2K-5K 28
+0-44 144
+5K+ 211
+END_FILESIZE

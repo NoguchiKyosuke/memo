@@ -1,0 +1,648 @@
+AWSTATS DATA FILE 7.9 (build 20230108)
+# If you remove this file, all statistics for date 202511 will be lost/reset.
+# Last config file used to build this data file was /home/mahjong/mahjong.cloudfree.jp/awstats/awstats.mahjong.cloudfree.jp.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2067                
+POS_TIME 2739                
+POS_VISITOR 17260               
+POS_DAY 19078               
+POS_DOMAIN 3427                
+POS_LOGIN 3828                
+POS_ROBOT 3983                
+POS_WORMS 4448                
+POS_EMAILSENDER 4579                
+POS_EMAILRECEIVER 4722                
+POS_SESSION 19519               
+POS_FILESIZE 20287               
+POS_SIDER 19686               
+POS_FILETYPES 4857                
+POS_DOWNLOADS 5077                
+POS_OS 5125                
+POS_BROWSER 5322                
+POS_SCREENSIZE 5764                
+POS_UNKNOWNREFERER 5838                
+POS_UNKNOWNREFERERBROWSER 6099                
+POS_ORIGIN 6181                
+POS_SEREFERRALS 6317                
+POS_PAGEREFS 6480                
+POS_SEARCHWORDS 6628                
+POS_KEYWORDS 6780                
+POS_MISC 2403                
+POS_ERRORS 6839                
+POS_CLUSTER 3684                
+POS_SIDER_404 6964                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20251202222240 1 0 12897425469075
+FirstTime 20251101011238
+LastTime 20251130221828
+LastUpdate 20251203020020 1 0 0 0 0
+TotalVisits 42                  
+TotalUnique 41                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 45                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+TotalMisc 0 0 0
+AddToFavourites 0 6 0
+FlashSupport 0 0 0
+DirectorSupport 0 0 0
+RealPlayerSupport 0 0 0
+JavaEnabled 0 0 0
+QuickTimeSupport 0 0 0
+PDFSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+JavascriptDisabled 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 0 0 0 2 2 33280
+1 68 72 1795205 8 9 0
+2 2 2 66676 6 6 33288
+3 64 64 380324 96 100 1613698
+4 1 1 33334 1 1 0
+5 1 1 288472 1 1 0
+6 1 1 33342 19 20 1161670
+7 0 0 0 1 1 0
+8 0 0 0 0 0 0
+9 1 1 33342 91 95 2062830
+10 1 1 288470 40 41 1418457
+11 0 0 0 0 0 0
+12 0 0 0 6 7 346649
+13 4 4 149588 3 3 29229
+14 66 66 635959 44 44 1094710
+15 0 0 0 3 4 29288
+16 1 1 261835 62 79 2119384
+17 2 2 321760 36 64 1421811
+18 4 4 355467 50 51 1550537
+19 0 0 0 2 2 288465
+20 180 180 823545 20 21 214272
+21 0 0 0 2 2 29229
+22 112 113 622193 285 425 3522751
+23 6 30 371018 39 39 193278
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 13
+us 364 365 2211834
+sg 115 115 409916
+ca 7 11 1514907
+gb 6 6 409742
+jp 5 29 337684
+se 5 5 182922
+in 3 3 99972
+nl 3 3 838779
+fr 2 2 66630
+kr 1 1 33334
+au 1 1 33334
+de 1 1 288134
+za 1 1 33342
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 9
+wordpress 93 758692 20251130221828 0
+bot[\s_+:,\.\;\/\\-] 65 1655584 20251130200618 0
+bingbot/ 22 623062 20251123105023 3
+robot 7 446 20251125180136 7
+no_user_agent 7 1540167 20251126181347 0
+checker 3 99856 20251104024123 0
+Go\-http\-client/ 3 1004 20251108145147 0
+netcraft 2 576475 20251115103355 0
+crawl 1 33342 20251107161838 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 9
+woff2 1 77165 0 0
+woff 1 11130 0 0
+css 10 79529 0 0
+html 55 5913326 0 0
+webp 1 26236 0 0
+js 7 11504 0 0
+php 457 262715 0 0
+png 10 17017 0 0
+jpg 1 61908 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 9
+win10 492 488
+android13 4 4
+linux 7 7
+androidmarshmallow 3 3
+macosx15 2 2
+androidpie 1 1
+Unknown 4 3
+android10 29 5
+linuxubuntu 1 1
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 19
+chrome139.0.0.0 2 2
+chrome88.0.4240.193 103 103
+chrome78.0.3904.108 365 365
+chrome117.0.0.0 1 1
+chrome107.0.0.0 1 1
+netscape5.0 2 2
+chrome52.0.1434.98 3 3
+chrome130.0.0.0 1 1
+msie8.0 3 3
+chrome91.0.4472.124 9 9
+chrome124.0.0.0 1 1
+firefox139.0 3 3
+chrome141.0.0.0 38 10
+chrome58.0.3029.110 1 1
+mozilla 2 1
+chrome134.0.0.0 2 2
+firefox92.0 1 1
+chrome112.0.5615.136 4 4
+chrome75.0.3770.143 1 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 2
+Mozilla/5.0_(l9scan/2.0.0313e2239313e2133313e25383;__https://leakix.net) 20251126181421
+Mozilla/5.0_(compatible;_CensysInspect/1.1;__https://about.censys.io/) 20251129225631
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 496 499
+From1 0 0
+From2 3 3
+From3 0 0
+From4 15 41
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 1
+www_google_com 3 3
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 0
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 4
+404 451 11854684
+302 13 0
+301 12 0
+403 332 19514
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 278
+/www/phpinfo.php.save 1 https://www.google.com/
+/test.php.backup 1 https://www.google.com/
+/settings.js 2 https://www.google.com/
+/static/app.js 1 https://www.google.com/
+/runtime.bundle.js 1 https://www.google.com/
+/assets/main.js 1 https://www.google.com/
+/js/env.production.js 1 https://www.google.com/
+/assets/webpack.js 1 https://www.google.com/
+/info2.php 1 https://www.google.com/
+/tokens.json 2 -
+/@vite/env 4 -
+/test.php.bak 1 https://www.google.com/
+/assets/js/main.js 1 https://www.google.com/
+/public/config.js 1 https://www.google.com/
+/public/js/bundle.js 1 https://www.google.com/
+/public/js/app.js 1 https://www.google.com/
+/static/bundle.js 1 https://www.google.com/
+/style.php 1 -
+/config/database.yml 2 -
+/js/settings.js 1 https://www.google.com/
+/admin/phpinfo.php.save 1 https://www.google.com/
+/php_info.php.save 1 https://www.google.com/
+/dev/info.php 1 https://www.google.com/
+/assets/js/config.js 1 https://www.google.com/
+/info 1 -
+/scripts/phpinfo.php 1 https://www.google.com/
+/.azure/credentials 2 -
+/config/app.js 1 https://www.google.com/
+/site/info.php.save 1 https://www.google.com/
+/dev/info.php.save 1 https://www.google.com/
+/php_info.php.orig 1 https://www.google.com/
+/phpinfo.php.tmp 1 https://www.google.com/
+/app.config 2 -
+/app.js 2 https://www.google.com/
+/info.php.save 1 https://www.google.com/
+/info1.php 1 https://www.google.com/
+/build/js/bundle.js 1 https://www.google.com/
+/env.js 2 https://www.google.com/
+/php_info.php.tmp 1 https://www.google.com/
+/.secrets 2 -
+/config.yml 2 -
+/js/main.js 1 https://www.google.com/
+/static/js/main.js 2 https://www.google.com/
+/configuration.json 2 -
+/admin/info.php 1 https://www.google.com/
+/dist/js/app.js 1 https://www.google.com/
+/tmp/info.php 1 https://www.google.com/
+/static/runtime.js 1 https://www.google.com/
+/swagger/index.html 4 -
+/shared.js 1 https://www.google.com/
+/info.php.orig 1 https://www.google.com/
+/vendor.bundle.js 2 https://www.google.com/
+/debug.php 3 https://www.google.com/
+/public/phpinfo.php.save 1 https://www.google.com/
+/api/swagger.json 3 -
+/telescope/requests 4 -
+/includes/info.php.save 1 https://www.google.com/
+/v3/api-docs 3 -
+/test.php.swp 1 https://www.google.com/
+/assets/runtime.js 1 https://www.google.com/
+/framework.js 1 https://www.google.com/
+/phpinfo.php.swp 1 https://www.google.com/
+/includes/info.php 1 https://www.google.com/
+/api_keys.json 2 -
+/cgi-bin/info.php.save 1 https://www.google.com/
+/swagger/swagger-ui.html 4 -
+/api-docs/swagger.json 3 -
+/assets/app.js 1 https://www.google.com/
+/php_info.php.old 1 https://www.google.com/
+/app.bundle.js 2 https://www.google.com/
+/.aws/credentials 3 -
+/js/config.js 2 https://www.google.com/
+/settings.json 2 -
+/phptest.php 1 https://www.google.com/
+/phpinfo.php.backup 1 https://www.google.com/
+/bundle.js 2 https://www.google.com/
+/diagnostic.php 1 https://www.google.com/
+/public/settings.js 1 https://www.google.com/
+/assets/settings.js 1 https://www.google.com/
+/ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application 4 -
+/assets/api.js 1 https://www.google.com/
+/docker-compose.yml 2 -
+/js/app-config.js 1 https://www.google.com/
+/js/env.development.js 1 https://www.google.com/
+/js/constants.js 1 https://www.google.com/
+/info.php~ 1 https://www.google.com/
+/scripts/phpinfo.php.save 1 https://www.google.com/
+/phpmyinfo 1 -
+/js/bundle.js 1 https://www.google.com/
+/application.yml 2 -
+/config/secrets.yml 2 -
+/www/info.php.save 1 https://www.google.com/
+/cacti/cmd_realtime.php 1 -
+/phpinfo.php.orig 1 https://www.google.com/
+/public/app.js 1 https://www.google.com/
+/api/graphql 4 -
+/dist/vendor.js 1 https://www.google.com/
+/phpinfo.php.bak 1 https://www.google.com/
+/js/app.js 2 https://www.google.com/
+/application.properties 2 -
+/test.php.old 1 https://www.google.com/
+/i.php 1 https://www.google.com/
+/phpinfo.php 4 https://www.google.com/
+/public/js/main.js 1 https://www.google.com/
+/gcp-credentials.json 2 -
+/build/bundle.js 1 https://www.google.com/
+/site/info.php 1 https://www.google.com/
+/swagger/v1/swagger.json 4 -
+/.docker/config.json 2 -
+/www/info.php 1 https://www.google.com/
+/server.php 1 https://www.google.com/
+/config/config.yml 1 -
+/web/info.php 1 https://www.google.com/
+/webjars/swagger-ui/index.html 4 -
+/api/gql 4 -
+/aws-config.json 1 -
+/assets/js/bundle.js 1 https://www.google.com/
+/credentials.json 1 -
+/kubernetes.yml 2 -
+/errors.log 2 -
+/info.php 9 -
+/php_info.php.swp 1 https://www.google.com/
+/static/api.js 1 https://www.google.com/
+/static/webpack.js 1 https://www.google.com/
+/phpinfo 4 -
+/php_info.php.bak 1 https://www.google.com/
+/static/settings.js 1 https://www.google.com/
+/docker-compose.yaml 2 -
+/test/info.php 1 https://www.google.com/
+/cgi-bin/phpinfo.php.save 1 https://www.google.com/
+/_profiler/phpinfo 3 -
+/dist/app.js 2 https://www.google.com/
+/php.php 1 https://www.google.com/
+/.config 2 -
+/js/api-config.js 1 https://www.google.com/
+/build/app.js 2 https://www.google.com/
+/public/js/config.js 1 https://www.google.com/
+/s/0313e2239313e2133313e25383/_/ 4 -
+/dist/js/bundle.js 1 https://www.google.com/
+/serverinfo.php 1 https://www.google.com/
+/admin/config 1 -
+/api 4 -
+/about 4 -
+/aws.json 2 -
+/_next/static/chunks/webpack.js 1 https://www.google.com/
+/webpack.js 1 https://www.google.com/
+/_next/static/chunks/app.js 1 https://www.google.com/
+/build/js/main.js 1 https://www.google.com/
+/web/info.php.save 1 https://www.google.com/
+/tmp/info.php.save 1 https://www.google.com/
+/apikeys.json 2 -
+/web.config 2 -
+/tmp/phpinfo.php 1 https://www.google.com/
+/assets/chunk.js 1 https://www.google.com/
+/.gcloud/credentials 2 -
+/config.json 6 -
+/static/js/vendors.chunk.js 1 https://www.google.com/
+/public/main.js 1 https://www.google.com/
+/static/main.js 1 https://www.google.com/
+/check.php 1 https://www.google.com/
+/v2/api-docs 3 -
+/js/vendor.js 2 https://www.google.com/
+/public/phpinfo.php 1 https://www.google.com/
+/test.php~ 1 https://www.google.com/
+/secrets.json 2 -
+/js/webpack.js 1 https://www.google.com/
+/api.js 1 https://www.google.com/
+/cgi-bin/info.php 1 https://www.google.com/
+/js/secrets.js 1 https://www.google.com/
+/site/phpinfo.php.save 1 https://www.google.com/
+/config/env.js 1 https://www.google.com/
+/login.action 4 -
+/commons.js 1 https://www.google.com/
+/static/env.js 1 https://www.google.com/
+/debug/default/view 4 -
+/assets/js/vendor.js 1 https://www.google.com/
+/php_version.php 1 https://www.google.com/
+/public/bundle.js 1 https://www.google.com/
+/static/js/bundle.js 2 https://www.google.com/
+/test.php.orig 1 https://www.google.com/
+/phpinfo.php.save 1 https://www.google.com/
+/.dockerenv 2 -
+/php_info.php 4 https://www.google.com/
+/public/info.php 1 https://www.google.com/
+/pi.php 1 https://www.google.com/
+/constants.js 2 https://www.google.com/
+/.DS_Store 4 -
+/assets/bundle.js 2 https://www.google.com/
+/js/chunk.js 1 https://www.google.com/
+/php_error.log 2 -
+/runtime.js 2 https://www.google.com/
+/info.php.tmp 1 https://www.google.com/
+/js/credentials.js 1 https://www.google.com/
+/static/config.js 1 https://www.google.com/
+/info.php.backup 1 https://www.google.com/
+/config.js 2 https://www.google.com/
+/build/main.js 1 https://www.google.com/
+/.s3cfg 2 -
+/graphql 4 -
+/secrets.yml 2 -
+/vendor.js 2 https://www.google.com/
+/_next/static/chunks/main.js 1 https://www.google.com/
+/config/settings.js 1 https://www.google.com/
+/dev/phpinfo.php 1 https://www.google.com/
+/public/env.js 1 https://www.google.com/
+/swagger.json 4 -
+/dist/main.js 1 https://www.google.com/
+/settings.yml 2 -
+/info.php.swp 1 https://www.google.com/
+/admin/phpinfo.php 1 https://www.google.com/
+/static/js/main.chunk.js 2 https://www.google.com/
+/azure.json 2 -
+/s3.yml 2 -
+/webpack-runtime.js 1 https://www.google.com/
+/.api_keys 2 -
+/dist/config.js 1 https://www.google.com/
+/php_info.php~ 1 https://www.google.com/
+/_all_dbs 4 -
+/dev/phpinfo.php.save 1 https://www.google.com/
+/phpinfo.php.old 1 https://www.google.com/
+/web/phpinfo.php.save 1 https://www.google.com/
+/info.php.old 1 https://www.google.com/
+/test.php.save 1 https://www.google.com/
+/test/phpinfo.php.save 1 https://www.google.com/
+/tmp/phpinfo.php.save 1 https://www.google.com/
+/includes/phpinfo.php 1 https://www.google.com/
+/Dockerfile 2 -
+/js/runtime.js 1 https://www.google.com/
+/keys.json 2 -
+/public/info.php.save 1 https://www.google.com/
+/_debug 2 -
+/chunk.js 1 https://www.google.com/
+/site/phpinfo.php 1 https://www.google.com/
+/polyfills.js 1 https://www.google.com/
+/cgi-bin/phpinfo.php 1 https://www.google.com/
+/v2/_catalog 4 -
+/static/js/runtime-main.js 2 https://www.google.com/
+/scripts/info.php.save 1 https://www.google.com/
+/admin/info.php.save 1 https://www.google.com/
+/phpversion.php 1 https://www.google.com/
+/auth.json 2 -
+/.aws/config 2 -
+/config/constants.js 1 https://www.google.com/
+/www/phpinfo.php 1 https://www.google.com/
+/build/js/app.js 1 https://www.google.com/
+/assets/env.js 1 https://www.google.com/
+/test.php 3 https://www.google.com/
+/server 4 -
+/test/info.php.save 1 https://www.google.com/
+/web/phpinfo.php 1 https://www.google.com/
+/test.php.tmp 1 https://www.google.com/
+/info.php.bak 1 https://www.google.com/
+/phpinfo.php~ 1 https://www.google.com/
+/dist/js/main.js 1 https://www.google.com/
+/error.log 2 -
+/pms 1 -
+/actuator/env 4 -
+/assets/config.js 1 https://www.google.com/
+/swagger-ui.html 4 -
+/assets/js/app.js 2 https://www.google.com/
+/test/phpinfo.php 1 https://www.google.com/
+/includes/phpinfo.php.save 1 https://www.google.com/
+/main.bundle.js 2 https://www.google.com/
+/oauth.json 2 -
+/debug.log 2 -
+/graphql/api 4 -
+/config/app.yml 2 -
+/static/js/config.js 1 https://www.google.com/
+/main.js 2 https://www.google.com/
+/build/config.js 1 https://www.google.com/
+/static/chunk.js 1 https://www.google.com/
+/config.yaml 2 -
+/php_info.php.backup 1 https://www.google.com/
+/dist/bundle.js 1 https://www.google.com/
+/static/js/vendor.js 1 https://www.google.com/
+/config.php 2 -
+/static/js/app.js 1 https://www.google.com/
+/scripts/info.php 1 https://www.google.com/
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 45
+167.71.203.150 115 115 409916 20251113203156
+34.168.220.212 103 103 330583 20251104222755
+137.184.227.170 64 64 314483 20251103145551
+136.118.104.164 62 62 313657 20251103205733
+35.239.229.215 62 62 313648 20251101011252
+34.127.107.42 62 62 313640 20251104031124
+126.67.49.64 5 29 337684 20251102232536
+3.8.131.170 3 3 87609 20251107221111
+3.222.165.167 2 2 66630 20251105202222
+204.76.203.25 2 2 576944 20251119052147
+52.25.136.175 1 1 33342 20251130221828
+167.114.153.155 1 1 33342 20251110062423
+64.15.129.100 1 1 288109 20251103014613
+192.36.217.48 1 1 33288 20251113135525
+64.15.129.126 1 1 288380 20251103014614
+64.15.129.112 0 1 1615 
+192.36.198.147 1 1 37854 20251113135528
+192.175.111.244 1 1 288109 20251103014608
+3.111.39.171 1 1 33342 20251126031712
+35.95.254.31 1 1 33342 20251130033450
+184.73.189.76 1 1 33342 20251129021016
+192.36.226.103 1 1 40585 20251113135527
+18.169.172.136 1 1 33342 20251130183118
+192.175.111.246 1 1 288109 20251103014615
+159.89.12.166 1 1 288134 20251108145107
+167.94.146.61 1 2 37407 20251129225626
+192.175.111.248 0 1 4119 
+44.244.44.118 1 1 33334 20251108040028
+192.175.111.249 0 1 1288 
+13.245.229.74 1 1 33342 20251110140623
+54.197.178.250 1 1 33334 20251105181032
+159.65.238.62 2 2 66622 20251112225041
+167.71.230.181 2 2 66630 20251126221130
+51.20.189.149 1 1 33334 20251128233210
+35.180.69.155 1 1 33342 20251129094003
+3.107.213.47 1 1 33334 20251126023147
+64.15.129.125 1 1 288142 20251103014607
+192.121.146.24 1 1 37861 20251113135526
+143.244.168.161 1 1 288470 20251105103457
+64.227.70.2 1 1 261835 20251101165045
+64.227.32.66 2 2 288791 20251126181421
+167.114.153.224 1 1 33342 20251117201141
+46.8.225.111 1 1 33288 20251111174048
+64.15.129.122 0 1 352 
+13.125.60.202 1 1 33334 20251113015005
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 17
+20251101 63 63 575483 2
+20251102 5 29 337684 1
+20251103 131 135 2076363 7
+20251104 165 165 644223 2
+20251105 5 5 676906 4
+20251107 3 3 87609 1
+20251108 2 2 321468 2
+20251110 2 2 66684 2
+20251111 1 1 33288 1
+20251112 2 2 66622 1
+20251113 120 120 592838 6
+20251117 1 1 33342 1
+20251119 1 1 288472 1
+20251126 6 6 422097 4
+20251128 1 1 33334 1
+20251129 3 4 104091 3
+20251130 3 3 100026 3
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 3
+30s-2mn 1
+2mn-5mn 1
+0s-30s 40
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 10
+/xmlrpc.php 444 183378 0 5
+/ 45 5757151 39 32
+/wp-login.php 12 79337 0 1
+/wp-json/wp/v2/users/ 6 4416 0 0
+/2025/02/16/%e9%9f%b3%e6%b3%a2%e3%81%a8%e3%81%af/ 2 76044 1 1
+/wp-content/themes/cocoon-master/webfonts/fontawesome/fonts/fontawesome-webfont.woff2 1 77165 0 0
+/2025/02/13/%e6%9c%ac%e3%83%96%e3%83%ad%e3%82%b0%e3%81%ae%e7%9b%ae%e7%9a%84/ 1 37861 1 1
+/2025/02/13/hello-world/ 1 37854 1 1
+/wp-content/themes/cocoon-master/webfonts/icomoon/fonts/icomoon.woff 1 11130 0 0
+/wp-content/themes/cocoon-master/lib/analytics/access.php 1 0 0 1
+END_SIDER
+
+# Payload Range - Payload Frequency
+BEGIN_FILESIZE 7
+44-100 13
+500-1K 22
+0-44 523
+1K-2K 21
+5K+ 502
+100-500 461
+2K-5K 18
+END_FILESIZE
