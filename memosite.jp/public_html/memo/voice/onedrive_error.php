@@ -29,10 +29,7 @@ renderHead($title, $description, $keywords);
     <section>
       <h2>今回発生したエラー</h2>
       以下のようなエラーがUbuntu環境で発生した。<br/>
-      <picture>
-        <source srcset="./images/curl_error_screenshot.webp" type="image/webp">
-        <img src="./images/curl_error_screenshot.png" alt="OneDrive curl error screenshot" style="max-width:100%;border:1px solid var(--border);border-radius:8px;margin-top:1rem;"/>
-      </picture>
+      <img src="./images/curl_error_screenshot.png.jxl" alt="OneDrive curl error screenshot" style="max-width:100%;border:1px solid var(--border);border-radius:8px;margin-top:1rem;"/>
     <p>
         このエラーは、Onedriveの同期を取る際にcurlのバージョンが不適合だった場合に表示される。<br/>
         そのため、以下のコマンドを入力してaptのアップデートを実行した後に、curlのバージョンを確認する。

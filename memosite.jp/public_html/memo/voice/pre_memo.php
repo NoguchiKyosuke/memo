@@ -361,7 +361,7 @@
 
     <h3>8.1 CLion コンパイルエラー</h3>
     <figure>
-        <img src="images/pre_memo/error_statement.png" alt="CLionコンパイルエラーの表示">
+        <img src="images/pre_memo/error_statement.png.jxl" alt="CLionコンパイルエラーの表示">
         <figcaption>図1: CLionコンパイルエラーの表示</figcaption>
     </figure>
     <p>gccだとコンパイルできないのが原因であった。そのため、nvccを使わなければならない。ただし、windows環境でのnvccの使用は難しいので、wslの環境で使用した。wslでのcuda環境の構築は<span class="reference">[jetbrains_clion_cuda]</span><span class="reference">[nvidia_cuda_linux_install]</span>を参考にした。</p>

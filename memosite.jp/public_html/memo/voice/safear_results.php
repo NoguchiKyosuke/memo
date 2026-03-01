@@ -54,21 +54,21 @@ renderHead($title, $description, $keywords, $canonical);
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">DETカーブ (det_curve)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/det_curve.webp', 'DET curve for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/det_curve.webp.jxl', 'DET curve for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">ROCカーブ (roc_curve)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/roc_curve.webp', 'ROC curve for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/roc_curve.webp.jxl', 'ROC curve for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">スコア分布 (score_distribution)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/score_distribution.webp', 'Score distribution for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/score_distribution.webp.jxl', 'Score distribution for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
@@ -91,42 +91,42 @@ renderHead($title, $description, $keywords, $canonical);
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">収録環境とスコアの相関ヒートマップ (env_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/env_id_heatmap.webp', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/env_id_heatmap.webp.jxl', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">合成音声手法とスコアの相関ヒートマップ (la_method_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/la_method_id_heatmap.webp', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/la_method_id_heatmap.webp.jxl', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">マイク環境とスコアの相関ヒートマップ (mic_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/mic_id_heatmap.webp', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/mic_id_heatmap.webp.jxl', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">収録場所とスコアの相関ヒートマップ (room_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/room_id_heatmap.webp', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/room_id_heatmap.webp.jxl', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">発話テキストとスコアの相関ヒートマップ (sent_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/sent_id_heatmap.webp', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/sent_id_heatmap.webp.jxl', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">発話者とスコアの相関ヒートマップ (spkr_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/spkr_id_heatmap.webp', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
+          echo renderImage('/voice/images/SafeEar/training_on_ASV2019/testing_on_J-SpAW-LA/spkr_id_heatmap.webp.jxl', 'Correlation heatmap for SafeEar (ASVspoof2019→J-SPAW)');
         ?>
       </section>
 
@@ -176,21 +176,21 @@ renderHead($title, $description, $keywords, $canonical);
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">DETカーブ (det_curve)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/det_curve.webp', 'DET curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/det_curve.webp.jxl', 'DET curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">ROCカーブ (roc_curve)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/roc_curve.webp', 'ROC curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/roc_curve.webp.jxl', 'ROC curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">スコア分布 (score_distribution)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/score_distribution.webp', 'Score distribution for SafeEar (J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/score_distribution.webp.jxl', 'Score distribution for SafeEar (J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
@@ -221,35 +221,35 @@ renderHead($title, $description, $keywords, $canonical);
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">収録環境とスコアの相関ヒートマップ (env_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/env_id_heatmap.webp', 'Correlation heatmap (environment vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/env_id_heatmap.webp.jxl', 'Correlation heatmap (environment vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">マイク環境とスコアの相関ヒートマップ (mic_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/mic_id_heatmap.webp', 'Correlation heatmap (microphone vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/mic_id_heatmap.webp.jxl', 'Correlation heatmap (microphone vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">収録場所とスコアの相関ヒートマップ (room_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/room_id_heatmap.webp', 'Correlation heatmap (room vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/room_id_heatmap.webp.jxl', 'Correlation heatmap (room vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">発話テキストとスコアの相関ヒートマップ (sent_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/sent_id_heatmap.webp', 'Correlation heatmap (sentence vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/sent_id_heatmap.webp.jxl', 'Correlation heatmap (sentence vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">発話者とスコアの相関ヒートマップ (spkr_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/spkr_id_heatmap.webp', 'Correlation heatmap (speaker vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_J-SpAW-PA/spkr_id_heatmap.webp.jxl', 'Correlation heatmap (speaker vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
@@ -296,21 +296,21 @@ renderHead($title, $description, $keywords, $canonical);
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">DETカーブ (det_curve)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/det_curve.webp', 'DET curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/det_curve.webp.jxl', 'DET curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">ROCカーブ (roc_curve)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/roc_curve.webp', 'ROC curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/roc_curve.webp.jxl', 'ROC curve for SafeEar (J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">スコア分布 (score_distribution)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/score_distribution.webp', 'Score distribution for SafeEar (J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/score_distribution.webp.jxl', 'Score distribution for SafeEar (J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
@@ -341,35 +341,35 @@ renderHead($title, $description, $keywords, $canonical);
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">収録環境とスコアの相関ヒートマップ (env_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/env_id_heatmap.webp', 'Correlation heatmap (environment vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/env_id_heatmap.webp.jxl', 'Correlation heatmap (environment vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">マイク環境とスコアの相関ヒートマップ (mic_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/mic_id_heatmap.webp', 'Correlation heatmap (microphone vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/mic_id_heatmap.webp.jxl', 'Correlation heatmap (microphone vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">収録場所とスコアの相関ヒートマップ (room_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/room_id_heatmap.webp', 'Correlation heatmap (room vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/room_id_heatmap.webp.jxl', 'Correlation heatmap (room vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">発話テキストとスコアの相関ヒートマップ (sent_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/sent_id_heatmap.webp', 'Correlation heatmap (sentence vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/sent_id_heatmap.webp.jxl', 'Correlation heatmap (sentence vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 
       <section class="attachment-item" style="margin:1rem 0;">
         <h4 style="font-size:1rem;margin:.2rem 0;">発話者とスコアの相関ヒートマップ (spkr_id_heatmap)</h4>
         <?php
-          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/spkr_id_heatmap.webp', 'Correlation heatmap (speaker vs score, J-SPAW-LA→J-SPAW-PA)');
+          echo renderImage('/voice/images/SafeEar/training_on_J-SpAW-LA/testing_on_denoise-PA/spkr_id_heatmap.webp.jxl', 'Correlation heatmap (speaker vs score, J-SPAW-LA→J-SPAW-PA)');
         ?>
       </section>
 

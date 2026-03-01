@@ -37,7 +37,7 @@ renderHead($title, $description, $keywords, $canonical);
       <h2>T4×2 を有効化する手順</h2>
       <ol>
         <li>セッション起動時に <em>Accelerator</em> を <strong>GPU</strong> &gt; <strong>T4 x2</strong> に設定することで有効化</li>
-        <img src="./images/select_GPU_on_Kaggle.webp" alt="Kaggle Notebook の Accelerator 設定画面" style="max-width:100%;border:1px solid var(--border);border-radius:8px;margin:1rem 0;">
+        <img src="./images/select_GPU_on_Kaggle.webp.jxl" alt="Kaggle Notebook の Accelerator 設定画面" style="max-width:100%;border:1px solid var(--border);border-radius:8px;margin:1rem 0;">
         <li>
             プログラムでマルチGPUを適用するように記述する。<br/>
             その際のコツを次のセクションで記述する。

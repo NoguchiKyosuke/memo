@@ -2,9 +2,9 @@
 require_once 'includes/head.php';
 require_once 'includes/common.php';
 
-$title = 'メモ帳 - SDVと音声解析の技術リソース';
-$description = 'Software Defined Vehicle (SDV) と音声解析に関する技術メモとリソース。最新の自動車ソフトウェア技術と機械学習による音声処理について学べます。';
-$keywords = 'SDV,Software Defined Vehicle,音声解析,機械学習,自動車ソフトウェア,技術メモ,プラットフォーム';
+$title = 'メモ';
+$description = '情報系のメモを中心に記録しているメモブログです。';
+$keywords = '音声解析,機械学習,メモ';
 
 renderHead($title, $description, $keywords);
 ?>
@@ -18,32 +18,24 @@ renderHead($title, $description, $keywords);
 
   <section>
     <div class="card-grid">
-      <a class="card home-card card-sdv" href="/sdv.php">
-        <h3>SDV</h3>
+      <a class="card home-card card-voice" href="/memo/">
+        <h3>メモ</h3>
       </a>
 
-      <a class="card home-card card-voice" href="/voice/">
-        <h3>音声研究メモ</h3>
-      </a>
-
-      <a class="card home-card card-time" href="/timekeeper.php">
-        <h3>タイムマネージャ</h3>
+      <a class="card home-card card-time" href="/clock/">
+        <h3>デジタル時計</h3>
       </a>
 
       <a class="card home-card card-vocab" href="/vocabulary_app/">
         <h3>単語帳アプリ</h3>
       </a>
 
-      <a class="card home-card card-ocr" href="/ocr_app/">
-        <h3>AI OCR</h3>
-      </a>
-
       <a class="card home-card card-game" href="/game/">
         <h3>GAME PORTAL</h3>
       </a>
 
-      <a class="card home-card card-pdf" href="/pdf_compressor/">
-        <h3>PDF Compressor</h3>
+      <a class="card home-card card-game" href="/protype/">
+        <h3>ミニアプリ</h3>
       </a>
     </div>
   </section>

@@ -30,12 +30,12 @@ renderHead($title, $description, $keywords, $canonical);
       <h2>PLDA とは何か</h2>
       <p>PLDA (Probabilistic Linear Discriminant Analysis) は、同じ答えのデータごとにグループを作り、確率的にどのグループに属するかで答えを判別する手法です。話者認証では i-vector や x-vector の埋め込みを コサイン類似度を使って判別する手法が多く用いられていますが、より統計的に強力なPLDA で判別する手法も取られます。</p>
       <div class="figure-wrap" style="text-align:center;">
-        <?php echo renderImage('/voice/images/cosine_similarity_vectors.png', 'ベクトルAとベクトルBのコサイン類似度を三次元空間で可視化した図'); ?>
+        <?php echo renderImage('/voice/images/cosine_similarity_vectors.png.jxl', 'ベクトルAとベクトルBのコサイン類似度を三次元空間で可視化した図'); ?>
         <p style="font-size:0.85rem;color:var(--text-subtle);margin-top:0.5rem;">図1. ベクトル間の角度 &theta; が小さいほどコサイン類似度が高くなる</p>
       </div>
       <p>PLDA はベクトル空間内で同一話者の埋め込みが共通の確率分布に従うと仮定し、クラスごとの広がりや重なり具合を統計的にモデリングします。下図は、2 次元上で発話ごとの特徴点が話者ごとにクラスタを形成しているイメージです。</p>
       <div class="figure-wrap" style="text-align:center;">
-        <?php echo renderImage('/voice/images/plda_concept_clusters.png', 'PLDA が想定する話者ごとのクラスタ構造イメージ'); ?>
+        <?php echo renderImage('/voice/images/plda_concept_clusters.png.jxl', 'PLDA が想定する話者ごとのクラスタ構造イメージ'); ?>
         <p style="font-size:0.85rem;color:var(--text-subtle);margin-top:0.5rem;">図2. 同じ話者に属する埋め込みは同心的な分布を形成し、PLDA がクラス間の境界を推定する</p>
       </div>
       <ul>
