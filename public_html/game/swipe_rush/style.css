@@ -1,0 +1,271 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    /* Prevent body scroll, handle in #feed */
+    width: 100vw;
+    height: 100vh;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 480px;
+    /* Mobile width on desktop */
+    margin: 0 auto;
+    background: #111;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Scroll Feed */
+#feed {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#feed::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+/* Individual Slide */
+.slide {
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    overflow: hidden;
+    border-bottom: 1px solid #222;
+}
+
+/* Canvas content */
+canvas.video-content {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Intro UI */
+.intro-slide {
+    flex-direction: column;
+    text-align: center;
+    background: linear-gradient(45deg, #2c3e50, #000000);
+    padding: 20px;
+}
+
+.intro-slide h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #ff00cc, #3333ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.instruction {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    line-height: 1.6;
+}
+
+#start-btn {
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    background: #ff0055;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* UI Overlay */
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Allow click through to Feed */
+}
+
+.top-bar {
+    position: absolute;
+    top: 40px;
+    /* Safe area */
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+    z-index: 10;
+}
+
+#time-display {
+    color: #ffeb3b;
+}
+
+.action-bar {
+    position: absolute;
+    right: 10px;
+    bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    pointer-events: auto;
+    /* Enable buttons */
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: transform 0.1s;
+}
+
+.action-btn:active {
+    transform: scale(0.9);
+}
+
+.action-btn i {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.action-btn .count {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    text-shadow: 1px 1px 1px black;
+}
+
+.functional:active i {
+    color: #ff4444;
+    /* Feedback for dislike */
+}
+
+.video-info {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+    width: 70%;
+    text-align: left;
+    text-shadow: 1px 1px 2px black;
+}
+
+.video-info .author {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.video-info .description {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.video-info .music {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+}
+
+.video-info .music::before {
+    content: '♫';
+    margin-right: 5px;
+}
+
+/* Game Over */
+#game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    pointer-events: auto;
+}
+
+#game-over h2 {
+    font-size: 3rem;
+    color: #ff0055;
+    margin-bottom: 20px;
+}
+
+#game-over button {
+    padding: 10px 30px;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.home-link {
+    margin-top: 20px;
+    color: #ccc;
+    text-decoration: none;
+}
+
+/* Bonus Animation */
+.bonus-popup {
+    position: absolute;
+    color: #00ff00;
+    font-size: 2rem;
+    font-weight: bold;
+    animation: fadeUp 1s forwards;
+    pointer-events: none;
+}
+
+@keyframes fadeUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}

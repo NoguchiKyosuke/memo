@@ -1,4 +1,2 @@
-# Ignore log files (fix: remove mistaken leading "./")
-MEMO/LOG/*.log
-SDV/LOG/*.log
-SPEECH/LOG/*.log
+public_html/voice/models/
+*safeBackup*

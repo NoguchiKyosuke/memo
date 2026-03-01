@@ -1,0 +1,133 @@
+[2025-12-02 00:52:46] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db9cedf521.png' '/tmp/ocr_out_692db9cedf522' -l eng+jpn 2>&1
+[2025-12-02 00:52:47] Return: 0
+Output: Estimating resolution as 270
+[2025-12-02 00:53:04] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692db9e06bd16.png' '/tmp/ocr_out_692db9e06bd1a' -l eng+jpn 2>&1
+[2025-12-02 00:53:15] Return: 0
+Output: Detected 348 diacritics
+[2025-12-02 00:53:57] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692dba1548176.png' '/tmp/ocr_out_692dba1548177' -l eng+jpn 2>&1
+[2025-12-02 00:53:58] Return: 0
+Output: Estimating resolution as 411
+Detected 202 diacritics
+[2025-12-02 00:54:02] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692dba1adb0d9.png' '/tmp/ocr_out_692dba1adb0dc' -l eng+jpn 2>&1
+[2025-12-02 00:54:10] Return: 0
+Output: Estimating resolution as 411
+Detected 202 diacritics
+[2025-12-02 09:25:05] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692e31e193568.png' '/tmp/ocr_out_692e31e19356b' -l eng+jpn 2>&1
+[2025-12-02 09:25:14] Return: 0
+Output: Detected 29 diacritics
+[2025-12-02 17:27:14] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692ea2e20ce38.png' '/tmp/ocr_out_692ea2e20ce3a' -l eng+jpn 2>&1
+[2025-12-02 17:27:15] Return: 0
+Output: 
+[2025-12-03 16:12:42] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692fe2ea88f50.png' '/tmp/ocr_out_692fe2ea88f51' -l eng+jpn 2>&1
+[2025-12-03 16:12:43] Return: 0
+Output: Estimating resolution as 166
+Detected 44 diacritics
+[2025-12-03 16:20:19] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_692fe4b331181.png' '/tmp/ocr_out_692fe4b331182' -l eng+jpn 2>&1
+[2025-12-03 16:20:19] Return: 0
+Output: 
+[2025-12-05 13:41:15] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_6932626b02d7f.png' '/tmp/ocr_out_6932626b02d80' -l eng+jpn 2>&1
+[2025-12-05 13:41:15] Return: 0
+Output: Estimating resolution as 605
+[2025-12-05 13:41:31] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_6932627b25050.png' '/tmp/ocr_out_6932627b25051' -l eng+jpn 2>&1
+[2025-12-05 13:41:31] Return: 0
+Output: Estimating resolution as 313
+[2025-12-05 13:41:39] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693262839d0be.png' '/tmp/ocr_out_693262839d0bf' -l eng+jpn 2>&1
+[2025-12-05 13:41:39] Return: 0
+Output: Estimating resolution as 805
+[2025-12-06 15:37:28] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_6933cf28d9e2e.png' '/tmp/ocr_out_6933cf28d9e30' -l eng+jpn 2>&1
+[2025-12-06 15:37:35] Return: 0
+Output: Detected 348 diacritics
+[2025-12-06 15:37:56] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_6933cf44d74a4.png' '/tmp/ocr_out_6933cf44d74a5' -l eng+jpn 2>&1
+[2025-12-06 15:37:57] Return: 0
+Output: Estimating resolution as 296
+[2025-12-06 15:39:16] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_6933cf9466fee.png' '/tmp/ocr_out_6933cf9466fef' -l eng+jpn 2>&1
+[2025-12-06 15:39:17] Return: 0
+Output: Estimating resolution as 259
+Detected 25 diacritics
+[2025-12-09 23:09:47] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_69382dab0ce3d.png' '/tmp/ocr_out_69382dab0ce3e' -l eng+jpn 2>&1
+[2025-12-09 23:09:48] Return: 0
+Output: Estimating resolution as 272
+[2025-12-09 23:10:08] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_69382dc00cff8.png' '/tmp/ocr_out_69382dc00cff9' -l eng+jpn 2>&1
+[2025-12-09 23:10:15] Return: 0
+Output: 
+[2025-12-12 14:46:59] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bac5300c2a.png' '/tmp/ocr_out_693bac5300c2b' -l eng+jpn 2>&1
+[2025-12-12 14:46:59] Return: 0
+Output: Empty page!!
+Empty page!!
+[2025-12-12 14:47:56] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bac8c0738c.png' '/tmp/ocr_out_693bac8c0738d' -l eng+jpn 2>&1
+[2025-12-12 14:47:56] Return: 0
+Output: 
+[2025-12-12 14:51:15] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bad539bc1d.png' '/tmp/ocr_out_693bad539bc1f' -l eng+jpn 2>&1
+[2025-12-12 14:51:16] Return: 1
+Output: Error in fopenReadStream: file not found
+Error in pixRead: image file not found: /* eapp.h -- internet (TCP/IP) program configurations */
+Image file /* eapp.h -- internet (TCP/IP) program configurations */ cannot be read!
+Error during processing.
+[2025-12-12 14:54:42] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bae22381ff.png' '/tmp/ocr_out_693bae2238200' -l eng+jpn 2>&1
+[2025-12-12 14:54:42] Return: 1
+Output: Error in fopenReadStream: file not found
+Error in pixRead: image file not found: /* eapp.h -- internet (TCP/IP) program configurations */
+Image file /* eapp.h -- internet (TCP/IP) program configurations */ cannot be read!
+Error during processing.
+[2025-12-12 14:55:06] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bae3aab0b4.png' '/tmp/ocr_out_693bae3aab0b7' -l eng+jpn 2>&1
+[2025-12-12 14:55:06] Return: 1
+Output: Error in fopenReadStream: file not found
+Error in pixRead: image file not found: /* eapp.h -- internet (TCP/IP) program configurations */
+Image file /* eapp.h -- internet (TCP/IP) program configurations */ cannot be read!
+Error during processing.
+[2025-12-12 14:56:06] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bae76a3ba3.png' '/tmp/ocr_out_693bae76a3ba4' -l eng+jpn 2>&1
+[2025-12-12 14:56:07] Return: 1
+Output: Error in fopenReadStream: file not found
+Error in pixRead: image file not found: /* eapp.h -- internet (TCP/IP) program configurations */
+Image file /* eapp.h -- internet (TCP/IP) program configurations */ cannot be read!
+Error during processing.
+[2025-12-12 14:57:22] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693baec232016.png' '/tmp/ocr_out_693baec232017' -l eng+jpn 2>&1
+[2025-12-12 14:57:22] Return: 0
+Output: 
+[2025-12-12 14:57:51] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693baedf0111a.png' '/tmp/ocr_out_693baedf0111b' -l eng+jpn 2>&1
+[2025-12-12 14:57:51] Return: 0
+Output: 
+[2025-12-12 14:58:10] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693baef2ed838.png' '/tmp/ocr_out_693baef2ed83a' -l eng+jpn 2>&1
+[2025-12-12 14:58:11] Return: 0
+Output: 
+[2025-12-12 15:01:23] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bafb3c975a.png' '/tmp/ocr_out_693bafb3c975b' -l eng+jpn 2>&1
+[2025-12-12 15:01:24] Return: 0
+Output: 
+[2025-12-12 15:01:59] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bafd7ace0b.png' '/tmp/ocr_out_693bafd7ace0c' -l eng+jpn 2>&1
+[2025-12-12 15:01:59] Return: 0
+Output: 
+[2025-12-12 15:04:28] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bb06cbf034.png' '/tmp/ocr_out_693bb06cbf035' -l eng+jpn 2>&1
+[2025-12-12 15:04:29] Return: 0
+Output: Estimating resolution as 168
+[2025-12-12 15:04:36] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bb074a8b83.png' '/tmp/ocr_out_693bb074a8b85' -l eng+jpn 2>&1
+[2025-12-12 15:04:36] Return: 0
+Output: 
+[2025-12-12 15:04:39] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bb077c1c64.png' '/tmp/ocr_out_693bb077c1c65' -l eng+jpn 2>&1
+[2025-12-12 15:04:40] Return: 0
+Output: 
+[2025-12-12 15:29:38] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bb652df907.png' '/tmp/ocr_out_693bb652df909' -l eng+jpn 2>&1
+[2025-12-12 15:29:39] Return: 1
+Output: libpng error: [20]gra: invalid chunk type
+Error in pixReadStreamPng: internal png error
+Error in pixReadStream: png: no pix returned
+Error in pixRead: pix not read
+Error during processing.
+[2025-12-12 16:17:27] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bc187f291e.png' '/tmp/ocr_out_693bc187f291f' -l eng+jpn 2>&1
+[2025-12-12 16:17:28] Return: 0
+Output: 
+[2025-12-12 16:18:55] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bc1df54962.png' '/tmp/ocr_out_693bc1df54963' -l eng+jpn 2>&1
+[2025-12-12 16:18:55] Return: 0
+Output: 
+[2025-12-12 16:20:35] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bc24363f81.png' '/tmp/ocr_out_693bc24363f83' -l eng+jpn 2>&1
+[2025-12-12 16:20:35] Return: 0
+Output: 
+[2025-12-12 16:20:47] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693bc24f2b32c.png' '/tmp/ocr_out_693bc24f2b32e' -l eng+jpn 2>&1
+[2025-12-12 16:20:50] Return: 0
+Output: Estimating resolution as 237
+Detected 61 diacritics
+[2025-12-15 12:18:37] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_693f7e0d347e3.png' '/tmp/ocr_out_693f7e0d347e4' -l eng+jpn 2>&1
+[2025-12-15 12:18:37] Return: 0
+Output: 
+[2025-12-16 14:21:55] Command: export TESSDATA_PREFIX='/home/mahjong/memosite.jp/public_html/ocr_app/tessdata' && '/home/mahjong/memosite.jp/public_html/ocr_app/lib/ld-linux-x86-64.so.2' --library-path '/home/mahjong/memosite.jp/public_html/ocr_app/lib' '/home/mahjong/memosite.jp/public_html/ocr_app/bin/tesseract' '/tmp/ocr_6940ec7339515.png' '/tmp/ocr_out_6940ec7339516' -l eng+jpn 2>&1
+[2025-12-16 14:21:55] Return: 0
+Output: Estimating resolution as 159

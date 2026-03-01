@@ -1,0 +1,19 @@
+{
+  "name": "メモ帳 タイムマネージャ",
+  "short_name": "タイムマネージャ",
+  "lang": "ja-JP",
+  "start_url": "/timekeeper.php",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0066cc",
+  "description": "正確な現在時刻の表示と最大5件のアラーム管理を提供するメモ帳の時間管理アプリです。",
+  "icons": [
+    {
+      "src": "/static/icons/timekeeper.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
