@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【完全体・超安定版】Abareru-Kun Quest: The Soul Resonance</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Kiwi+Maru:wght@400;500&family=Orbitron:wght@700;900&family=Shippori+Mincho:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /*
+        ========================================
+        --- I. 基本設定 & 宇宙の法則 ---
+        ========================================
+        */
+        :root {
+            --color-bg: #0A0A14;
+            --color-surface: rgba(15, 52, 96, 0.5);
+            --color-primary: #e94560;
+            --color-secondary: #533483;
+            --color-accent: #fca311;
+            --color-text: #E0E0E0;
+            --color-text-muted: #A0A0A0;
+            --color-border: rgba(224, 224, 224, 0.15);
+            --font-body: 'Kiwi Maru', serif;
+            --font-heading: 'Shippori Mincho', serif;
+            --font-impact: 'Orbitron', sans-serif;
+            --font-pixel: 'DotGothic16', sans-serif;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow: hidden;
+            /* Prevent scrolling outside the game */
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-body);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header,
+        section,
+        footer {
+            padding: 80px 20px;
+            border-bottom: 1px solid var(--color-border);
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            margin-bottom: 60px;
+            text-shadow: 0 0 15px var(--color-primary);
+        }
+
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            margin: 0 auto 30px auto;
+            max-width: 800px;
+            text-align: left;
+        }
+
+        /*
+        ========================================
+        --- II. ゲームセクション ---
+        ========================================
+        */
+        #game-section {
+            padding: 40px 0;
+        }
+
+        #game-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #game-container {
+            width: 800px;
+            height: 600px;
+            position: relative;
+            background: #000;
+            border: 2px solid var(--color-border);
+            box-shadow: 0 0 30px var(--color-secondary);
+        }
+
+        #game-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+            /* ドット絵をくっきり表示 */
+        }
+
+        #game-info {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: var(--color-surface);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #game-info h3 {
+            font-family: var(--font-pixel);
+            color: var(--color-accent);
+            font-size: 1.5rem;
+        }
+
+        #game-info p {
+            font-family: var(--font-pixel);
+            line-height: 1.8;
+        }
+
+        #start-game-button {
+            padding: 15px 40px;
+            font-family: var(--font-impact);
+            font-size: 1.5rem;
+            color: white;
+            background: var(--color-primary);
+            border: 2px solid var(--color-accent);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #start-game-button:hover {
+            background: var(--color-secondary);
+            transform: scale(1.05);
+        }
+
+        #game-ui-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game-ui-container">
+        <div id="game-info">
+            <div id="initial-info">
+                <h1 style="font-family: var(--font-heading);">Abareru-Kun Quest</h1>
+                <h3 style="margin-top: 40px;">操作方法</h3>
+                <p>
+                    【フィールド】<br>
+                    矢印キー: 移動<br>
+                    Enterキー: 調べる / 話す
+                </p>
+                <p>
+                    【戦闘 / メニュー】<br>
+                    矢印キー: コマンド選択<br>
+                    Enterキー: 決定
+                </p>
+                <button id="start-game-button" style="margin-top: 20px;">ゲームを開始する</button>
+            </div>
+            <div id="loading-info" style="display:none;">
+                <h3>魂のデータをロード中...</h3>
+                <p>この世界は文字(AA)で構築されています。心の目で感じてください。</p>
+            </div>
+        </div>
+        <div id="game-container" style="display: none;">
+            <canvas id="game-canvas" width="800" height="600"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // ==================================================================
+        // --- III. ゲームエンジン & ロジック (完全体・超安定版) ---
+        // ==================================================================
+        // ※注意：このスクリプトは非常に長大です。
+        // ==================================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const startButton = document.getElementById('start-game-button');
+            const initialInfo = document.getElementById('initial-info');
+            const loadingInfo = document.getElementById('loading-info');
+            const gameInfoContainer = document.getElementById('game-info');
+            const gameContainer = document.getElementById('game-container');
+            let gameInstance = null;
+
+            startButton.addEventListener('click', () => {
+                if (!gameInstance) {
+                    initialInfo.style.display = 'none';
+                    loadingInfo.style.display = 'block';
+
+                    setTimeout(() => {
+                        gameInfoContainer.style.display = 'none';
+                        gameContainer.style.display = 'block';
+                        gameInstance = new Game();
+                        gameInstance.init();
+                    }, 500);
+                }
+            });
+        });
+
+        // ========================================
+        // --- 1. 定数と設定 (Constants & Config) ---
+        // ========================================
+        const CONFIG = {
+            CANVAS_WIDTH: 800,
+            CANVAS_HEIGHT: 600,
+            TILE_SIZE: 32,
+            FONT_SIZE: 16,
+            FONT_FAMILY: "'DotGothic16', monospace",
+            PLAYER_SPEED: 4,
+            ENCOUNTER_RATE: 0.05,
+            DEBUG_MODE: true, // Set to false to hide debug info
+        };
+
+        // ========================================
+        // --- 2. アセット管理 (Asset Manager) ---
+        // ========================================
+        const ASSETS = {
+            player: {
+                down: ["  O  \n /|\\ \n / \\ ", "  O  \n /|\\ \n  |  "],
+                up: ["  O  \n /|\\ \n / \\ ", "  O  \n /|\\ \n  |  "],
+                left: ["  O  \n /|  \n /|  ", "  O  \n  |\\ \n  |\\ "],
+                right: ["  O  \n  |\\ \n  |\\ ", "  O  \n /|  \n /|  "],
+            },
+            npc1: { idle: [" YEAH \n  O  \n /|\\ \n / \\ "] },
+            npc2: { idle: ["  /   \n -O-  \n  |   \n / \\ "] },
+            tiles: {
+                grass: " `'.` ",
+                ground: " .... ",
+                wall: "######",
+                tree: " /\\ \n/..\\",
+                heal: "  +  "
+            },
+            enemy: {
+                idle: ["  .---.  \n / o o \\ \n|  ^  |\n \\~-~ / \n  '---'  ", "  .---.  \n / O O \\ \n|  ^  |\n \\~-~ / \n  '---'  "],
+                attack: ["  .---.  \n /> < \\ \n|  O  |\n \\WWW/ \n  '---'  "],
+                hit: ["  .---.  \n / x x \\ \n|  >  |\n \\~-~ / \n  '---'  "],
+                dead: ["  .---.  \n / . . \\ \n|  _  |\n \\   / \n  '---'  "]
+            }
+        };
+
+        // ========================================
+        // --- 3. ゲームの核 (Game Core) ---
+        // ========================================
+        class Game {
+            constructor() {
+                this.canvas = document.getElementById('game-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.gameState = 'FIELD'; // FIELD, BATTLE, EVENT
+                this.field = null;
+                this.battle = null;
+                this.eventManager = null;
+                this.lastTime = 0;
+                this.accumulator = 0;
+                this.deltaTime = 1 / 60;
+            }
+
+            init() {
+                console.log("Initializing Game...");
+                this.canvas.width = CONFIG.CANVAS_WIDTH;
+                this.canvas.height = CONFIG.CANVAS_HEIGHT;
+                this.ctx.font = `${CONFIG.FONT_SIZE}px ${CONFIG.FONT_FAMILY}`;
+
+                this.input = new InputHandler();
+                this.ui = new UIManager(this.ctx);
+                this.field = new FieldManager(this);
+                this.battle = new BattleManager(this);
+                this.eventManager = new EventManager(this);
+
+                this.field.init();
+
+                requestAnimationFrame(this.gameLoop.bind(this));
+            }
+
+            gameLoop(currentTime) {
+                const frameTime = (currentTime - this.lastTime) / 1000;
+                this.lastTime = currentTime;
+                this.accumulator += frameTime;
+
+                while (this.accumulator >= this.deltaTime) {
+                    this.update(this.deltaTime);
+                    this.input.clearFrameEnd(); // Clear presses after update
+                    this.accumulator -= this.deltaTime;
+                }
+
+                this.draw();
+                requestAnimationFrame(this.gameLoop.bind(this));
+            }
+
+            update(deltaTime) {
+                switch (this.gameState) {
+                    case 'FIELD': this.field.update(deltaTime, this.input); break;
+                    case 'BATTLE': this.battle.update(this.input); break;
+                    case 'EVENT': this.eventManager.update(this.input); break;
+                }
+            }
+
+            draw() {
+                this.ctx.fillStyle = '#000';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                switch (this.gameState) {
+                    case 'FIELD': this.field.draw(this.ctx); break;
+                    case 'BATTLE': this.battle.draw(this.ctx); break;
+                    case 'EVENT':
+                        this.field.draw(this.ctx);
+                        this.eventManager.draw(this.ctx);
+                        break;
+                }
+                if (CONFIG.DEBUG_MODE) this.drawDebugInfo();
+            }
+
+            drawDebugInfo() {
+                this.ctx.fillStyle = 'white';
+                this.ctx.font = '16px sans-serif';
+                this.ctx.fillText(`State: ${this.gameState}`, 10, 20);
+                this.ctx.fillText(`UI Busy: ${this.ui.isBusy()}`, 10, 40);
+                if (this.gameState === 'BATTLE') {
+                    this.ctx.fillText(`Battle State: ${this.battle.state}`, 10, 60);
+                }
+            }
+
+            startBattle() {
+                this.gameState = 'BATTLE';
+                this.battle.start(this.field.player);
+            }
+
+            endBattle(win) {
+                this.gameState = 'FIELD';
+                if (win) {
+                    this.field.player.heal(20);
+                    this.startEvent(["なんとか 魂を しずめることに せいこうした！", "少しだけ 体力が かいふくした！"]);
+                } else {
+                    this.startEvent(["めのまえが まっくらに なった...", "さいごに たちよった 回復ポイントに もどされた。"], () => this.field.player.respawn());
+                }
+            }
+
+            startEvent(messages, onEndCallback = null) {
+                this.gameState = 'EVENT';
+                this.eventManager.start(messages, onEndCallback);
+            }
+
+            endEvent() {
+                this.gameState = 'FIELD';
+            }
+        }
+
+        // ========================================
+        // --- 4. 入力ハンドラ (Input Handler) ---
+        // ========================================
+        class InputHandler {
+            constructor() {
+                this.keys = new Set();
+                this.framePressed = new Set();
+                this.frameReleased = new Set();
+
+                const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '];
+
+                window.addEventListener('keydown', e => {
+                    if (gameKeys.includes(e.key)) {
+                        e.preventDefault();
+                        if (!this.keys.has(e.key)) {
+                            this.framePressed.add(e.key);
+                        }
+                        this.keys.add(e.key);
+                    }
+                });
+                window.addEventListener('keyup', e => {
+                    if (gameKeys.includes(e.key)) {
+                        e.preventDefault();
+                        this.keys.delete(e.key);
+                        this.frameReleased.add(e.key);
+                    }
+                });
+            }
+
+            isDown(key) { return this.keys.has(key); }
+            wasPressed(key) { return this.framePressed.has(key); }
+            wasReleased(key) { return this.frameReleased.has(key); }
+
+            clearFrameEnd() {
+                this.framePressed.clear();
+                this.frameReleased.clear();
+            }
+        }
+
+        // ========================================
+        // --- 5. UIマネージャー (UI Manager) ---
+        // ========================================
+        class UIManager {
+            constructor(ctx) {
+                this.ctx = ctx;
+                this.textBox = null;
+                this.menu = null;
+            }
+
+            showTextBox(textLines, onEndCallback = null) {
+                this.textBox = new TextBox(this.ctx, textLines, onEndCallback);
+            }
+
+            showMenu(options, onSelectCallback, geometry = {}) {
+                this.menu = new Menu(this.ctx, options, onSelectCallback, geometry.x, geometry.y, geometry.width, geometry.height);
+            }
+
+            hideMenu() { this.menu = null; }
+
+            update(input) {
+                if (this.textBox) {
+                    this.textBox.update(input);
+                    if (this.textBox.isFinished) {
+                        this.textBox = null;
+                    }
+                } else if (this.menu) { // Prevent menu input while textbox is active
+                    this.menu.update(input);
+                }
+            }
+
+            draw() {
+                if (this.menu) this.menu.draw();
+                if (this.textBox) this.textBox.draw();
+            }
+
+            isBusy() { return this.textBox !== null; }
+        }
+
+        class TextBox {
+            constructor(ctx, textLines, callback) {
+                this.ctx = ctx;
+                this.x = 50; this.y = CONFIG.CANVAS_HEIGHT - 150;
+                this.width = CONFIG.CANVAS_WIDTH - 100; this.height = 120;
+                this.textLines = textLines;
+                this.currentLine = 0;
+                this.displayedText = ''; this.charIndex = 0;
+                this.speed = 2; this.counter = 0;
+                this.isFinished = false;
+                this.onEndCallback = callback;
+            }
+
+            update(input) {
+                if (this.isFinished) return;
+
+                if (input.wasPressed('Enter')) {
+                    const currentLineText = this.textLines[this.currentLine];
+                    if (this.charIndex < currentLineText.length) {
+                        this.charIndex = currentLineText.length;
+                        this.displayedText = currentLineText;
+                    } else {
+                        this.currentLine++;
+                        if (this.currentLine >= this.textLines.length) {
+                            this.isFinished = true;
+                            if (this.onEndCallback) this.onEndCallback();
+                            return; // BUG FIX: Immediately exit after finishing.
+                        } else {
+                            this.charIndex = 0; this.displayedText = '';
+                        }
+                    }
+                }
+
+                this.counter++;
+                if (this.counter >= this.speed) {
+                    // BUG FIX: Add a safety check to ensure textLines[currentLine] exists.
+                    if (this.textLines[this.currentLine] && this.charIndex < this.textLines[this.currentLine].length) {
+                        this.charIndex++;
+                        this.displayedText = this.textLines[this.currentLine].substring(0, this.charIndex);
+                    }
+                    this.counter = 0;
+                }
+            }
+
+            draw() {
+                this.ctx.fillStyle = 'rgba(0, 0, 10, 0.8)';
+                this.ctx.fillRect(this.x, this.y, this.width, this.height);
+                this.ctx.strokeStyle = '#FFF'; this.ctx.lineWidth = 4;
+                this.ctx.strokeRect(this.x, this.y, this.width, this.height);
+
+                this.ctx.fillStyle = '#FFF'; this.ctx.font = `24px ${CONFIG.FONT_FAMILY}`;
+                this.ctx.fillText(this.displayedText, this.x + 20, this.y + 50);
+
+                if (this.textLines[this.currentLine] && this.charIndex >= this.textLines[this.currentLine].length) {
+                    const arrowX = this.x + this.width - 40;
+                    const arrowY = this.y + this.height - 20;
+                    if (Math.floor(Date.now() / 500) % 2 === 0) {
+                        this.ctx.fillText('▼', arrowX, arrowY);
+                    }
+                }
+            }
+        }
+
+        class Menu {
+            constructor(ctx, options, callback, x, y, width, height) {
+                this.ctx = ctx;
+                this.options = options; this.onSelectCallback = callback; this.cursor = 0;
+                this.x = x === undefined ? CONFIG.CANVAS_WIDTH - 250 : x;
+                this.y = y === undefined ? CONFIG.CANVAS_HEIGHT - 200 : y;
+                this.width = width || 200;
+                this.height = height || this.options.length * 40 + 40;
+            }
+
+            update(input) {
+                if (input.wasPressed('ArrowUp')) {
+                    this.cursor = (this.cursor > 0) ? this.cursor - 1 : this.options.length - 1;
+                }
+                if (input.wasPressed('ArrowDown')) {
+                    this.cursor = (this.cursor < this.options.length - 1) ? this.cursor + 1 : 0;
+                }
+                if (input.wasPressed('Enter')) {
+                    if (this.options[this.cursor].action) {
+                        this.onSelectCallback(this.options[this.cursor].action);
+                    }
+                }
+            }
+
+            draw() {
+                this.ctx.fillStyle = 'rgba(0, 0, 10, 0.8)';
+                this.ctx.fillRect(this.x, this.y, this.width, this.height);
+                this.ctx.strokeStyle = '#FFF'; this.ctx.lineWidth = 4;
+                this.ctx.strokeRect(this.x, this.y, this.width, this.height);
+
+                this.ctx.fillStyle = '#FFF'; this.ctx.font = `24px ${CONFIG.FONT_FAMILY}`;
+                this.options.forEach((opt, i) => {
+                    this.ctx.fillText(opt.text, this.x + 50, this.y + 40 + i * 40);
+                });
+
+                this.ctx.fillText('▶', this.x + 20, this.y + 40 + this.cursor * 40);
+            }
+        }
+
+        // ========================================
+        // --- 6. スプライトと描画 (Sprite & Drawing) ---
+        // ========================================
+        class Sprite {
+            constructor(spriteData, animationSpeed = 15) {
+                this.data = spriteData; this.frame = 0;
+                this.animationCounter = 0; this.animationSpeed = animationSpeed;
+            }
+
+            update() {
+                this.animationCounter++;
+                if (this.animationCounter > this.animationSpeed) {
+                    this.frame = (this.frame + 1) % this.data.length;
+                    this.animationCounter = 0;
+                }
+            }
+
+            draw(ctx, x, y, options = {}) {
+                const { color = '#FFF', font = `${CONFIG.FONT_SIZE}px ${CONFIG.FONT_FAMILY}` } = options;
+                const spriteLines = this.data[this.frame].split('\n');
+                ctx.fillStyle = color; ctx.font = font;
+                spriteLines.forEach((line, i) => {
+                    ctx.fillText(line, x, y + i * CONFIG.FONT_SIZE);
+                });
+            }
+        }
+
+        function drawAATile(ctx, aa, x, y, color = '#FFF') {
+            const lines = aa.split('\n');
+            ctx.fillStyle = color; ctx.font = `${CONFIG.FONT_SIZE - 2}px monospace`;
+            lines.forEach((line, i) => {
+                ctx.fillText(line, x, y + i * (CONFIG.FONT_SIZE / 2));
+            });
+        }
+
+        // ========================================
+        // --- 7. イベントマネージャー (Event Manager) ---
+        // ========================================
+        class EventManager {
+            constructor(game) { this.game = game; }
+
+            start(messages, onEndCallback = null) {
+                this.game.ui.showTextBox(messages, () => {
+                    if (onEndCallback) onEndCallback();
+                    this.game.endEvent();
+                });
+            }
+            update(input) { this.game.ui.update(input); }
+            draw(ctx) { this.game.ui.draw(ctx); }
+        }
+
+        // ========================================
+        // --- 8. フィールド管理 (Field Manager) ---
+        // ========================================
+        class FieldManager {
+            constructor(game) { this.game = game; this.mapData = null; this.player = null; this.npcs = []; this.camera = null; }
+
+            init() {
+                this.mapData = MAP_DATA_1;
+                this.player = new Player(this, 10 * CONFIG.TILE_SIZE, 10 * CONFIG.TILE_SIZE);
+                this.camera = new Camera(this.player);
+                this.loadNPCs();
+            }
+
+            loadNPCs() {
+                this.npcs = [
+                    new NPC(15 * CONFIG.TILE_SIZE, 15 * CONFIG.TILE_SIZE, ASSETS.npc1, ["イエェェェーイ！！", "このさきは キケンだ！", "くさむらで あばれるたましいに でくわしたら...", "ねっけつで たたかうんだ！ ジャースティス！"]),
+                    new NPC(5 * CONFIG.TILE_SIZE, 20 * CONFIG.TILE_SIZE, ASSETS.npc2, ["あら あなた...", "ことばには ちからが やどります。", "ときには よい しを よむことで...", "みだれた たましいも いやされる ものですよ。"])
+                ];
+            }
+
+            update(deltaTime, input) {
+                if (this.game.ui.isBusy()) {
+                    this.game.ui.update(input);
+                } else {
+                    this.player.update(input, deltaTime);
+                    this.camera.update();
+                    this.checkEvents(input);
+                    this.checkEncounters();
+                }
+            }
+
+            checkEvents(input) {
+                if (input.wasPressed('Enter')) {
+                    const checkX = this.player.x + (CONFIG.TILE_SIZE / 2);
+                    const checkY = this.player.y + (CONFIG.TILE_SIZE / 2);
+
+                    for (const npc of this.npcs) {
+                        if (Math.hypot(npc.x - checkX, npc.y - checkY) < CONFIG.TILE_SIZE) {
+                            this.game.startEvent(npc.messages); return;
+                        }
+                    }
+
+                    const tileX = Math.floor((this.player.x + CONFIG.TILE_SIZE / 2) / CONFIG.TILE_SIZE);
+                    const tileY = Math.floor((this.player.y + CONFIG.TILE_SIZE / 2) / CONFIG.TILE_SIZE);
+                    if (this.mapData[tileY][tileX] === 4) {
+                        this.player.setRespawn(); this.player.fullHeal();
+                        this.game.startEvent(["ふしぎな ひかりに つつまれた...", "たいりょくと りせいが かんぜんに かいふくした！", "さいごに ふれたばしょ として きおくされた。"]);
+                    }
+                }
+            }
+
+            checkEncounters() {
+                if (this.player.isMoving) {
+                    const tileX = Math.floor(this.player.x / CONFIG.TILE_SIZE);
+                    const tileY = Math.floor(this.player.y / CONFIG.TILE_SIZE);
+                    if (this.mapData[tileY][tileX] === 2 && Math.random() < CONFIG.ENCOUNTER_RATE) {
+                        this.game.startBattle();
+                    }
+                }
+            }
+
+            draw(ctx) {
+                ctx.save(); ctx.translate(-this.camera.x, -this.camera.y);
+                this.drawMap(ctx);
+                this.npcs.forEach(npc => npc.draw(ctx));
+                this.player.draw(ctx);
+                ctx.restore();
+                this.game.ui.draw(ctx);
+            }
+
+            drawMap(ctx) {
+                const startCol = Math.floor(this.camera.x / CONFIG.TILE_SIZE);
+                const endCol = startCol + (CONFIG.CANVAS_WIDTH / CONFIG.TILE_SIZE) + 2;
+                const startRow = Math.floor(this.camera.y / CONFIG.TILE_SIZE);
+                const endRow = startRow + (CONFIG.CANVAS_HEIGHT / CONFIG.TILE_SIZE) + 2;
+
+                for (let y = startRow; y < endRow; y++) {
+                    for (let x = startCol; x < endCol; x++) {
+                        if (y < 0 || y >= this.mapData.length || x < 0 || x >= this.mapData[0].length) continue;
+                        const tileId = this.mapData[y][x], drawX = x * CONFIG.TILE_SIZE, drawY = y * CONFIG.TILE_SIZE;
+                        let tileAA, color;
+                        switch (tileId) {
+                            case 0: tileAA = ASSETS.tiles.ground; color = '#6b8e23'; break;
+                            case 1: tileAA = ASSETS.tiles.wall; color = '#8B4513'; break;
+                            case 2: tileAA = ASSETS.tiles.grass; color = '#228B22'; break;
+                            case 3: tileAA = ASSETS.tiles.tree; color = '#006400'; break;
+                            case 4: tileAA = ASSETS.tiles.heal; color = '#FFD700'; break;
+                            default: tileAA = ' ';
+                        }
+                        drawAATile(ctx, tileAA, drawX, drawY, color);
+                    }
+                }
+            }
+
+            isSolid(x, y) {
+                const tileX = Math.floor(x / CONFIG.TILE_SIZE), tileY = Math.floor(y / CONFIG.TILE_SIZE);
+                if (tileY < 0 || tileY >= this.mapData.length || tileX < 0 || tileX >= this.mapData[0].length) return true;
+                const tileId = this.mapData[tileY][tileX]; return tileId === 1 || tileId === 3;
+            }
+        }
+
+        // ========================================
+        // --- 9. キャラクター (Characters) ---
+        // ========================================
+        class Character {
+            constructor(x, y, spriteAsset) {
+                this.x = x; this.y = y; this.sprites = {};
+                for (const dir in spriteAsset) this.sprites[dir] = new Sprite(spriteAsset[dir]);
+                this.direction = 'down'; this.isMoving = false;
+            }
+            draw(ctx) { this.sprites[this.direction].draw(ctx, this.x, this.y); }
+            update() { if (this.isMoving) this.sprites[this.direction].update(); }
+        }
+
+        class Player extends Character {
+            constructor(field, x, y) {
+                super(x, y, ASSETS.player);
+                this.field = field; this.speed = CONFIG.PLAYER_SPEED;
+                this.hp = 100; this.maxHp = 100; this.sanity = 100; this.maxSanity = 100;
+                this.respawnX = x; this.respawnY = y;
+            }
+
+            update(input, deltaTime) {
+                this.isMoving = false; let dx = 0, dy = 0;
+                if (input.isDown('ArrowUp')) { dy = -this.speed; this.direction = 'up'; }
+                else if (input.isDown('ArrowDown')) { dy = this.speed; this.direction = 'down'; }
+                else if (input.isDown('ArrowLeft')) { dx = -this.speed; this.direction = 'left'; }
+                else if (input.isDown('ArrowRight')) { dx = this.speed; this.direction = 'right'; }
+
+                if (dx !== 0 || dy !== 0) { this.isMoving = true; this.move(dx, dy); }
+                super.update();
+            }
+
+            move(dx, dy) {
+                const nextX = this.x + dx, nextY = this.y + dy;
+                const TILE_SIZE_MINUS_1 = CONFIG.TILE_SIZE - 1;
+                if (!this.field.isSolid(nextX, nextY) &&
+                    !this.field.isSolid(nextX + TILE_SIZE_MINUS_1, nextY) &&
+                    !this.field.isSolid(nextX, nextY + TILE_SIZE_MINUS_1) &&
+                    !this.field.isSolid(nextX + TILE_SIZE_MINUS_1, nextY + TILE_SIZE_MINUS_1)) {
+                    this.x = nextX; this.y = nextY;
+                }
+            }
+
+            setRespawn() { this.respawnX = this.x; this.respawnY = this.y; }
+            respawn() { this.x = this.respawnX; this.y = this.respawnY; this.fullHeal(); }
+            heal(amount) { this.hp = Math.min(this.maxHp, this.hp + amount); }
+            fullHeal() { this.hp = this.maxHp; this.sanity = this.maxSanity; }
+        }
+
+        class NPC extends Character {
+            constructor(x, y, spriteAsset, messages) { super(x, y, spriteAsset); this.messages = messages; this.direction = 'idle'; }
+            draw(ctx) { this.sprites.idle.draw(ctx, this.x, this.y); }
+        }
+
+        // ========================================
+        // --- 10. カメラ (Camera) ---
+        // ========================================
+        class Camera {
+            constructor(target) { this.target = target; this.x = 0; this.y = 0; }
+            update() {
+                this.x = this.target.x - (CONFIG.CANVAS_WIDTH / 2) + (CONFIG.TILE_SIZE / 2);
+                this.y = this.target.y - (CONFIG.CANVAS_HEIGHT / 2) + (CONFIG.TILE_SIZE / 2);
+                this.x = Math.max(0, this.x); this.y = Math.max(0, this.y);
+            }
+        }
+
+        // ========================================
+        // --- 11. 戦闘管理 (Battle Manager) ---
+        // ========================================
+        class BattleManager {
+            constructor(game) { this.game = game; this.state = 'IDLE'; }
+
+            start(player) {
+                this.state = 'INTRO'; this.turn = 0;
+                this.player = player;
+                this.enemy = { hp: 100, maxHp: 100, sprite: new Sprite(ASSETS.enemy.idle, 30), name: "あばれるたましい" };
+                this.game.ui.showTextBox([`${this.enemy.name}が あらわれた！`], () => {
+                    this.state = 'PLAYER_TURN'; this.showPlayerCommands();
+                });
+            }
+
+            showPlayerCommands() {
+                this.game.ui.showMenu([
+                    { text: 'こうげき', action: 'attack' }, { text: 'じゅもん', action: 'magic' },
+                    { text: 'どうぐ', action: 'item' }, { text: 'にげる', action: 'run' }
+                ], action => this.handlePlayerAction(action));
+            }
+
+            handlePlayerAction(action) {
+                this.game.ui.hideMenu();
+                this.state = "PLAYER_ACTION";
+                switch (action) {
+                    case 'attack': this.handleAttack(); break;
+                    case 'magic': this.game.ui.showTextBox(["まだ じゅもんは おぼえていない！"], () => this.endPlayerTurn()); break;
+                    case 'item': this.game.ui.showTextBox(["まだ どうぐは もっていない！"], () => this.endPlayerTurn()); break;
+                    case 'run': this.handleRun(); break;
+                }
+            }
+
+            handleAttack() {
+                const damage = 10 + Math.floor(Math.random() * 5);
+                this.enemy.hp -= damage;
+                this.enemy.sprite = new Sprite(ASSETS.enemy.hit, 10);
+                this.game.ui.showTextBox([`きみの こうげき！`, `${this.enemy.name}に ${damage}の ダメージ！`], () => this.endPlayerTurn());
+            }
+
+            handleRun() {
+                if (Math.random() > 0.5) {
+                    this.game.ui.showTextBox(["うまく にげきれた！"], () => { this.state = 'OUTRO'; this.game.endBattle(true); });
+                } else {
+                    this.game.ui.showTextBox(["にげられなかった！"], () => this.endPlayerTurn());
+                }
+            }
+
+            endPlayerTurn() {
+                if (this.enemy.hp <= 0) {
+                    this.game.ui.showTextBox([`${this.enemy.name}を たおした！`], () => { this.state = 'OUTRO'; this.game.endBattle(true); });
+                    return;
+                }
+                this.state = 'ENEMY_TURN';
+                setTimeout(() => this.enemyTurn(), 1000);
+            }
+
+            enemyTurn() {
+                const damage = 5 + Math.floor(Math.random() * 5);
+                this.player.hp -= damage;
+                this.enemy.sprite = new Sprite(ASSETS.enemy.attack, 15);
+                this.game.ui.showTextBox([`${this.enemy.name}の こうげき！`, `きみは ${damage}の ダメージを うけた！`], () => {
+                    if (this.player.hp <= 0) {
+                        this.game.ui.showTextBox(["きみは ちからつきた..."], () => { this.state = 'OUTRO'; this.game.endBattle(false); });
+                    } else {
+                        this.state = 'PLAYER_TURN'; this.showPlayerCommands();
+                    }
+                });
+            }
+
+            update(input) {
+                this.game.ui.update(input);
+                if (this.enemy) this.enemy.sprite.update();
+            }
+
+            draw(ctx) {
+                ctx.fillStyle = '#112'; ctx.fillRect(0, 0, CONFIG.CANVAS_WIDTH, CONFIG.CANVAS_HEIGHT);
+                if (this.enemy) this.enemy.sprite.draw(ctx, CONFIG.CANVAS_WIDTH / 2 - 50, 100);
+                this.drawStatus(ctx); this.game.ui.draw(ctx);
+            }
+
+            drawStatus(ctx) {
+                const x = 50, y = CONFIG.CANVAS_HEIGHT - 200, width = 300, height = 150;
+                ctx.fillStyle = 'rgba(0, 0, 10, 0.8)'; ctx.fillRect(x, y, width, height);
+                ctx.strokeStyle = '#FFF'; ctx.lineWidth = 4; ctx.strokeRect(x, y, width, height);
+                ctx.fillStyle = '#FFF'; ctx.font = `24px ${CONFIG.FONT_FAMILY}`;
+                ctx.fillText("せいしんりょく", x + 20, y + 40);
+                ctx.fillText(`HP: ${this.player.hp} / ${this.player.maxHp}`, x + 20, y + 80);
+                ctx.fillText(`理性: ${this.player.sanity} / ${this.player.maxSanity}`, x + 20, y + 120);
+            }
+        }
+
+        // ========================================
+        // --- 12. マップデータ (Map Data) ---
+        // ========================================
+        const MAP_DATA_1 = [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 3, 3, 0, 2, 2, 2, 0, 3, 0, 2, 2, 0, 1, 1, 0, 3, 3, 0, 2, 2, 2, 0, 3, 0, 3, 3, 0, 1],
+            [1, 0, 3, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 3, 0, 2, 2, 2, 0, 0, 0, 0, 3, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 2, 2, 0, 3, 3, 3, 0, 1, 1, 1, 1, 1, 0, 3, 0, 2, 2, 2, 0, 3, 3, 3, 1, 1, 1, 1, 1, 1],
+            [1, 0, 2, 2, 0, 3, 0, 0, 0, 1, 4, 0, 0, 1, 0, 0, 0, 2, 2, 2, 0, 3, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 3, 3, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 0, 3, 0, 2, 2, 2, 0, 0, 1, 1, 0, 1, 1, 0, 0, 2, 2, 2, 0, 3, 3, 0, 0, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 3, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 3, 3, 0, 2, 2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 0, 3, 3, 0, 3, 0, 1, 0, 0, 1, 0, 1],
+            [1, 0, 0, 3, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 3, 0, 0, 0, 1, 0, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 2, 2, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        ];
+    </script>
+
+</body>
+
+</html>

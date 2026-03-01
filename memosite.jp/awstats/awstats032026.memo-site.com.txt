@@ -1,0 +1,267 @@
+AWSTATS DATA FILE 7.9 (build 20230108)
+# If you remove this file, all statistics for date 202603 will be lost/reset.
+# Last config file used to build this data file was /home/mahjong/memosite.jp/awstats/awstats.memo-site.com.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2051                
+POS_TIME 2730                
+POS_VISITOR 6175                
+POS_DAY 6475                
+POS_DOMAIN 3272                
+POS_LOGIN 3510                
+POS_ROBOT 3665                
+POS_WORMS 4056                
+POS_EMAILSENDER 4187                
+POS_EMAILRECEIVER 4330                
+POS_SESSION 6554                
+POS_FILESIZE 6919                
+POS_SIDER 6710                
+POS_FILETYPES 4465                
+POS_DOWNLOADS 4625                
+POS_OS 4673                
+POS_BROWSER 4771                
+POS_SCREENSIZE 4879                
+POS_UNKNOWNREFERER 4953                
+POS_UNKNOWNREFERERBROWSER 5040                
+POS_ORIGIN 5122                
+POS_SEREFERRALS 5254                
+POS_PAGEREFS 5398                
+POS_SEARCHWORDS 5546                
+POS_KEYWORDS 5698                
+POS_MISC 2394                
+POS_ERRORS 5757                
+POS_CLUSTER 3366                
+POS_SIDER_404 5856                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20260301191130 50 12496 15913929202100
+FirstTime 20260301015237
+LastTime 20260301151126
+LastUpdate 20260301200021 29 0 29 0 0
+TotalVisits 6                   
+TotalUnique 6                   
+MonthHostsKnown 0                   
+MonthHostsUnknown 6                   
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+WindowsMediaPlayerSupport 0 0 0
+RealPlayerSupport 0 0 0
+DirectorSupport 0 0 0
+PDFSupport 0 0 0
+QuickTimeSupport 0 0 0
+JavascriptDisabled 0 0 0
+TotalMisc 0 0 0
+FlashSupport 0 0 0
+AddToFavourites 0 0 0
+JavaEnabled 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 0 0 0 0 1 100050
+1 2 3 10438 1 1 231
+2 0 0 0 1 2 879
+3 4 6 20865 2 2 466
+4 0 0 0 1 1 6520
+5 0 0 0 0 0 0
+6 2 2 3084 1 1 252
+7 0 0 0 0 0 0
+8 0 0 0 1 1 1317
+9 0 0 0 3 5 31724
+10 0 0 0 0 0 0
+11 0 0 0 2 2 499
+12 0 0 0 2 3 89044
+13 0 0 0 2 2 13325
+14 0 0 0 2 2 13984
+15 7 13 42651 1 5 8653
+16 0 0 0 0 0 0
+17 0 0 0 1 4 8393
+18 0 0 0 4 4 9949
+19 0 0 0 1 1 3051
+20 0 0 0 0 0 0
+21 0 0 0 0 0 0
+22 0 0 0 0 0 0
+23 0 0 0 0 0 0
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 2
+jp 9 15 45735
+us 6 9 31303
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 7
+Googlebot/ 9 42475 20260301180408 0
+bingbot/ 4 114530 20260301180600 0
+360Spider 3 3761 20260301191130 2
+facebook 3 109607 20260301131049 0
+[\s_+:,\.\;\/\\-]bot 2 13035 20260301142142 0
+bot[\s_+:,\.\;\/\\-] 1 355 20260301123713 1
+robot 1 355 20260301021903 1
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 6
+js 6 16669 0 0
+json 1 545 0 0
+html 9 26719 0 0
+svg 1 531 0 0
+css 2 6346 0 0
+Unknown 5 26228 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 3
+macosx 1 1
+linux 1 1
+win10 22 13
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 3
+firefox124.0 1 1
+opera108.0.0.0 1 1
+chrome145.0.0.0 22 13
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 0
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 9 12
+From1 0 0
+From2 0 0
+From3 0 0
+From4 6 12
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 0
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 0
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 2
+404 1 1317
+301 12 2902
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 1
+/.env 1 -
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 6
+126.131.73.198 7 13 42651 20260301151126
+38.125.69.39 2 3 10438 20260301031619
+23.110.171.99 2 3 10438 20260301015237
+62.216.67.240 2 3 10427 20260301030335
+23.26.61.140 1 1 0 20260301061258
+23.26.47.136 1 1 3084 20260301061258
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 1
+20260301 15 24 77038 6
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 2
+30s-2mn 1
+0s-30s 5
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 6
+/ 6 14856 6 2
+/sdv 3 16378 0 3
+/timekeeper 2 9850 0 0
+/voice/ 2 11018 0 1
+/static/manifest.json 1 545 0 0
+/static/timekeeper-offline.html 1 845 0 0
+END_SIDER
+
+# Payload Range - Payload Frequency
+BEGIN_FILESIZE 6
+500-1K 5
+2K-5K 9
+1K-2K 9
+5K+ 21
+0-44 1
+100-500 16
+END_FILESIZE

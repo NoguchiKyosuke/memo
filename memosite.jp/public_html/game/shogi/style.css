@@ -1,0 +1,507 @@
+:root {
+    --bg-color: #1a1a2e;
+    --text-color: #e0e0e0;
+    --primary: #d4a373;
+    --secondary: #faedcd;
+    --board-color: #e6c288;
+    /* Wood color */
+    --line-color: #333;
+    --highlight: rgba(255, 255, 0, 0.4);
+    --selected: rgba(0, 255, 0, 0.4);
+    --last-move: rgba(255, 100, 100, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', 'Noto Serif JP', serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    height: 95vh;
+    gap: 20px;
+    padding: 10px;
+}
+
+/* Sidebar */
+#sidebar {
+    width: 300px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+h1 {
+    font-family: 'Noto Serif JP', serif;
+    color: var(--primary);
+    text-align: center;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: #444;
+}
+
+.btn.primary {
+    background: var(--primary);
+    color: #1a1a1a;
+    font-weight: bold;
+}
+
+.btn.secondary {
+    background: var(--secondary);
+    color: #1a1a1a;
+}
+
+.btn.danger {
+    background: #ef4444;
+}
+
+.btn.sm {
+    padding: 8px;
+    font-size: 0.9rem;
+}
+
+/* Difficulty Buttons */
+.btn.weak {
+    background: #81c784;
+    /* Soft Green */
+    color: #1b5e20;
+    font-weight: bold;
+}
+
+.btn.weak:hover {
+    background: #66bb6a;
+}
+
+.btn.normal {
+    background: #64b5f6;
+    /* Soft Blue */
+    color: #0d47a1;
+    font-weight: bold;
+}
+
+.btn.normal:hover {
+    background: #42a5f5;
+}
+
+.btn.strong {
+    background: #e57373;
+    /* Soft Red */
+    color: #b71c1c;
+    font-weight: bold;
+}
+
+.btn.strong:hover {
+    background: #ef5350;
+}
+
+.btn.god {
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+    background-size: 200% 200%;
+    color: black;
+    font-weight: 900;
+    animation: shine 3s infinite linear;
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px #FFD700;
+}
+
+.btn.god:hover {
+    box-shadow: 0 0 20px #FFD700, 0 0 40px #FFA500;
+    transform: scale(1.02);
+}
+
+@keyframes shine {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.divider {
+    text-align: center;
+    margin: 10px 0;
+    color: #888;
+}
+
+#room-code-input {
+    width: 100%;
+    padding: 10px;
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Chat */
+#chat-container {
+    margin-top: auto;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 200px;
+}
+
+#chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#chat-input {
+    width: 100%;
+    padding: 8px;
+    background: #222;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Board Area */
+#board-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+#shogi-board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    width: min(80vh, 600px);
+    height: min(80vh, 600px);
+    background-color: var(--board-color);
+    border: 4px solid #5d4037;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.cell {
+    border: 1px solid var(--line-color);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Star points (dots) */
+.cell.star::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #333;
+    border-radius: 50%;
+}
+
+.piece {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: bold;
+    font-size: 2rem;
+    /* Adjust based on cell size */
+    color: #000;
+    /* Piece shape - simplified as text, or we can use background image. 
+       Let's use a subtle polygon shape css if possible, or just text. 
+       Text is easiest. Sente points up, Gote points down. */
+    user-select: none;
+    line-height: 1;
+}
+
+.piece.gote {
+    transform: rotate(180deg);
+}
+
+.piece.promoted {
+    color: #d00;
+}
+
+.cell.selected {
+    background-color: var(--selected);
+}
+
+.cell.valid-move {
+    background-color: var(--highlight);
+}
+
+.cell.valid-move::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.cell.last-move {
+    background-color: var(--last-move);
+}
+
+
+/* Komadai (Captured Pieces) */
+.komadai-container {
+    width: 100%;
+    /* max-width: 600px; */
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+}
+
+.komadai-label {
+    width: 100px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.komadai-slots {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.komadai-piece {
+    background: var(--board-color);
+    color: black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Noto Serif JP', serif;
+    border-radius: 4px;
+    /* Shogi piece shape is pentagon but box is fine for komadai */
+    cursor: pointer;
+    position: relative;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.komadai-piece .count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.komadai-piece.selected {
+    border: 2px solid green;
+}
+
+/* Modal - Ensure hidden by default */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    /* Changed from just hidden to strictly none until active */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    /* Higher than everything */
+}
+
+.modal.active {
+    display: flex;
+}
+
+/* Flashy Result Animation */
+#result-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    pointer-events: none;
+    /* Let clicks pass through if needed, but usually we block */
+    pointer-events: auto;
+}
+
+#result-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: scale(0.5);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.result-win #result-title {
+    color: #ffd700;
+    text-shadow: 0 0 20px #ffea00, 0 0 50px #ff6a00;
+}
+
+.result-lose #result-title {
+    color: #a0a0ff;
+    text-shadow: 0 0 20px #5050ff, 0 0 50px #0000aa;
+}
+
+#result-message {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.5s forwards;
+}
+
+@keyframes popIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.result-action-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: transparent;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeIn 1s ease 1s forwards;
+    transition: all 0.3s;
+}
+
+.result-action-btn:hover {
+    background: white;
+    color: black;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+
+/* Gote Perspective */
+.role-gote #board-area {
+    flex-direction: column-reverse;
+    /* Swap Komadai (Sente goes Top, Gote goes Bottom) */
+}
+
+.role-gote #shogi-board {
+    transform: rotate(180deg);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+        align-items: flex-start;
+    }
+
+    #game-container {
+        flex-direction: column;
+        height: auto;
+        padding-bottom: 50px;
+    }
+
+    #sidebar {
+        width: 100%;
+        order: 2;
+        /* Move below board for easier play */
+    }
+
+    #board-area {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 9/11;
+        /* Rough estimate for board + komadai */
+    }
+
+    #shogi-board {
+        width: 100%;
+        height: auto;
+        /* Use aspect ratio from grid */
+        aspect-ratio: 1/1;
+        max-width: 90vw;
+        max-height: 90vw;
+    }
+
+    .piece {
+        font-size: 1.5rem;
+        /* Smaller pieces on mobile */
+    }
+
+    .komadai-piece {
+        width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+    }
+}

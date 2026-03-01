@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前置詞穴埋め問題アプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 800px; /* 少し幅を広げて列表示に対応 */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .question-box {
+            background-color: #e0f2fe;
+            border-radius: 10px;
+            padding: 25px;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #1e3a8a;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column; /* デフォルトは縦積み */
+            justify-content: center;
+            align-items: center;
+            gap: 15px; /* 列間のギャップ */
+            word-break: break-word;
+        }
+
+        /* 画面が中程度以上のサイズで横並びにする */
+        @media (min-width: 768px) { /* md breakpoint */
+            .question-box {
+                flex-direction: row; /* 横並び */
+                text-align: left; /* テキストを左寄せ */
+                align-items: flex-start; /* 上端揃え */
+            }
+            .question-box > div {
+                flex: 1; /* 各列が均等な幅を占める */
+            }
+        }
+
+        .english-sentence, .japanese-sentence {
+            padding: 5px;
+        }
+        .english-sentence {
+            font-size: 1.25rem;
+            color: #1e3a8a;
+        }
+        .japanese-sentence {
+            font-size: 1rem;
+            color: #4a5568;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .input-group input[type="text"] {
+            border: 2px solid #90cdf4;
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-size: 1.1rem;
+            width: 70%;
+            max-width: 250px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .input-group input[type="text"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        .input-group button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .input-group button:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+        .input-group button:active {
+            transform: translateY(0);
+        }
+        .message {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 10px;
+            min-height: 24px; /* メッセージの高さ確保 */
+        }
+        .message.correct {
+            color: #10b981; /* 緑 */
+        }
+        .message.incorrect {
+            color: #ef4444; /* 赤 */
+        }
+        .progress-bar {
+            background-color: #e2e8f0;
+            border-radius: 5px;
+            height: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background-color: #3b82f6;
+            height: 100%;
+            width: 0%;
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+        .counter {
+            font-size: 0.9rem;
+            color: #4a5568;
+            text-align: right;
+            margin-top: 5px;
+        }
+        @media (max-width: 480px) {
+            .input-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .input-group input[type="text"],
+            .input-group button {
+                width: 100%;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold text-gray-800">前置詞穴埋めクイズ</h1>
+        <div class="question-box" id="questionBox">
+            <!-- 問題がここに表示されます -->
+            <div class="english-sentence" id="englishSentence"></div>
+            <div class="japanese-sentence" id="japaneseSentence"></div>
+        </div>
+        <div class="input-group">
+            <input type="text" id="answerInput" placeholder="前置詞を入力してください" autofocus>
+            <button id="checkButton">チェック</button>
+        </div>
+        <div class="message" id="message"></div>
+        <button id="nextButton" class="bg-gray-400 text-white rounded-lg py-3 px-6 text-lg cursor-not-allowed" disabled>次の問題</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBarFill"></div>
+        </div>
+        <div class="counter" id="questionCounter"></div>
+    </div>
+
+    <script>
+        // クイズのデータ配列。各オブジェクトは例題、正解の前置詞、日本語訳を含む。
+        const quizData = [
+            { example: "Do you know ___ the accident?", answer: "about", japanese: "あなたはその事故について知っていますか?" },
+            { example: "This tape is ___ 3 meters long.", answer: "about", japanese: "このテープはおよそ3メートルの長さだ。" },
+            { example: "I'll go ___ you.", answer: "after", japanese: "私はあなたの後から行く" },
+            { example: "They gave it to him ___ a birthday present.", answer: "as", japanese: "彼らは誕生日プレゼントとして彼にそれをあげた。" },
+            { example: "Why do you regard him ___ your friend?", answer: "as", japanese: "なぜあなたは彼を友達と見なすの?" },
+            { example: "Let's meet ___ the station.", answer: "at", japanese: "駅で会いましょう。" },
+            { example: "I broke my leg ___ the age of 13.", answer: "at", japanese: "私は13歳の時に脚を骨折した。" },
+            { example: "He will come home ___ noon.", answer: "before", japanese: "彼は昼前には帰宅するだろう。" },
+            { example: "The president went ___ him.", answer: "before", japanese: "社長は彼の前に立って行った。" },
+            { example: "There is a cat ___ the window.", answer: "by", japanese: "窓のそばにネコがいる。" },
+            { example: "Braille is used ___ many people.", answer: "by", japanese: "点字はたくさんに人々によって使われている。" },
+            { example: "I go to school ___ bus every day.", answer: "by", japanese: "私は毎日バスで学校に行く" },
+            { example: "I must finish the work ___ tomorrow.", answer: "by", japanese: "私はその仕事を明日までに終えなくてはならない。" },
+            { example: "I've got to pay the rental fee ___ the month.", answer: "by", japanese: "私は月単位でそのレンタル料を支払わなくてはならない" },
+            { example: "I'll build a new shrine ___ you.", answer: "for", japanese: "私はあなたたちのために新しい神社を建てます。" },
+            { example: "He dashed ___ the door suddenly.", answer: "for", japanese: "彼は突然ドアに向かって突進した。" },
+            { example: "She has lived in Japan ___ five years.", answer: "for", japanese: "彼女は5年間日本に住んでいる。" },
+            { example: "I'm ___ the plan.", answer: "for", japanese: "私はその計画に賛成だ。" },
+            { example: "The girl missed the train ___ this reason.", answer: "for", japanese: "その少女はこの理由のために電車を逃した。" },
+            { example: "She got a letter ___ him.", answer: "from", japanese: "彼女は彼から手紙をもらった。" },
+            { example: "Tofu is made ___ soybeans.", answer: "from", japanese: "豆腐は大豆から出来ている。" },
+            { example: "The cat is ___ the box now.", answer: "in", japanese: "ネコは今この箱の中にいる。" },
+            { example: "He was ___ America in 2001.", answer: "in", japanese: "彼は2001年にはアメリカにいた。" },
+            { example: "Look at the girl ___ a red T-shirt!", answer: "in", japanese: "赤いTシャツを着ている女の子を見て!" },
+            { example: "___ my opinion, we should stop it right now.", answer: "in", japanese: "私の考えでは、私たちはそれを今すぐにやめるべきだ。" },
+            { example: "The actor is the coolest actor ___ the world.", answer: "in", japanese: "その俳優は世界で一番格好いい俳優だ。" },
+            { example: "He came ___ the room.", answer: "into", japanese: "彼が部屋の中へ入ってきた。" },
+            { example: "It's turned ___ a rotten world.", answer: "into", japanese: "嫌な世の中になってきた。" },
+            { example: "Is there a post office ___ here?", answer: "near", japanese: "この近くに郵便局はありますか?" },
+            { example: "I like the color ___ this cellphone.", answer: "of", japanese: "私はこのケータイの色が好きだ。" },
+            { example: "Try to be a person ___ kindness.", answer: "of", japanese: "優しさをもつ(優しい)人になろうとしなさい。" },
+            { example: "This desk is made ___ wood.", answer: "of", japanese: "この机は木で作られている。" },
+            { example: "My bag is ___ the table.", answer: "on", japanese: "私のバッグはそのテーブルの上にある。" },
+            { example: "He plays soccer ___ Mondays.", answer: "on", japanese: "彼は(毎週)月曜日にサッカーをする。" },
+            { example: "I watched the game ___ TV.", answer: "on", japanese: "私はテレビでその試合を見た" },
+            { example: "He's ___ the job right now.", answer: "on", japanese: "彼は今仕事中である。" },
+            { example: "___ my way home, I found a wallet ___ the street.", answer: "on", japanese: "帰宅途中、私は道ばたで財布を拾った。" },
+            { example: "The plane flew ___ me.", answer: "over", japanese: "飛行機が私の上を飛んで行った。" },
+            { example: "He is popular all ___ the world.", answer: "over", japanese: "彼は世界じゅうで有名だ" },
+            { example: "She is ___ 100 kilos.", answer: "over", japanese: "彼女は100キロを超えている。" },
+            { example: "Our teacher stayed there ___ the weekend.", answer: "over", japanese: "先生は週末の間そこに滞在した" },
+            { example: "It is no use crying ___ spilt milk.", answer: "over", japanese: "こぼれた牛乳について泣いても無駄だ(覆水盆に返らず)" },
+            { example: "He went ___ Tokyo last night.", answer: "to", japanese: "彼は昨夜東京へ行った。" },
+            { example: "She talked ___ me.", answer: "to", japanese: "彼女が私に話しかけてきた。" },
+            // 複数穴の質問を単一穴に修正
+            { example: "I work from Monday ___ Friday.", answer: "to", japanese: "私は月曜日から金曜日まで働いている。" },
+            { example: "The child sat down ___ breakfast.", answer: "to", japanese: "その子供は朝食のために座った。" },
+            { example: "I prefer coffee ___ tea.", answer: "to", japanese: "私は紅茶と比べて(よりも)コーヒーの方が好きだ" },
+            { example: "There're two men ___ the bridge.", answer: "under", japanese: "あの橋の下に2人の男性がいる。" },
+            { example: "He can't smoke because he's ___ age.", answer: "under", japanese: "彼は未成年なので喫煙出来ない。" },
+            { example: "The building is still ___ construction.", answer: "under", japanese: "その建物はまだ建設中だ。" },
+            { example: "It's not easy ___ such circumstances.", answer: "under", japanese: "こうした状況では、それは簡単ではない。" },
+            { example: "I want to go ___ you.", answer: "with", japanese: "私はあなたと一緒に行きたい。" },
+            { example: "She is a girl ___ a long hair.", answer: "with", japanese: "彼女は長い髪を持った(の)少女だ。" },
+            { example: "He writes a poem ___ a pen.", answer: "with", japanese: "彼はペンで詩を書く" },
+            { example: "Don't speak ___ your mouth full.", answer: "with", japanese: "口に食べ物を詰めこんだまま話をするな。" },
+            { example: "What's the matter ___ you?", answer: "with", japanese: "どうしましたか? (あなたに関しての問題は何ですか?)" },
+            { example: "The clock is ___ the phone.", answer: "above", japanese: "その時計は電話の上にある。" },
+            { example: "We flew ___ the Pacific.", answer: "across", japanese: "私たちは飛行機で太平洋を横切った。" },
+            { example: "There is a village ___ the river.", answer: "across", japanese: "その川の向こう側に村がある。" },
+            { example: "I'm ___ the plan.", answer: "against", japanese: "私はその計画に反対だ。" },
+            { example: "I walked ___ the street to get there.", answer: "along", japanese: "そこに着くために私は通りに沿って歩いた。" },
+            { example: "He feels relaxed ___ his friends.", answer: "among", japanese: "彼は友達に囲まれてリラックスする。" },
+            { example: "I want to travel ___ the world.", answer: "around", japanese: "私は世界のあちこちを旅行したい。" },
+            { example: "There's no store ___ this school.", answer: "around", japanese: "この学校の周りには何の店もない。" },
+            { example: "The toy you're looking for is ___ you.", answer: "behind", japanese: "あなたの探しているおもちゃはあなたの後ろにあります。" },
+            { example: "He has a bruise ___ his right knee.", answer: "below", japanese: "彼は右膝の下に傷がある。" },
+            { example: "My score is ___ the average.", answer: "below", japanese: "私の点数は平均より下だ。" },
+            { example: "I walked ___ my cousin.", answer: "beside", japanese: "私はいとこと並んで歩いた。" },
+            { example: "There is no lie ___ you and I.", answer: "between", japanese: "君と僕の間に嘘は何もない。" },
+            { example: "They went out ___ the heavy rain.", answer: "despite", japanese: "彼らは大雨にもかかわらず外出した。" },
+            { example: "I stayed in America ___ 2008.", answer: "during", japanese: "私は2008年の間(ずっと) アメリカに滞在した。" },
+            { example: "She went to Hawaii ___ November.", answer: "during", japanese: "彼女は11月(の間)にハワイへ行った。" },
+            { example: "The officer works every day ___ Wednesday.", answer: "except", japanese: "その警官は水曜日以外は毎日働いている。" },
+            { example: "She's crying ___ a child.", answer: "like", japanese: "彼女は子供のように泣いている。" },
+            { example: "The scarf slipped ___ her arms.", answer: "off", japanese: "そのスカーフは彼女の腕から滑り落ちた。" },
+            { example: "The cat jumped ___ the chair.", answer: "onto", japanese: "ネコが椅子の上に飛び乗った。" },
+            { example: "I have been here ___ 5 in the morning.", answer: "since", japanese: "私は朝5時から(ずっと)ここにいる。" },
+            { example: "This beef is much cheaper ___ that one.", answer: "than", japanese: "この牛肉はあれよりもよっぽど安い。" },
+            { example: "He searched for his glasses ___ the room.", answer: "throughout", japanese: "彼はメガネを部屋中くまなく探した。" },
+            { example: "She kept crying ___ the night.", answer: "throughout", japanese: "彼女は一晩中泣き続けた。" },
+            { example: "My mother went ___ the station.", answer: "toward", japanese: "母は駅の方へ向かって行った。" },
+            { example: "I continued to play the game ___ midnight.", answer: "until", japanese: "私は真夜中までそのゲームをプレイし続けた。" },
+            { example: "My e-pal came to Japan ___ Manila.", answer: "via", japanese: "私のメル友はマニラ経由で日本に来た。" },
+            { example: "I was called ___ the room.", answer: "within", japanese: "私はその部屋の中から呼ばれた。" },
+            { example: "Complete the task ___ a week.", answer: "within", japanese: "1週間以内にその仕事を完了しなさい。" },
+            { example: "It's impossible to live ___ water.", answer: "without", japanese: "水なしで生きるのは不可能だ。" },
+            { example: "Our boss went away ___ saying goodbye.", answer: "without", japanese: "上司はさよならも言わずに立ち去った。" },
+            { example: "That coffee is ___ drinking.", answer: "worth", japanese: "あのコーヒーは飲んでみる価値がある。" },
+            { example: "They're ___ the new measure.", answer: "anti", japanese: "彼らは新しい法案に反対している。" },
+            { example: "The dog sat ___ the kitchen table.", answer: "beneath", japanese: "その犬は食卓の下に座った。" },
+            { example: "She has two brothers ___ him.", answer: "besides", japanese: "彼女には彼以外にも2人の兄がいる。" },
+            { example: "The store is ___ the post office.", answer: "beyond", japanese: "その店は郵便局の向こうにある。" },
+            { example: "That theory was ___ my understanding.", answer: "beyond", japanese: "あの理論は私の理解を越えていた(私には分からなかった)。" },
+            { example: "I received an answer ___ my inquiry.", answer: "concerning", japanese: "私は問い合わせについての回答をもらった。" },
+            { example: "Tears streamed ___ her face then.", answer: "down", japanese: "その時涙が彼女の顔を流れ落ちた。" },
+            { example: "It costs $45 to travel there, ___ table expenses.", answer: "excluding", japanese: "食費を除き、そこへ旅行するのには45ドルかかる。" },
+            { example: "The total price is $153, ___ delivery.", answer: "including", japanese: "送料も含めて、合計金額は153ドルだ。" },
+            { example: "That pudding is already ___ my stomach.", answer: "inside", japanese: "あのプリンはもう私の腹の中にある(食べてしまった)。" },
+            { example: "___ my advice, he has gone there.", answer: "notwithstanding", japanese: "私の忠告にもかかわらず、彼はそこへ行ってしまった。" },
+            { example: "My father waited for me ___ the store.", answer: "outside", japanese: "父は私をその店の外で待っていた。" },
+            { example: "It's ten minutes ___ eight.", answer: "past", japanese: "8時10分過ぎだ。" },
+            { example: "We went ___ our destination.", answer: "past", japanese: "私たちは目的地を通り過ぎてしまった。" },
+            { example: "It costs $80 ___ month to rent this room.", answer: "per", japanese: "この部屋を借りるのに1ヶ月につき80ドルかかる。" },
+            { example: "I'm ___ the death penalty.", answer: "pro", japanese: "私は死刑制度に賛成だ。" },
+            { example: "___ the new system, it's worse than before.", answer: "regarding", japanese: "新しいシステムについて言うと、それは前よりも悪くなった。" },
+            { example: "I put my bag ___ the seat.", answer: "underneath", japanese: "私は座席の下にかばんをしまった。" },
+            { example: "___ you, I can't swim so well.", answer: "unlike", japanese: "あなたと違って、私はそんなに上手に泳げない。" },
+            { example: "He tried to climb ___ the pillar.", answer: "up", japanese: "彼はその柱を登ろうとした。" },
+            { example: "The final will be Team A ___ Team B.", answer: "versus", japanese: "決勝戦はAチーム対Bチームになるだろう。" },
+            { example: "We all went ___ the ship.", answer: "aboard", japanese: "私たちは全員その船に乗り込んだ。" },
+            { example: "The nurse usually works ___ that doctor.", answer: "alongside", japanese: "その看護師は普段、あの医者のそばで働いている。" },
+            { example: "The treasure was found ___ the trees.", answer: "amid", japanese: "その宝は木々の中から発見された。" },
+            { example: "I like everything ___ that.", answer: "but", japanese: "私はあれ以外は全て好きだ。" },
+            { example: "Julius Caesar visited this area ___ 50 BC.", answer: "circa", japanese: "ユリウス・カエサルはこの地域を紀元前およそ50年頃に訪れた。" },
+            { example: "___ a receipt, you can't return the goods.", answer: "failing", japanese: "レシートがない場合、その商品は返品出来ない。" },
+            { example: "___ the meeting, we all had a chat.", answer: "following", japanese: "その会議の後で、私たちはおしゃべりした。" },
+            { example: "10 ___ 3 equals 7.", answer: "minus", japanese: "10引く3は7だ。" },
+            { example: "I walked out ___ my coat.", answer: "minus", japanese: "私はコートを置いて退席した。" },
+            { example: "He lives ___ the famous museum.", answer: "opposite", japanese: "彼はかの有名な美術館の向かいに住んでいる。" },
+            { example: "The boy threw it ___ the window.", answer: "out", japanese: "その少年はそれを窓から外へ投げた。" },
+            { example: "12 ___ 5 equals 17.", answer: "plus", japanese: "12足す5は17だ。" },
+            { example: "Every room has a kitchen ___ private bathroom.", answer: "plus", japanese: "どの部屋にも、キッチンに加えて専用浴室がついている。" },
+            { example: "4 ___ 5 is 20.", answer: "times", japanese: "4かける5は20だ。" },
+            { example: "There's a black box ___ the wheelhouse.", answer: "abaft", japanese: "操舵室より船尾に黒い箱がある。" },
+            { example: "___ any objections, the plan will proceed.", answer: "absent", japanese: "異議がなければ、計画は実施される。" },
+            { example: "___ what you said, I have a question.", answer: "apropos", japanese: "あなたの言ったことに関して、ひとつ質問がある。" },
+            { example: "The boy sat ___ his father's knee.", answer: "astride", japanese: "その少年は父親のひざにまたがって座った。" },
+            { example: "The stars moved slowly ___ the sky.", answer: "athwart", japanese: "星々はゆっくりと空を横切っていった。" },
+            { example: "He sat ___ the mountain, waiting for the sunrise.", answer: "atop", japanese: "彼は日の出を待ちながら、その山の頂上に座っていたのだった。" },
+            { example: "___ any storms, the plane should arrive on time.", answer: "barring", japanese: "嵐がなければ、その飛行機は時間通りに着くはずだ。" },
+            { example: "I squeezed my body ___ wall and coffin.", answer: "betwixt", japanese: "私は壁と棺の間に自分の体を押し込んだ。" },
+            { example: "___ the current situation, I think that's impossible.", answer: "given", japanese: "現状を考慮すれば、私はそれは不可能だと思う。" },
+            { example: "Do you mind if I sit ___ you?", answer: "next", japanese: "あなたの隣に座ってもよろしいですか?" },
+            { example: "___ Mr.Jones, I don't think the idea is effective.", answer: "pace", japanese: "ジョーンズ氏には失礼ながら、私はその考えは効果的でないと思う。" },
+            { example: "The soldier acted ___ soldier, not as a human being.", answer: "qua", japanese: "その兵士は人間としてではなく、兵士として行動した。" },
+            { example: "I found a wallet ___ cash on the street.", answer: "sans", japanese: "私は道で中身のない財布を見つけた。" },
+            { example: "They are all alive ___ her.", answer: "save", japanese: "彼らは彼女を除いて全員生きている。" },
+            { example: "It was written by Bob, ___ Joe who was ill.", answer: "vice", japanese: "それは病気のジョーに代わってボブによって書かれた。" },
+            { example: "___ the news, the boy was found safe.", answer: "according to", japanese: "ニュースによると、その少年は無事に見つかったという。" },
+            { example: "A hill loomed ___ them.", answer: "ahead of", japanese: "彼らの前に丘がぼんやりと見えてきた。" },
+            { example: "___ magazines, Tom reads very little.", answer: "apart from", japanese: "トムは雑誌以外はほとんど読まない。" },
+            { example: "___ me, I don't like that actor.", answer: "as for", japanese: "私どうかと言うと、あの俳優は好みではない。" },
+            { example: "I don't smoke ___ now.", answer: "as of", japanese: "今のところタバコは吸っていない。" },
+            { example: "___ usual, she showed up late.", answer: "as per", japanese: "いつもどおり、彼女は遅れてやって来た。" },
+            { example: "___ the problem, a quick measure is required.", answer: "as regards", japanese: "その問題については、急ぎの対応が求められている。" },
+            { example: "___ a few scratches, I'm OK.", answer: "aside from", japanese: "少し擦り傷がある以外は大丈夫だ。" },
+            { example: "Mary was late ___ the heavy traffic.", answer: "because of", japanese: "メアリーはひどい渋滞のために遅刻した。" },
+            { example: "Our new house is ___ the school.", answer: "close to", japanese: "私たちの新居は学校の近くにある。" },
+            { example: "I have had to reduce my workload ___ the pain.", answer: "due to", japanese: "私はその痛みのために仕事量を減らさざるを得なかった。" },
+            { example: "No one came ___ Catharine.", answer: "except for", japanese: "キャサリンを除いては誰も来なかった。" },
+            { example: "That is quite ___ the truth.", answer: "far from", japanese: "それは事実とかけ離れている。" },
+            { example: "I have a bruise ___ my wrist.", answer: "inside of", japanese: "私は手首の内側に傷がある。" },
+            { example: "He walked to school ___ taking the car.", answer: "instead of", japanese: "彼は車に乗らずに歩いて学校まで行った。" },
+            { example: "The old man lives ___ me.", answer: "next to", japanese: "その老人は私の隣に住んでいる。" },
+            { example: "Now. ___ the next topic.", answer: "on to", japanese: "さて。次の話題に移ります。" },
+            { example: "The audience came ___ the theater.", answer: "out of", japanese: "観客がその劇場から外に出てきた。" },
+            { example: "I was ___ the building when he came back.", answer: "outside of", japanese: "彼が帰ってきた時、私はその建物の外にいた。" },
+            { example: "He'll leave here ___ unavoidable circumstances.", answer: "owing to", japanese: "彼はやむを得ない事情でここを去る予定だ。" },
+            { example: "She went to Canada ___ her trip to America.", answer: "prior to", japanese: "彼女はアメリカに旅行する前にカナダへ行った。" },
+            { example: "___ the contract, you have to pay for it.", answer: "pursuant to", japanese: "契約に準じ、あなたはその代金を支払わなくてはならない。" },
+            { example: "I'll buy it, ___ the cost.", answer: "regardless of", japanese: "値段に関係なく、私はそれを買うつもりだ。" },
+            { example: "He worked hard ___ the meeting.", answer: "subsequent to", japanese: "その会議の後、彼は一生懸命に働いた。" },
+            { example: "I can go to college ___ my aunt's help.", answer: "thanks to", japanese: "私はおばの援助のおかげで大学に通うことができる。" },
+            { example: "I walked ___ Kyoto Station.", answer: "as far as", japanese: "私は京都駅まで歩いた。" },
+            { example: "___ clothes, he gave me some food.", answer: "as well as", japanese: "衣類に加え、彼は私に食べ物をくれた。" },
+            { example: "I went there ___ my father's car.", answer: "by means of", japanese: "私は父の車でそこへ向かった。" },
+            { example: "He made the machine ___ the plans.", answer: "in accordance with", japanese: "彼は設計図通りにその機械を作った。" },
+            { example: "I must study French ___ English.", answer: "in addition to", japanese: "私は英語に加えてフランス語も勉強しなければならない。" },
+            { example: "Fasten your seatbelt ___ accident.", answer: "in case of", japanese: "事故に備えてシートベルトを締めなさい。" },
+            { example: "The incident happened right ___ me.", answer: "in front of", japanese: "その事件はまさに私の目の前で起きた。" },
+            { example: "Jane will attend the party ___ him.", answer: "in lieu of", japanese: "彼の代わりにジェーンがそのパーティーに出席する。" },
+            { example: "She has stood him ___ the daughter he lost.", answer: "in place of", japanese: "彼女はずっと、彼の亡くした娘の代わりになっている。" },
+            { example: "___ culture, he is much superior.", answer: "in point of", japanese: "教養の点では彼の方がよっぽど優っている。" },
+            { example: "___ bad weather, we went out for a drive.", answer: "in spite of", japanese: "悪天候にもかかわらず、私たちはドライブに出かけた。" },
+            { example: "I had to take days off ___ illness.", answer: "on account of", japanese: "病気のため、私は休職せざるを得なかった。" },
+            { example: "I'd like to say thank you ___ my son.", answer: "on behalf of", japanese: "息子に代わってお礼を申し上げたい。" },
+            { example: "Judy gets a commission ___ her salary.", answer: "on top of", japanese: "ジュディは給料に加えて歩合ももらっている。" },
+            { example: "She made inquiries ___ the product.", answer: "with regard to", japanese: "彼女はその製品について問い合わせた。" },
+            { example: "We have no idea ___ the matter.", answer: "with respect to", japanese: "その件に関しては我々は何も分からない。" },
+        ];
+
+        let questions = []; // 全問題
+        let incorrectQuestions = []; // 不正解だった問題
+        let currentQuestionIndex = 0;
+        let correctCount = 0;
+
+        const englishSentenceDiv = document.getElementById('englishSentence');
+        const japaneseSentenceDiv = document.getElementById('japaneseSentence');
+        const answerInput = document.getElementById('answerInput');
+        const checkButton = document.getElementById('checkButton');
+        const message = document.getElementById('message');
+        const nextButton = document.getElementById('nextButton');
+        const progressBarFill = document.getElementById('progressBarFill');
+        const questionCounter = document.getElementById('questionCounter');
+
+        // 問題をシャッフルする関数
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // クイズを初期化する関数
+        function initializeQuiz() {
+            questions = [...quizData]; // 元のデータをコピー
+            shuffleArray(questions);
+            incorrectQuestions = [];
+            currentQuestionIndex = 0;
+            correctCount = 0;
+            updateQuestionCounter();
+            loadQuestion();
+            updateProgressBar();
+        }
+
+        // 問題をロードする関数
+        function loadQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                const q = questions[currentQuestionIndex];
+                const answerWords = q.answer.split(' '); // 正解の単語を分割
+                let placeholders = '';
+                // 正解の単語数だけアンダースコアのプレースホルダーを生成
+                for (let i = 0; i < answerWords.length; i++) {
+                    placeholders += `<span class="text-red-500 underline">___</span> `;
+                }
+                // 末尾のスペースを削除
+                placeholders = placeholders.trim();
+
+                // 英語の例文の最初の '___' を生成したプレースホルダーに置き換える
+                const exampleText = q.example.replace('___', placeholders);
+                englishSentenceDiv.innerHTML = exampleText;
+                japaneseSentenceDiv.textContent = q.japanese; // 日本語訳を表示
+
+                answerInput.value = '';
+                message.textContent = '';
+                message.className = 'message';
+                checkButton.disabled = false;
+                nextButton.disabled = true;
+                nextButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+                nextButton.classList.remove('bg-blue-500', 'hover:bg-blue-600', 'cursor-pointer');
+                answerInput.focus(); // 入力フィールドにフォーカス
+            } else {
+                // 全ての問題が終了した場合
+                if (incorrectQuestions.length > 0) {
+                    // 不正解の問題がある場合、それらを再挑戦問題としてシャッフルしてセット
+                    questions = [...incorrectQuestions];
+                    shuffleArray(questions);
+                    incorrectQuestions = [];
+                    currentQuestionIndex = 0;
+                    // メッセージを表示して、次のラウンドへ
+                    englishSentenceDiv.innerHTML = `<span class="text-xl text-blue-700">お疲れ様でした！</span>`;
+                    japaneseSentenceDiv.innerHTML = `<span class="text-lg text-gray-700">不正解だった問題に再挑戦しましょう。</span>`;
+                    answerInput.disabled = true;
+                    checkButton.disabled = true;
+                    nextButton.disabled = false; // 再挑戦ラウンド開始ボタンとして使う
+                    nextButton.textContent = '再挑戦開始';
+                    nextButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                    nextButton.classList.add('bg-blue-500', 'hover:bg-blue-600', 'cursor-pointer');
+                } else {
+                    // 全ての問題に正解した場合
+                    englishSentenceDiv.innerHTML = `<span class="text-xl text-green-700">全問正解です！おめでとうございます！</span>`;
+                    japaneseSentenceDiv.innerHTML = `<span class="text-lg text-gray-700">もう一度プレイしますか？</span>`;
+                    answerInput.disabled = true;
+                    checkButton.disabled = true;
+                    nextButton.disabled = false;
+                    nextButton.textContent = '最初からやり直す';
+                    nextButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                    nextButton.classList.add('bg-blue-500', 'hover:bg-blue-600', 'cursor-pointer');
+                }
+                updateProgressBar();
+            }
+        }
+
+        // 進捗バーを更新する関数
+        function updateProgressBar() {
+            const totalQuestions = quizData.length; // 元のデータの数で進捗を計算
+            const progress = (correctCount / totalQuestions) * 100;
+            progressBarFill.style.width = `${progress}%`;
+        }
+
+        // 問題数を更新する関数
+        function updateQuestionCounter() {
+            questionCounter.textContent = `正解数: ${correctCount} / ${quizData.length}`;
+        }
+
+        // 回答をチェックする関数
+        function checkAnswer() {
+            const userAnswer = answerInput.value.trim().toLowerCase();
+            const currentQuestion = questions[currentQuestionIndex];
+            const correctPreposition = currentQuestion.answer.toLowerCase();
+
+            if (userAnswer === correctPreposition) {
+                message.textContent = '正解！';
+                message.className = 'message correct';
+                correctCount++;
+                updateQuestionCounter();
+                updateProgressBar();
+                checkButton.disabled = true;
+                nextButton.disabled = false;
+                nextButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                nextButton.classList.add('bg-blue-500', 'hover:bg-blue-600', 'cursor-pointer');
+            } else {
+                message.textContent = `不正解！ 正解は「${correctPreposition}」です。`;
+                message.className = 'message incorrect';
+                // 不正解だった問題を不正解リストに追加（重複しないように）
+                if (!incorrectQuestions.includes(currentQuestion)) {
+                    incorrectQuestions.push(currentQuestion);
+                }
+                // 不正解でも次の問題に進めるようにする（ただし同じ問題を繰り返せる）
+                checkButton.disabled = true;
+                nextButton.disabled = false;
+                nextButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                nextButton.classList.add('bg-blue-500', 'hover:bg-blue-600', 'cursor-pointer');
+            }
+        }
+
+        // イベントリスナー
+        checkButton.addEventListener('click', checkAnswer);
+
+        // Enterキーでチェック/次の問題に進む
+        answerInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (!checkButton.disabled) {
+                    checkAnswer();
+                } else if (!nextButton.disabled) {
+                    nextQuestion();
+                }
+            }
+        });
+
+        nextButton.addEventListener('click', nextQuestion);
+
+        function nextQuestion() {
+            // ボタンのテキストで次のアクションを判断
+            if (nextButton.textContent === '再挑戦開始' || nextButton.textContent === '最初からやり直す') {
+                initializeQuiz();
+                answerInput.disabled = false;
+                checkButton.disabled = false;
+                nextButton.textContent = '次の問題';
+                updateProgressBar();
+                updateQuestionCounter();
+            } else {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }
+
+        // DOMContentLoaded イベントリスナーでクイズを初期化
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+
+    </script>
+</body>
+</html>
