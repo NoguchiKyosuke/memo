@@ -1,2 +1,0 @@
-# Normalize shell scripts to LF on checkout/commit
-*.sh text eol=lf
