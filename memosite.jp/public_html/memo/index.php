@@ -28,11 +28,15 @@ renderHead($title, $description, $keywords, $canonical);
       <p class="lead">音声処理・機械学習・車載技術など、日々の学習と研究をまとめたメモのコレクション。</p>
     </header>
 
-    <?php renderA8Ad(); ?>
-
     <section>
       <h2>カテゴリ</h2>
       <div class="content-grid">
+        <a class="content-card content-card--category" href="/memo/discord/">
+          <div class="card-icon">🎮</div>
+          <h3>ディスコードボット作成</h3>
+          <p>ディスコードのボット作成に関する技術メモと手順。</p>
+        </a>
+
         <a class="content-card content-card--category" href="/memo/voice/">
           <div class="card-icon">🎤</div>
           <h3>音声研究メモ</h3>
@@ -46,6 +50,8 @@ renderHead($title, $description, $keywords, $canonical);
         </a>
       </div>
     </section>
+
+    <?php renderA8Ad(); ?>
 
     <section>
       <h2>音声研究の最新記事</h2>
